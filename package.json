@@ -1,0 +1,38 @@
+{
+  "name": "thingder",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "add": "^2.0.6",
+    "dayjs": "^1.11.5",
+    "i18next": "^21.9.2",
+    "i18next-browser-languagedetector": "^6.1.5",
+    "i18next-http-backend": "^1.4.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^11.18.6",
+    "react-input-checkbox": "^1.1.0",
+    "react-loading-skeleton": "^3.1.0",
+    "react-redux": "^8.0.4",
+    "react-router-dom": "^6.4.1",
+    "react-simple-pull-to-refresh": "^1.3.3",
+    "react-tinder-card": "^1.5.4",
+    "yarn": "^1.22.19"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.1.0",
+    "msw": "^0.47.3",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0"
+  }
+}
