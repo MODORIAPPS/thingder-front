@@ -2,7 +2,6 @@ import api from "@/api";
 import Button from "@/components/Button";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { changeRegisterProperty, resetRegisterStateAction } from "@/store/register/register.reducer";
-import { formatPhoneNumberHypen } from "@/utils/formatter";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,15 +10,13 @@ import { toast } from "react-toastify";
 import ActionBar from "../../components/ActionBar";
 import Spacing from "../../components/Spacing";
 import Typography from "../../components/Typography";
-import EmailInput from "../Login/components/EmailInput";
-import PasswordInput from "../Login/components/PasswordInput";
+import EmailInput from "./components/EmailInput";
 import PasswordConfirmInput from "./components/PasswordConfirmInput";
+import PasswordInput from "./components/PasswordInput";
 import PhoneCodeInput from "./components/PhoneCodeInput";
 import PhoneNumberInput from "./components/PhoneNumberInput";
 import SendCodeButton from "./components/SendCodeButton";
 import Timer from "./components/Timer";
-import DetailFragment from "./fragments/DetailFragment";
-import PhotoFragment from "./fragments/PhotoFragment";
 import useRegister from "./hooks/useRegister";
 
 interface PinCheckResponse {

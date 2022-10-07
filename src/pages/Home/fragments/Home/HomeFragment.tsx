@@ -7,15 +7,13 @@ import Spacing from "../../../../components/Spacing";
 import styled from "@emotion/styled";
 import ChooseButton from "./components/ChooseButton";
 import { useRef } from "react";
+import { API } from "./types";
 
 // https://github.com/3DJakob/react-tinder-card-demo/blob/master/src/examples/Advanced.js
 
 const HomeFragment: React.FC = () => {
 
-    const cardRef = useRef(null);
-    useEffect(() => {
-
-    }, []);
+    const cardRef = useRef<API>(null);
 
     const onSwipe = (direction: any) => {
         console.log('You swiped: ' + direction)

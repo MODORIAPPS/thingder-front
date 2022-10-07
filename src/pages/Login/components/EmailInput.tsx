@@ -1,37 +1,26 @@
-import TextInput from "@/components/TextInput";
-import React, { useState } from "react";
-import { InputCommonType } from "./input.type";
 import ImgEmail from "@/assets/icon/message_alt_fill.png";
+import TextInput from "@/components/TextInput";
 import styled from "@emotion/styled";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { changeRegisterProperty } from "@/store/register/register.reducer";
+import React from "react";
+import { InputCommonType } from "./input.type";
 
 const EMAIL_INPUT_ERROR = "유효하지 않은 이메일 주소입니다";
 
-const EmailInput: React.FC = () => {
 
-    const email = useAppSelector(state => state.register.email);
-    const dispatch = useAppDispatch();
-    const [error, setError] = useState("")
+interface Props extends InputCommonType {
 
-    const handleChange = (email: string) => {
-        if (!isEmailValid(email)) {
-            setError(EMAIL_INPUT_ERROR);
-        } else {
-            setError("");
-        }
+}
 
-        dispatch(changeRegisterProperty({ email }));
-    };
+const EmailInput: React.FC<Props> = (props) => {
 
     return (
         <TextInput
             leadingIcon={<EmailIcon src={ImgEmail} />}
             label="이메일"
             placeholder="이메일 주소를 입력해주세요"
-            onChange={handleChange}
-            value={email}
-            error={error}
+            onChange={props.onChange}
+            value={props.value}
+            error={props.error}
             type="email"
         />
     );
