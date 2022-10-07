@@ -21,7 +21,6 @@ const HomeNavigator: React.FC = () => {
 
                 {/* 커틀러리(About) 프래그먼트 */}
                 <Route path="about" element={<AboutFragment />} />
-
             </Route>
         </Routes>
     );

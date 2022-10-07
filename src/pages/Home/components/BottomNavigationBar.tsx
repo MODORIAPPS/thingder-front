@@ -3,6 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Spacing from "../../../components/Spacing";
 
+// Enabled Icons
+import ImgNavHomeEnabled from "@/assets/icon/nav/nav_home_enabled.svg";
+import ImgNavExploreEnabled from "@/assets/icon/nav/nav_explore_enabled.svg";
+import ImgNavChatEnabled from "@/assets/icon/nav/nav_chat_enabled.svg";
+import ImgNavAboutEnabled from "@/assets/icon/nav/nav_about_enabled.svg";
+
 // Disabled Icons
 import ImgNavHomeDisabled from "../../../assets/icon/nav/nav_home_disabled.svg"
 import ImgNavExploreDisabled from "../../../assets/icon/nav/nav_explore_disabled.svg";
@@ -25,26 +31,26 @@ const BottomNavigationBar: React.FC = () => {
         <TabLayout>
             <TabWrapper onClick={() => setTab("home")}>
                 <TabItem>
-                    <Icon src={ImgNavHomeDisabled} />
-                    <Text>홈</Text>
+                    <Icon src={tab === "home" ? ImgNavHomeEnabled : ImgNavHomeDisabled} />
+                    <Text selected={tab === "home"}>홈</Text>
                 </TabItem>
             </TabWrapper>
             <TabWrapper onClick={() => setTab("explore")}>
                 <TabItem>
-                    <Icon src={ImgNavExploreDisabled} />
-                    <Text>탐험</Text>
+                    <Icon src={tab === "explore" ? ImgNavExploreEnabled : ImgNavExploreDisabled} />
+                    <Text selected={tab === "explore"}>탐험</Text>
                 </TabItem>
             </TabWrapper>
             <TabWrapper onClick={() => setTab("chat")}>
                 <TabItem>
-                    <Icon src={ImgNavChatDisabled} />
-                    <Text>메시지</Text>
+                    <Icon src={tab === "chat" ? ImgNavChatEnabled : ImgNavChatDisabled} />
+                    <Text selected={tab === "chat"}>메시지</Text>
                 </TabItem>
             </TabWrapper>
             <TabWrapper onClick={() => setTab("about")}>
                 <TabItem>
-                    <Icon src={ImgNavAboutDisabled} />
-                    <Text>커틀러리</Text>
+                    <Icon src={tab === "about" ? ImgNavAboutEnabled : ImgNavAboutDisabled} />
+                    <Text selected={tab === "about"} style={{ color: (tab === "about") ? 'red' : "#858585" }}>커틀러리</Text>
                 </TabItem>
             </TabWrapper>
         </TabLayout>
@@ -60,9 +66,15 @@ const TabLayout = styled.div`
     align-items: center;
 
     width: 100%;
-    height: 56px;
 
     background: white;
+
+    padding-top: 12px;
+    padding-bottom: 7px;
+
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 const TabWrapper = styled.div`
@@ -84,13 +96,13 @@ const Icon = styled.img`
     height: 28px;
 `;
 
-const Text = styled.p`
+const Text = styled.p<{ selected: boolean }>`
     margin-top: 6px;
     margin-bottom: 0;
 
     font-size: 12px;
     line-height: 16px;
-    color: #858585;
+    color: ${({ selected }) => selected ? "#404040" : "#858585"}
 `;
 
 export default BottomNavigationBar;

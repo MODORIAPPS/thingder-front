@@ -1,12 +1,21 @@
 import styled from "@emotion/styled";
 import React from "react";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import BottomNavigationBar from "./components/BottomNavigationBar";
+import Modal from 'react-modal';
 
 const Home: React.FC = () => {
+
+    useEffect(() => {
+        Modal.setAppElement("#body")
+    }, []);
+
     return (
         <Container>
-            <Outlet />
+            <Body id="body">
+                <Outlet />
+            </Body>
             <NavWrapper>
                 <BottomNavigationBar />
             </NavWrapper>
@@ -19,10 +28,14 @@ const Container = styled.div`
     height: 100vh;
 `;
 
+const Body = styled.div`
+    overflow-y: scroll;
+    height: calc(100% - 70px);
+`;
+
 const NavWrapper = styled.div`
     position: absolute;
     width: 100%;
-    height: 56px;
     bottom: 0;
 `;
 

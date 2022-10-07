@@ -6,11 +6,20 @@ import Colors from "../styles/color";
 interface Props {
     text: string;
     onClick: () => void;
+
+    disable?: boolean;
 }
 
 const Button: React.FC<Props> = (props) => {
+    
+    const handleClick = () => {
+        if(props.disable) return;
+
+        props.onClick();
+    }
+
     return (
-        <Container onClick={props.onClick}>
+        <Container style={{ backgroundColor: props.disable ? "#7c2700d1" : Colors.Primary }} onClick={handleClick}>
             <Typography.Subtitle2 style={{ color: "#ffffff" }}>{props.text}</Typography.Subtitle2>
         </Container>
     );

@@ -6,19 +6,19 @@ import Typography from "../../../components/Typography";
 
 interface Props {
     checked: boolean;
-    onChanged: (boolean: string) => void;
+    onChanged: (value: boolean) => void;
 }
 
 const RememberCheckbox: React.FC<Props> = ({ checked, onChanged }) => {
     return (
-        <Container>
-            {/* <Checkbox
+        <Container onClick={() => onChanged(!checked)}>
+            <Checkbox
                 theme="fancy-checkbox"
                 value={checked}
-                onChange={(e) => onChanged(e.target.checked)}>
-            </Checkbox> */}
+                onChange={(e) => onChanged(!checked)}>
+            </Checkbox>
             <Spacing.Horizontal width={8} />
-            <Typography.Subtitle4>이메일 기억하기</Typography.Subtitle4>
+            <Typography.Subtitle4 style={{ fontWeight: "normal" }}>이메일 기억하기</Typography.Subtitle4>
         </Container>
     );
 };

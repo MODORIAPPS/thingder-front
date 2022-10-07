@@ -37,6 +37,8 @@ const Container = styled.div`
     justify-content: space-between;
     align-items: center;
     height: 56px;
+
+    padding: 6px 24px;
 `;
 
 const Icon = styled.img`

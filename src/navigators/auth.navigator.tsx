@@ -1,3 +1,5 @@
+import RegisterItem from "@/pages/RegisterItem/RegisterItem";
+import RegisterPolicy from "@/pages/RegisterPolicy/RegisterPolicy";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "../pages/Login/Login";
@@ -15,6 +17,12 @@ const AuthNavigator: React.FC = () => {
 
             {/* 회원가입 */}
             <Route path="register" element={<Register />} />
+
+            {/* 회원가입 */}
+            <Route path="policy" element={<RegisterPolicy />} />
+
+            {/* 아이템 등록 */}
+            <Route path="register/item" element={<RegisterItem />} />
 
             {/* 비밀번호 찾기 */}
             <Route path="reset" element={<PasswordReset />} />

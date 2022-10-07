@@ -5,6 +5,9 @@ import { Container } from "../../../components/Container";
 import PlainTextInput from "../../../components/PlainTextInput";
 import Spacing from "../../../components/Spacing";
 import { useTranslation, Trans } from "react-i18next";
+import Introduction from "@/pages/Home/fragments/About/components/Introduction";
+import { StickToBottom } from "./StartFragment";
+import Button from "@/components/Button";
 
 interface Props {
     handleClickStartService: () => void;
@@ -13,37 +16,25 @@ interface Props {
 
 const DescFragment: React.FC<Props> = ({ handleClickStartService, handleClickShare }) => {
 
-    const { t, i18n } = useTranslation();
-
     return (
         <Container>
             <ActionBar>
                 <Icon style={{ opacity: 0 }} />
                 <Icon onClick={handleClickShare} src={ImgShareIcon} />
             </ActionBar>
+            <Spacing.Vertical height={32} />
+
             <Body>
-                {t("intro.select_lang")}
+                <span>어서오세요</span>
+                <Spacing.Vertical height={32} />
+                <Introduction />
+
+                <Spacing.Vertical height={40} />
             </Body>
 
-            <Trans i18nKey={"intro.select_lang"}>
-                dfa
-            </Trans>
-
-            <PlainTextInput
-                label={t("title")}
-                value="faefew"
-                placeholder="별명을 입력해주세요."
-                onChange={() => { }}
-            />
-
-            <Spacing.Vertical height={42} />
-
-            <PlainTextInput
-                label="당신을 이렇게 불러드릴게요."
-                value="faefew"
-                placeholder="별명을 입력해주세요."
-                onChange={() => { }}
-            />
+            <StickToBottom>
+                <Button onClick={handleClickStartService} text="안녕!" />
+            </StickToBottom>
         </Container>
     );
 };
@@ -51,6 +42,8 @@ const DescFragment: React.FC<Props> = ({ handleClickStartService, handleClickSha
 const Body = styled.div`
     padding: 0 30px;
     color: #404040;
+
+    overflow-y: scroll;
 `;
 
 const ActionBar = styled.div`

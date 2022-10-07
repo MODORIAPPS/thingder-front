@@ -13,7 +13,7 @@ interface Props {
 const PlainTextInput: React.FC<Props> = ({ label, value, placeholder, onChange }) => {
     return (
         <>
-            <Typography.Body2 style={{ color: "#000000bf" }}>{label}</Typography.Body2>
+            <Typography.Body2 style={{ color: "rgba(0, 0, 0, 0.75)" }}>{label}</Typography.Body2>
             <Spacing.Vertical height={11} />
             <Input
                 placeholder={placeholder}
@@ -44,7 +44,7 @@ const Input = styled.input`
     }
 `;
 
-const Divider = styled.div`
+export const Divider = styled.div`
     background-color: #00000040;
     height: 2px;
 `;

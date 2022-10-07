@@ -7,12 +7,17 @@ interface Props {
     leadingIcon: React.ReactElement;
 
     value: string;
+    placeholder: string;
     onChange: (value: string) => void;
 
     error?: string;
+
+    type?: React.HTMLInputTypeAttribute;
+
+    action?: React.ReactElement
 }
 
-const TextInput: React.FC<Props> = ({ label, leadingIcon, value, onChange, error }) => {
+const TextInput: React.FC<Props> = ({ label, leadingIcon, value, placeholder, onChange, error, type, action }) => {
     return (
         <Container>
             <Label>{label}</Label>
@@ -20,7 +25,14 @@ const TextInput: React.FC<Props> = ({ label, leadingIcon, value, onChange, error
             <InputWrapper>
                 {leadingIcon}
                 <Spacing.Horizontal width={8} />
-                <Input value={value} onChange={(e) => onChange(e.target.value)} />
+                <Input
+                    type={type}
+                    value={value}
+                    placeholder={placeholder}
+                    onChange={(e) => onChange(e.target.value)} />
+                <ActionWrapper>
+                    {action}
+                </ActionWrapper>
             </InputWrapper>
             <Spacing.Vertical height={4} />
             <Divider />
@@ -79,6 +91,11 @@ const Label = styled.span`
 const Divider = styled.div`
     background: rgba(0, 0, 0, 0.25);
     height: 2px;
+    margin: 0 5px;
+`;
+
+const ActionWrapper = styled.div`
+    align-self: flex-end;
 `;
 
 export default TextInput;

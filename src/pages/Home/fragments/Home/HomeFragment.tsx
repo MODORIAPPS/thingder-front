@@ -1,14 +1,18 @@
 import React, { useEffect } from "react";
 import Typography from "../../../../components/Typography";
 import TinderCard from 'react-tinder-card'
-import ItemCardBig from "./components/ItemCardBig";
+import ItemCardBig, { image } from "./components/ItemCardBig";
 import HomeFragTopBar from "./components/HomeFragTopBar";
 import Spacing from "../../../../components/Spacing";
 import styled from "@emotion/styled";
 import ChooseButton from "./components/ChooseButton";
+import { useRef } from "react";
+
+// https://github.com/3DJakob/react-tinder-card-demo/blob/master/src/examples/Advanced.js
 
 const HomeFragment: React.FC = () => {
 
+    const cardRef = useRef(null);
     useEffect(() => {
 
     }, []);
@@ -17,45 +21,80 @@ const HomeFragment: React.FC = () => {
         console.log('You swiped: ' + direction)
     }
 
-    const handleClickNegativeButton = () => { };
-    const handleClickPositiveButton = () => { };
+    const handleClickNegativeButton = () => { cardRef?.current?.swipe("left") };
+    const handleClickPositiveButton = () => { cardRef?.current?.swipe("right") };
 
     return (
-        <>
+        <Screen>
             <HomeFragTopBar />
-            <Spacing.Vertical height={32} />
+            <Spacing.Vertical height={24} />
 
             <Container>
                 <CardContainer>
                     <TinderCard
+                        className="slide"
+                        ref={cardRef}
                         onSwipe={onSwipe}>
-                        <ItemCardBig uid={""} nickname={"몰랑이"} name={""} madeIn={""} brand={""} madeAt={""} />
+                        <ItemCardBig
+                            uid={"asdfasdf"}
+                            nickname={"몰랑이"}
+                            name={"마약베게"}
+                            madeIn={"중국"}
+                            brand={"샤넬"}
+                            madeAt={new Date().toString()}
+                            thumbnail_src={image}
+                            thubmnail_srcSet={image} />
                     </TinderCard>
+                    <TinderCard
+                        className="slide"
+                        ref={cardRef}
+                        onSwipe={onSwipe}>
+                        <ItemCardBig
+                            uid={"asdfasdf"}
+                            nickname={"몰랑이"}
+                            name={"마약베게"}
+                            madeIn={"중국"}
+                            brand={"샤넬"}
+                            madeAt={new Date().toString()}
+                            thumbnail_src={image}
+                            thubmnail_srcSet={image} />                    </TinderCard>
                 </CardContainer>
-
+                <Spacing.Vertical height={24} />
                 <ChooseButtonWrapper>
                     <ChooseButton.Negative onClick={handleClickNegativeButton} />
                     <Spacing.Horizontal width={65} />
                     <ChooseButton.Positive onClick={handleClickPositiveButton} />
                 </ChooseButtonWrapper>
             </Container>
-        </>
-    )
+        </Screen>
+    );
 };
+
+const Screen = styled.div`
+    overflow: hidden;
+    height: 100%;
+`;
 
 const Container = styled.div`
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    height: 100%;
 `;
 
 const CardContainer = styled.div`
-    position: absolute;
-    height: 700px;
+    /* position: absolute; */
+    /* height: 700px; */
+    padding: 0 12px;
+    box-sizing: border-box;
+    height: 520px;
+    position: relative;
 `;
 
 const ChooseButtonWrapper = styled.div`
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
+    padding: 0 80px;
 `;
 
 export default HomeFragment;
