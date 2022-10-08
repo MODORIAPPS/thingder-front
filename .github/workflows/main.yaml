@@ -16,7 +16,7 @@ jobs:
       - name: Upload files via scp
         uses: appleboy/scp-action@master
         with:
-          host: 3.35.232.86
+          host: 43.200.225.149
           username: ec2-user
           port: 22
           key: ${{ secrets.THINGDER_FRONT_PRIVATE_KEY }}
@@ -26,7 +26,7 @@ jobs:
       - name: Execute yarn build via ssh
         uses: appleboy/ssh-action@master
         with:
-          host: 3.35.232.86
+          host: 43.200.225.149
           username: ec2-user
           key: ${{ secrets.THINGDER_FRONT_PRIVATE_KEY }}
           port: 22
