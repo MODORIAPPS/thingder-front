@@ -4,10 +4,11 @@ import React from "react";
 import Spacing from "../../../../../components/Spacing";
 import Stack from "../../../../../components/Stack";
 import Typography from "../../../../../components/Typography";
-
-export const image = "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg";
+import ImgInfo from "@/assets/icon/info.png";
 
 interface Props {
+    onClickInfo: (uid: string) => void;
+
     uid: string;
 
     nickname: string;
@@ -15,7 +16,8 @@ interface Props {
     madeIn: string;
     brand: string;
 
-    madeAt: string;
+    genYear: number;
+    genMonth: number;
 
     thumbnail_src: string;
     thubmnail_srcSet: string;
@@ -24,22 +26,26 @@ interface Props {
 const ItemCardBig: React.FC<Props> = (props) => {
     return (
         <Container>
-            <ItemImage src={image} />
+            <ItemImage src={props.thumbnail_src} />
 
             <BlackGradient>
                 <Stack.Horizontal>
                     <Typography.Header1>{props.nickname}</Typography.Header1>
                     <div>
-                        <Property>{dayjs(props.madeAt).format("YYYY년 MM월 제조")}</Property>
+                        <Property>{props.genYear}년 {props.genMonth}월 제조</Property>
                         <Property>{props.name}</Property>
                     </div>
                 </Stack.Horizontal>
                 <Spacing.Vertical height={4} />
-                <BottomWrapper>
-                    <BottomProperty>제조국: {props.madeIn}</BottomProperty>
-                    <BottomPropertyDivider />
-                    <BottomProperty>브랜드: {props.brand}</BottomProperty>
-                </BottomWrapper>
+                <Stack.Horizontal>
+                    <BottomWrapper>
+                        <BottomProperty>제조국: {props.madeIn}</BottomProperty>
+                        <BottomPropertyDivider />
+                        <BottomProperty>브랜드: {props.brand}</BottomProperty>
+                    </BottomWrapper>
+
+                    <InfoButton src={ImgInfo} onClick={() => props.onClickInfo(props.uid)} />
+                </Stack.Horizontal>
             </BlackGradient>
         </Container>
     );
@@ -56,6 +62,10 @@ const Container = styled.div`
     color: white;
 
     filter: drop-shadow(0px 13px 19px rgba(0, 0, 0, 0.0701213));
+
+    @media (max-height: 600px) {
+        height: 400px;
+    }
 `;
 
 const ItemImage = styled.img`
@@ -75,6 +85,12 @@ const BottomBlackGradient = styled.div`
 
 const Nickname = styled.h2`
 
+`;
+
+
+const InfoButton = styled.img`
+    width: 18px;
+    height: 18px;
 `;
 
 const BlackGradient = styled.div`

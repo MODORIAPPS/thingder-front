@@ -1,11 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { signInUser } from "@/store/user/user.reducer";
+import { useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Welcome from "../pages/Welcome";
 import AdminNavigator from "./admin.navigator";
 import AuthNavigator from "./auth.navigator";
 import HomeNavigator from "./home.navigator";
 
 const RootNavigator = () => {
+
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const isLogin = useAppSelector(state => state.user.data?.isLogin);
+
+    useEffect(() => {
+        dispatch(signInUser());
+    }, []);
+
+    useEffect(() => {
+        if(isLogin){
+            navigate("/home")
+        }else{
+            navigate("/");
+        }
+    }, [isLogin]);
 
     return (
         <Routes>

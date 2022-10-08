@@ -27,6 +27,8 @@ const Button = styled.img`
     &:active {
         opacity: .8;
     }
+
+    cursor: pointer;
 `;
 
 const ChooseButton = {

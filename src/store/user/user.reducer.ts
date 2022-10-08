@@ -45,17 +45,14 @@ export const signInUser = (token?: string): ThunkAction<void, RootState, unknown
                 dispatch({ type: USER_SIGN_IN_ERROR, error: "No user auth info" });
                 return
             }
-            localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-            
+            console.log("token", token ?? accessToken ?? "");
             api.main.defaults.headers.common['Authorization'] = token ?? accessToken ?? "";
+
+            localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+
 
             console.log('accessToken', accessToken);
 
-            // console.log('token', accessToken);
-
-
-
-            // const { data } = await api.main.get<User>("/auth/my");
             dispatch({ type: USER_SIGN_IN_SUCCESS });
 
             console.log("user/reducer token", accessToken);
@@ -93,9 +90,11 @@ const userReducer = (
             }
         case USER_SIGN_IN_SUCCESS:
             return {
-                ...state,
                 loading: false,
                 error: null,
+                data: {
+                    isLogin: true
+                }
             }
         case USER_SIGN_IN_ERROR:
             return {

@@ -1,3 +1,4 @@
+import { useAppSelector } from "@/hooks/redux";
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import AboutFragment from "../pages/Home/fragments/About/AboutFragment";
@@ -8,9 +9,9 @@ import Home from "../pages/Home/Home";
 
 const HomeNavigator: React.FC = () => {
 
-    useEffect(() => {
-        
-    }, []);
+    const { loading, data } = useAppSelector(state => state.user);
+
+    if (loading || !data?.isLogin) return <></>
 
     return (
         <Routes>

@@ -32,7 +32,7 @@ const DetailFragment: React.FC<Props> = (props) => {
         const { data } = await api.main.post<RegisterResponse>("/auth/register", state);
         if (data.token) {
             localStorage.setItem(ACCESS_TOKEN_KEY, data.token);
-            dispatch(signInUser());
+            dispatch(signInUser(data.token));
             navigate("/home");
             toast("회원가입이 완료되었습니다!")
         }
@@ -64,6 +64,18 @@ const DetailFragment: React.FC<Props> = (props) => {
                     placeholder="제조국가를 입력해주세요."
                     value={state.genCountry}
                     onChange={(genCountry) => dispatch(changeRegisterProperty({ genCountry }))} />
+                <Spacing.Vertical height={36} />
+                <PlainTextInput
+                    label={"물건의 제조년도를 알려주세요."}
+                    placeholder="예) 2002"
+                    value={state.genYear}
+                    onChange={(genYear) => dispatch(changeRegisterProperty({ genYear }))} />
+                <Spacing.Vertical height={36} />
+                <PlainTextInput
+                    label={"물건의 제조월을 알려주세요."}
+                    placeholder="예) 12"
+                    value={state.genMonth}
+                    onChange={(genMonth) => dispatch(changeRegisterProperty({ genMonth }))} />
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
                     label={"물건의 브랜드를 알려주세요."}

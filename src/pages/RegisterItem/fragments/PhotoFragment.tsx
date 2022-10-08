@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Spacing from "../../../components/Spacing";
 import ImgAddRound from "../../../assets/icon/add_round.svg";
 import Button from "../../../components/Button";
@@ -14,7 +14,6 @@ interface ImageResponse {
     src: string;
     srcSet: string;
 }
-const dol = "https://ojsfile.ohmynews.com/STD_IMG_FILE/2014/0829/IE001748429_STD.jpg";
 
 interface Props {
     onClickContinueButton: () => void;
@@ -43,12 +42,13 @@ const PhotoFragment: React.FC<Props> = ({ onClickContinueButton }) => {
 
         const image: ImageResponse = {
             src: BASE_URL + data.src,
-            srcSet: BASE_URL + data.srcSet
+            srcSet: data.srcSet
         };
         const array = [...photo];
-        array.push(image);
+        array.push(image)
+        console.log(array);
         setPhoto(array);
-    }, []);
+    }, [photo]);
 
 
     const clickImageUploadButton = useCallback(() => {
@@ -71,14 +71,12 @@ const PhotoFragment: React.FC<Props> = ({ onClickContinueButton }) => {
     const handleClickPhotoBox = (index: number) => {
         let array = [...photo];
         if (photo[index]) {
-
+            console.log('asdf');
             array.splice(index, 1);
-
+            setPhoto(array);
         } else {
             clickImageUploadButton();
         }
-
-        setPhoto(array);
     };
 
     return (

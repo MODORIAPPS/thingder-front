@@ -61,7 +61,7 @@ const Register: React.FC = () => {
         try {
             const { data } = await api.main.post("/auth/pin/send?phone=" + phone);
             setPhoneError("");
-            start();
+            restart(CODE_EXPIRY_TIME, true);
             toast("인증코드가 전송되었습니다!");
             setEnd(false);
         } catch (e) {

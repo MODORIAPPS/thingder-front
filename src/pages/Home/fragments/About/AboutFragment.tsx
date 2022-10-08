@@ -1,8 +1,10 @@
+import Button from "@/components/Button";
 import Spacing from "@/components/Spacing";
+import { useAppDispatch } from "@/hooks/redux";
+import { signOutUser } from "@/store/user/user.reducer";
 import styled from "@emotion/styled";
-import React from "react";
-import { useState } from "react";
-import Typography from "../../../../components/Typography";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AskToTalk from "./components/AskToTalkButton";
 import Introduction from "./components/Introduction";
 import MemberList from "./components/MemberList";
@@ -10,6 +12,9 @@ import TopBar from "./components/TopBar";
 import AskToTalkModal from "./modal/AskToTalkModal";
 
 const AboutFragment: React.FC = () => {
+
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const [modal, setModal] = useState(false);
 
@@ -19,6 +24,14 @@ const AboutFragment: React.FC = () => {
 
     const handleClickAskToTalk = () => {
         setModal(true)
+    };
+
+    const handleClickSignOut = () => {
+        const confirm = window.confirm("로그아웃하시겠어요?");
+        if (confirm) {
+            dispatch(signOutUser());
+            navigate("/");
+        }
     };
 
     return (
@@ -39,6 +52,8 @@ const AboutFragment: React.FC = () => {
                 <Introduction />
 
                 <Spacing.Vertical height={40} />
+
+                <Button text="로그아웃" onClick={handleClickSignOut} />
             </Container>
 
             <AskToTalkModal open={modal} onClickBackButton={() => setModal(false)} />
