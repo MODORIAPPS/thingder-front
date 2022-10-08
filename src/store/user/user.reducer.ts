@@ -12,7 +12,7 @@ const USER_INFO_UPDATE = "USER_INFO_UPDATE" as const;
 const USER_SIGN_OUT = "USER_SIGN_OUT" as const;
 
 const userSignInAction = () => ({ type: USER_SIGN_IN });
-const userSignInSuccessAction = (user: User) => ({ type: USER_SIGN_IN_SUCCESS, user });
+const userSignInSuccessAction = () => ({ type: USER_SIGN_IN_SUCCESS });
 const userSignInErrorAction = (error: string) => ({ type: USER_SIGN_IN_ERROR, error });
 const userSignOutAction = () => ({ type: USER_SIGN_OUT });
 const userInfoUpdateAction = (data: User) => ({ type: USER_INFO_UPDATE, data });
@@ -36,28 +36,31 @@ const initState: UserState = {
     error: null,
 }
 
-export const signInUser = (): ThunkAction<void, RootState, unknown, AnyAction> => {
+export const signInUser = (token?: string): ThunkAction<void, RootState, unknown, AnyAction> => {
     return async (dispatch) => {
         try {
             dispatch({ type: USER_SIGN_IN });
             const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
-            api.main.defaults.headers.common['Authorization'] = accessToken ?? "";
-
-            console.log('accessToken', accessToken);
-
-            // console.log('token', accessToken);
-
             if (!accessToken) {
                 dispatch({ type: USER_SIGN_IN_ERROR, error: "No user auth info" });
                 return
             }
             localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+            
+            api.main.defaults.headers.common['Authorization'] = token ?? accessToken ?? "";
 
-            const { data } = await api.main.get<User>("/auth/my");
-            dispatch({ type: USER_SIGN_IN_SUCCESS, user: data });
+            console.log('accessToken', accessToken);
+
+            // console.log('token', accessToken);
+
+
+
+            // const { data } = await api.main.get<User>("/auth/my");
+            dispatch({ type: USER_SIGN_IN_SUCCESS });
 
             console.log("user/reducer token", accessToken);
         } catch (e) {
+            console.log("error", e);
             localStorage.removeItem(ACCESS_TOKEN_KEY);
             dispatch({ type: USER_SIGN_IN_ERROR, error: "error" });
         }
@@ -90,8 +93,8 @@ const userReducer = (
             }
         case USER_SIGN_IN_SUCCESS:
             return {
+                ...state,
                 loading: false,
-                data: action.user,
                 error: null,
             }
         case USER_SIGN_IN_ERROR:

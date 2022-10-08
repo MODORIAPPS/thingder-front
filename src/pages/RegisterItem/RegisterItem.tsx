@@ -8,14 +8,15 @@ import PhotoFragment from "./fragments/PhotoFragment";
 
 const RegisterItem: React.FC = () => {
 
-    const [page, setPage] = useState<"photo" | "detail">("detail");
+    const [page, setPage] = useState<"photo" | "detail">("photo");
 
+    const handleClickContinue = () => setPage("detail");
     return (
         <Container>
             {
                 page === "photo"
                     ?
-                    <PhotoFragment />
+                    <PhotoFragment onClickContinueButton={handleClickContinue} />
                     :
                     <DetailFragment onClickBackButton={() => setPage("photo")} />
             }

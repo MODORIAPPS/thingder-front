@@ -1,66 +1,94 @@
+import api, { ACCESS_TOKEN_KEY } from "@/api";
 import ActionBar from "@/components/ActionBar";
 import Button from "@/components/Button";
 import PlainTextInput from "@/components/PlainTextInput";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { changeRegisterProperty } from "@/store/register/register.reducer";
+import { signInUser } from "@/store/user/user.reducer";
 import styled from "@emotion/styled";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Spacing from "../../../components/Spacing";
 
 interface Props {
     onClickBackButton: () => void;
 }
 
+export const BASE_URL = "http://rife.today:8083";
+
+interface RegisterResponse {
+    email: string;
+    expiration: string;
+    token: string;
+}
+
 const DetailFragment: React.FC<Props> = (props) => {
 
-    const handleClickCompleteRegister = async () => { };
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const state = useAppSelector(state => state.register);
+    const handleClickCompleteRegister = async () => {
+        const { data } = await api.main.post<RegisterResponse>("/auth/register", state);
+        if (data.token) {
+            localStorage.setItem(ACCESS_TOKEN_KEY, data.token);
+            dispatch(signInUser());
+            navigate("/home");
+            toast("회원가입이 완료되었습니다!")
+        }
+    };
 
     return (
         <Screen>
             <ActionBar onClickBackButton={props.onClickBackButton} />
             <Spacing.Vertical height={16} />
-            <PresentImage src={"https://th3.tmon.kr/thumbs/image/343/3fd/dfd/fbce85afe_700x700_95_FIT.jpg"} />
+            <PresentImage
+                src={state.images[0]?.src}
+            />
             <Container>
+                <Spacing.Vertical height={24} />
                 <PlainTextInput
                     label={"당신을 이렇게 불러드릴게요."}
                     placeholder="별명을 입력해주세요."
-                    value={""}
-                    onChange={() => { }} />
+                    value={state.nickname}
+                    onChange={(nickname) => dispatch(changeRegisterProperty({ nickname }))} />
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
                     label={"당신은 어떤 물건인가요?"}
                     placeholder="물건의 종류를 입력해주세요"
-                    value={""}
-                    onChange={() => { }} />
+                    value={state.type}
+                    onChange={(type) => dispatch(changeRegisterProperty({ type }))} />
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
                     label={"물건의 제조국을 알려드릴게요."}
                     placeholder="제조국가를 입력해주세요."
-                    value={""}
-                    onChange={() => { }} />
+                    value={state.genCountry}
+                    onChange={(genCountry) => dispatch(changeRegisterProperty({ genCountry }))} />
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
                     label={"물건의 브랜드를 알려주세요."}
                     placeholder="브랜드명을 입력해주세요."
-                    value={""}
-                    onChange={() => { }} />
+                    value={state.brand}
+                    onChange={(brand) => dispatch(changeRegisterProperty({ brand }))} />
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
-                    label={"당신을 이렇게 불러드릴게요."}
-                    placeholder="별명을 입력해주세요."
-                    value={""}
-                    onChange={() => { }} />
+                    label={"물건을 대표하는 물질성 5가지를 적어주세요."}
+                    placeholder="#흐름  #차가움  #깨지기쉬움  #방수  #재활용"
+                    value={state.tag}
+                    onChange={(tag) => dispatch(changeRegisterProperty({ tag }))} />
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
                     label={"물건을 이모지로만 설명해주세요."}
                     placeholder="😎 🌽 🎑 🥝 🍑 🌽 🎑 🥝"
-                    value={""}
-                    onChange={() => { }} />
+                    value={state.description}
+                    onChange={(description) => dispatch(changeRegisterProperty({ description }))} />
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
                     label={"물건에 대해 짧게 이야기해주세요."}
                     placeholder="자유롭게 소개 부탁해요."
-                    value={""}
-                    onChange={() => { }} />
-                <Spacing.Vertical height={120} />
+                    value={state.story}
+                    onChange={(story) => dispatch(changeRegisterProperty({ story }))} />
+                <Spacing.Vertical height={60} />
                 <Button onClick={handleClickCompleteRegister} text="회원가입 완료!" />
                 <Spacing.Vertical height={40} />
             </Container>

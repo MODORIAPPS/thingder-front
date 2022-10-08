@@ -1,49 +1,60 @@
+import api from "@/api";
 import Spacing from "@/components/Spacing";
+import { useAppDispatch } from "@/hooks/redux";
+import ItemDetailModal from "@/pageModal/ItemDetail/ItemDetailModal";
+import { showMemberDetailAction } from "@/store/ui/ui.reducer";
 import styled from "@emotion/styled";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PullToRefresh from "react-simple-pull-to-refresh";
-import ItemCard, { ItemCardType, sampleData } from "./components/ItemCard";
+import ItemCard, { ItemCardType } from "./components/ItemCard";
 import TopBar from "./components/TopBar";
 
-const fetchItemList: Promise<ItemCardType[]> = new Promise<ItemCardType[]>((resolve) => {
-    setTimeout(() => {
-        resolve(sampleData);
-    }, 1000);
-})
+interface ItemListResponse {
+    members: ItemCardType[];
+}
 
 const ExploreFragment: React.FC = () => {
 
-    const { status, data, error, refetch } = useQuery(["items"], () => fetchItemList);
+    const dispatch = useAppDispatch();
+    const [list, setList] = useState<ItemCardType[]>([]);
 
-    if (status === "loading") {
-        return <span>Loading...</span>
-    }
+    const fetchItemList = async () => {
+        const { data } = await api.main.get<ItemListResponse>("/matching/");
+        setList(data.members);
+    };
 
-    if (status === "error") {
-        return <span>Error</span>
-    }
+    const handleClickItem = (uid: string) => {
+        dispatch(showMemberDetailAction(uid));
+    };
+
+    useEffect(() => {
+        fetchItemList();
+    }, []);
 
     return (
         <>
             <TopBar />
-            <PullToRefresh onRefresh={() => refetch()}>
+            <PullToRefresh onRefresh={() => fetchItemList()}>
                 <ListView>
                     {
-                        data.map(item =>
+                        list?.map(item =>
                             <ItemCard
+                                onClick={handleClickItem}
                                 key={item.uid}
                                 uid={item.uid}
                                 nickname={item.nickname}
-                                name={item.name}
-                                thumbnail_src={item.thumbnail_src}
-                                thumbnail_srcSet={item.thumbnail_srcSet}
+                                name={item.nickname}
+                                thumbnail_src={item.image.src}
+                                thumbnail_srcSet={item.image.srcSet}
                             />
                         )
                     }
                 </ListView>
             </PullToRefresh>
             <Spacing.Vertical height={40} />
+
+            <ItemDetailModal />
         </>
     )
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import AboutFragment from "../pages/Home/fragments/About/AboutFragment";
 import ChatFragment from "../pages/Home/fragments/Chat/ChatFragment";
@@ -7,6 +7,11 @@ import HomeFragment from "../pages/Home/fragments/Home/HomeFragment";
 import Home from "../pages/Home/Home";
 
 const HomeNavigator: React.FC = () => {
+
+    useEffect(() => {
+        
+    }, []);
+
     return (
         <Routes>
             <Route element={<Home />} >

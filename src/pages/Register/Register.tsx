@@ -29,7 +29,7 @@ const Register: React.FC = () => {
 
     const password = useAppSelector(state => state.register.password);
     const passwordConfirm = useAppSelector(state => state.register.passwordConfirm);
-    const token = useAppSelector(state => state.register.pinToken);
+    const isCodeConfirmed = useAppSelector(state => state.register.pinToken);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -43,8 +43,8 @@ const Register: React.FC = () => {
     const [code, setCode] = useState("");
     const [codeError, setCodeError] = useState("");
 
-    const { seconds, minutes, isRunning, start, restart } = useTimer({
-        expiryTimestamp: EXPIRY_TIME,
+    const { seconds, minutes, isRunning, start, restart, pause } = useTimer({
+        expiryTimestamp: CODE_EXPIRY_TIME,
         onExpire: () => setEnd(true),
         autoStart: false
     });
@@ -54,15 +54,16 @@ const Register: React.FC = () => {
 
     const handleClickSendCode = async () => {
         if (isRunning) {
-            restart(EXPIRY_TIME, true);
+            restart(CODE_EXPIRY_TIME, true);
             return;
         }
 
         try {
-            // const { data } = await api.main.post("/auth/pin/send?phone=" + phone);
+            const { data } = await api.main.post("/auth/pin/send?phone=" + phone);
             setPhoneError("");
             start();
             toast("인증코드가 전송되었습니다!");
+            setEnd(false);
         } catch (e) {
             console.error(e);
             setPhoneError(PHONE_NUMBER_ERROR);
@@ -71,9 +72,11 @@ const Register: React.FC = () => {
 
     const handleClickCodeConfirm = async () => {
         try {
-            const { data } = await api.main.post<PinCheckResponse>("/auth/pin/check", { phone: state.phoneNumber, pin: state.confirmCode });
+            const { data } = await api.main.post<PinCheckResponse>("/auth/pin/check", { phone, pin: code });
             setCodeError("");
             dispatch(changeRegisterProperty({ pinToken: data.token }));
+            toast("인증되었습니다!");
+            pause();
         } catch (e) {
             setCodeError(CODE_CONFIRM_ERROR);
         }
@@ -85,6 +88,7 @@ const Register: React.FC = () => {
 
     const handleClickBackButton = () => {
         dispatch(resetRegisterStateAction());
+        navigate(-1);
     }
 
 
@@ -128,7 +132,7 @@ const Register: React.FC = () => {
                 <PasswordConfirmInput />
                 <Spacing.Vertical height={32} />
 
-                <Button disable={!(password === passwordConfirm && token)} onClick={handleClickContinue} text="계속" />
+                <Button disable={!(password === passwordConfirm && isCodeConfirmed)} onClick={handleClickContinue} text="계속" />
             </Container>
         </>
     );
@@ -146,10 +150,10 @@ const ConfirmCodeButton = styled.span`
 `;
 
 // 3분
-const EXPIRY_TIME = new Date(new Date().setMinutes(new Date().getMinutes() + 3));
+export const CODE_EXPIRY_TIME = new Date(new Date().setMinutes(new Date().getMinutes() + 3));
 
-const PHONE_NUMBER_ERROR = "유효하지 않은 휴대폰 번호입니다";
-const CODE_CONFIRM_ERROR = "인증코드가 일치하지 않습니다";
+export const PHONE_NUMBER_ERROR = "유효하지 않은 휴대폰 번호입니다";
+export const CODE_CONFIRM_ERROR = "인증코드가 일치하지 않습니다";
 
 const Container = styled.div`
     padding: 0 20px;

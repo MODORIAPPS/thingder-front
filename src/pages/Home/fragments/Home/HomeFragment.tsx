@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Typography from "../../../../components/Typography";
 import TinderCard from 'react-tinder-card'
 import ItemCardBig, { image } from "./components/ItemCardBig";
@@ -8,12 +8,18 @@ import styled from "@emotion/styled";
 import ChooseButton from "./components/ChooseButton";
 import { useRef } from "react";
 import { API } from "./types";
+import { ItemCardType } from "../Explore/components/ItemCard";
+import ItemDetail from "@/pageModal/ItemDetail/ItemDetailModal";
+import ItemDetailModal from "@/pageModal/ItemDetail/ItemDetailModal";
 
 // https://github.com/3DJakob/react-tinder-card-demo/blob/master/src/examples/Advanced.js
 
 const HomeFragment: React.FC = () => {
 
+    const [itemList, setItemList] = useState<ItemCardType[]>([]);
     const cardRef = useRef<API>(null);
+
+    const fetchItemList = useState()
 
     const onSwipe = (direction: any) => {
         console.log('You swiped: ' + direction)
@@ -55,7 +61,8 @@ const HomeFragment: React.FC = () => {
                             brand={"샤넬"}
                             madeAt={new Date().toString()}
                             thumbnail_src={image}
-                            thubmnail_srcSet={image} />                    </TinderCard>
+                            thubmnail_srcSet={image} />
+                    </TinderCard>
                 </CardContainer>
                 <Spacing.Vertical height={24} />
                 <ChooseButtonWrapper>
@@ -64,9 +71,15 @@ const HomeFragment: React.FC = () => {
                     <ChooseButton.Positive onClick={handleClickPositiveButton} />
                 </ChooseButtonWrapper>
             </Container>
+
+            <ItemDetailModal />
         </Screen>
     );
 };
+
+interface Props {
+
+}
 
 const Screen = styled.div`
     overflow: hidden;

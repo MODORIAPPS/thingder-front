@@ -29,7 +29,7 @@ const DescFragment: React.FC<Props> = ({ handleClickStartService, handleClickSha
                 <Spacing.Vertical height={32} />
                 <Introduction />
 
-                <Spacing.Vertical height={40} />
+                <Spacing.Vertical height={200} />
             </Body>
 
             <StickToBottom>
@@ -42,8 +42,8 @@ const DescFragment: React.FC<Props> = ({ handleClickStartService, handleClickSha
 const Body = styled.div`
     padding: 0 30px;
     color: #404040;
-
     overflow-y: scroll;
+    height: 100%;
 `;
 
 const ActionBar = styled.div`

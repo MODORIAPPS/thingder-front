@@ -1,23 +1,26 @@
 import styled from "@emotion/styled";
 import React from "react";
 
-// interface Props {
-//     uid: string;
+interface Props {
+    onClick: (uid: string) => void;
 
-//     nickname: string;
-//     name: string;
+    uid: string;
 
-//     thumbnail_src: string;
-//     thumbnail_srcSet: string;
-// }
+    nickname: string;
+    name: string;
 
-const ItemCard: React.FC<ItemCardType> = (props) => {
+    thumbnail_src: string;
+    thumbnail_srcSet: string;
+}
+
+
+const ItemCard: React.FC<Props> = (props) => {
     return (
-        <Container>
-            <ItemImage src={props.thumbnail_src} srcSet={props.thumbnail_srcSet} />
+        <Container onClick={() => props.onClick(props.uid)}>
+            <ItemImage src={props.thumbnail_src} />
             <PropertyWrapper>
                 <Nickname>{props.nickname}</Nickname>
-                <Name>{props.name}</Name>
+                <Name>{props.nickname}</Name>
             </PropertyWrapper>
         </Container>
     );
@@ -72,62 +75,25 @@ export interface ItemCardType {
     uid: string;
 
     nickname: string;
-    name: string;
+    type: string;
+    genYear: number;
+    genMonth: number;
+    genCountry: string;
+    brand: string;
 
-    thumbnail_src: string;
-    thumbnail_srcSet: string;
+    image: {
+        uid: string;
+        src: string;
+        srcSet: string;
+    }
 }
 
-export const sampleData: ItemCardType[] = [
-    {
-        uid: "123122",
-        nickname: "고양이축제",
-        name: "네모난 블루투스 스피커",
-        thumbnail_src: "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg",
-        thumbnail_srcSet: "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg",
-    },
-    {
-        uid: "12312",
-        nickname: "웰컴투더돌고래월드",
-        name: "돌고래 벽지",
-        thumbnail_src: "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg",
-        thumbnail_srcSet: "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg",
-    },
-    {
-        uid: "345443",
-        nickname: "돌고래귀여워",
-        name: "큰돌고래",
-        thumbnail_src: "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg",
-        thumbnail_srcSet: "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg",
-    },
-    {
-        uid: "32322332",
-        nickname: "고양이축제",
-        name: "네모난 블루투스 스피커",
-        thumbnail_src: "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg",
-        thumbnail_srcSet: "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg",
-    },
-    {
-        uid: "54543434",
-        nickname: "흰돌고래",
-        name: "빡빡이",
-        thumbnail_src: "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg",
-        thumbnail_srcSet: "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg",
-    },
-    {
-        uid: "43433443",
-        nickname: "땡땡이",
-        name: "동그란 알람시계",
-        thumbnail_src: "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg",
-        thumbnail_srcSet: "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg",
-    },
-    {
-        uid: "ewafewew",
-        nickname: "동그랑땡",
-        name: "동그란 알람시계",
-        thumbnail_src: "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg",
-        thumbnail_srcSet: "http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg",
-    }
-]
+// export const sampleData: ItemCardType[] = [
+//     {
+//         uid: "123122",
+//         nickname: "몰랑이",
+
+//     }
+// ]
 
 export default ItemCard;
