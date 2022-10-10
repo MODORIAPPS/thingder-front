@@ -1,12 +1,10 @@
 import styled from "@emotion/styled";
 import React from "react";
 import ImgShareIcon from "../../../assets/icon/share.png";
-import { Container } from "../../../components/Container";
 import PlainTextInput from "../../../components/PlainTextInput";
 import Spacing from "../../../components/Spacing";
 import { useTranslation, Trans } from "react-i18next";
 import Introduction from "@/pages/Home/fragments/About/components/Introduction";
-import { StickToBottom } from "./StartFragment";
 import Button from "@/components/Button";
 
 interface Props {
@@ -22,7 +20,7 @@ const DescFragment: React.FC<Props> = ({ handleClickStartService, handleClickSha
                 <Icon style={{ opacity: 0 }} />
                 <Icon onClick={handleClickShare} src={ImgShareIcon} />
             </ActionBar>
-            <Spacing.Vertical height={32} />
+            <Spacing.Vertical height={24} />
 
             <Body>
                 <span>어서오세요</span>
@@ -39,11 +37,14 @@ const DescFragment: React.FC<Props> = ({ handleClickStartService, handleClickSha
     );
 };
 
+const Container = styled.div`
+    overflow: scroll;
+    height: 100vh;
+`;
+
 const Body = styled.div`
     padding: 0 30px;
     color: #404040;
-    overflow-y: scroll;
-    height: 100%;
 `;
 
 const ActionBar = styled.div`
@@ -58,6 +59,16 @@ const Icon = styled.img`
     width: 24px;
     height: 24px;
     margin: 10px;
+`;
+
+const StickToBottom = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    background-color: white;
+    bottom: 35px;
+    box-sizing: border-box;
+    padding: 0 30px;
 `;
 
 export default DescFragment;

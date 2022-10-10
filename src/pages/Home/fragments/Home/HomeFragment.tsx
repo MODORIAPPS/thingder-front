@@ -48,6 +48,7 @@ const HomeFragment: React.FC = () => {
     const handleClickPositiveButton = () => { swipe("right") };
 
     const handleClickInfo = (uid: string) => {
+        console.log('fawfe');
         dispatch(showMemberDetailAction(uid));
     }
 

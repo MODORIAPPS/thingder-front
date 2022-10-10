@@ -11,7 +11,7 @@ interface Props {
 
 const StartFragment: React.FC<Props> = ({ handleClickHello }) => {
     return (
-        <>
+        <Container>
             <VerticalStack>
                 <LogoImg alt="thingder_logo_start" src={ImgThingderLogoStart} />
                 <Spacing.Vertical height={42} />
@@ -20,9 +20,13 @@ const StartFragment: React.FC<Props> = ({ handleClickHello }) => {
             <StickToBottom>
                 <Button onClick={handleClickHello} text="시작" />
             </StickToBottom>
-        </>
+        </Container>
     );
 };
+
+const Container = styled.div`
+    height: 100vh;
+`;
 
 const VerticalStack = styled.div`
     text-align: center;

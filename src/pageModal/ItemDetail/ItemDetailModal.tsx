@@ -99,7 +99,6 @@ const ItemDetailModal: React.FC = () => {
                         <BottomProperty>브랜드: {data.brand}</BottomProperty>
                     </BottomWrapper>
                 </Stack.Vertical>
-                <Divider />
 
                 {/* 다섯개 태그 */}
                 <Divider />

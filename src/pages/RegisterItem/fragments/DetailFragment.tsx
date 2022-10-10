@@ -15,7 +15,7 @@ interface Props {
     onClickBackButton: () => void;
 }
 
-export const BASE_URL = "http://rife.today:8083";
+export const BASE_URL = "https://api.thingder.app";
 
 interface RegisterResponse {
     email: string;
@@ -29,12 +29,18 @@ const DetailFragment: React.FC<Props> = (props) => {
     const dispatch = useAppDispatch();
     const state = useAppSelector(state => state.register);
     const handleClickCompleteRegister = async () => {
-        const { data } = await api.main.post<RegisterResponse>("/auth/register", state);
-        if (data.token) {
-            localStorage.setItem(ACCESS_TOKEN_KEY, data.token);
-            dispatch(signInUser(data.token));
-            navigate("/home");
-            toast("회원가입이 완료되었습니다!")
+        try {
+            const { data } = await api.main.post<RegisterResponse>("/auth/register", state);
+            if (data.token) {
+                localStorage.setItem(ACCESS_TOKEN_KEY, data.token);
+                dispatch(signInUser(data.token));
+                navigate("/home");
+                toast("회원가입이 완료되었습니다!")
+            }
+        } catch (e) {
+            // 유효하지 않은 pin 토큰입니다.
+            toast.error("전화번호 인증시간이 만료되었습니다. 다시 시도해주세요.");
+            navigate("/");
         }
     };
 

@@ -93,7 +93,7 @@ const Register: React.FC = () => {
 
 
     return (
-        <>
+        <Screen>
             <ActionBar onClickBackButton={handleClickBackButton} />
             <Spacing.Vertical height={16} />
             <Container>
@@ -134,11 +134,16 @@ const Register: React.FC = () => {
 
                 <Button disable={!(password === passwordConfirm && isCodeConfirmed)} onClick={handleClickContinue} text="계속" />
             </Container>
-        </>
+        </Screen>
     );
 };
 
-const ConfirmCodeButton = styled.span`
+const Screen = styled.div`
+    height: 100vh;
+    overflow: scroll;
+`;
+
+const ConfirmCodeButton = styled.span` 
     display: inline-block;
     font-size: 14px;
     box-sizing: border-box;
