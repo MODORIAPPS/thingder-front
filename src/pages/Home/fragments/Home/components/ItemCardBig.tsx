@@ -63,7 +63,11 @@ const Container = styled.div`
 
     filter: drop-shadow(0px 13px 19px rgba(0, 0, 0, 0.0701213));
 
-    @media (max-height: 600px) {
+    @media (min-height: 500px) {
+        height: 300px;
+    }
+
+    @media (min-height: 600px) {
         height: 400px;
     }
 `;

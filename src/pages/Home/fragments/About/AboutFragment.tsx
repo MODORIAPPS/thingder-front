@@ -35,7 +35,7 @@ const AboutFragment: React.FC = () => {
     };
 
     return (
-        <div id="about-fragment">
+        <Screen id="about-fragment">
             <TopBar onClickShare={handleClickShare} />
             <Spacing.Vertical height={24} />
 
@@ -57,12 +57,18 @@ const AboutFragment: React.FC = () => {
             </Container>
 
             <AskToTalkModal open={modal} onClickBackButton={() => setModal(false)} />
-        </div>
+        </Screen>
     );
 };
 
+const Screen = styled.div`
+    box-sizing: border-box;
+    height: 90%;
+`;
+
 const Container = styled.div`
     padding: 0 32px;
+    overflow-y: scroll;
 `;
 
 export default AboutFragment;

@@ -111,13 +111,11 @@ const HomeFragment: React.FC = () => {
 const Screen = styled.div`
     overflow-x: hidden;
     overflow-y: scroll;
-    height: 100%;
 `;
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    height: 100%;
 `;
 
 const CardContainer = styled.div`
@@ -128,7 +126,11 @@ const CardContainer = styled.div`
     height: 520px;
     position: relative;
 
-    @media (max-height: 600px) {
+    @media (min-height: 500px) {
+        height: 300px;
+    }
+
+    @media (min-height: 600px) {
         height: 400px;
     }
 `;

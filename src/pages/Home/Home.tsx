@@ -30,11 +30,11 @@ const Container = styled.div`
 
 const Body = styled.div`
     overflow-y: scroll;
-    height: calc(100% - 70px);
 `;
 
 const NavWrapper = styled.div`
     position: absolute;
+    z-index: 99;
     width: 100%;
     bottom: 0;
 `;
