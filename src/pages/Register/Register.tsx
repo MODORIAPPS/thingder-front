@@ -43,7 +43,7 @@ const Register: React.FC = () => {
     const [code, setCode] = useState("");
     const [codeError, setCodeError] = useState("");
 
-    const { seconds, minutes, isRunning, start, restart, pause } = useTimer({
+    const { seconds, minutes, isRunning, restart, pause } = useTimer({
         expiryTimestamp: CODE_EXPIRY_TIME,
         onExpire: () => setEnd(true),
         autoStart: false

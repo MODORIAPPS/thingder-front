@@ -63,7 +63,7 @@ const AboutFragment: React.FC = () => {
 
 const Screen = styled.div`
     box-sizing: border-box;
-    height: 90%;
+    height: 100%;
 `;
 
 const Container = styled.div`

@@ -1,19 +1,18 @@
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Spacing from "../../../components/Spacing";
 
 // Enabled Icons
-import ImgNavHomeEnabled from "@/assets/icon/nav/nav_home_enabled.svg";
-import ImgNavExploreEnabled from "@/assets/icon/nav/nav_explore_enabled.svg";
-import ImgNavChatEnabled from "@/assets/icon/nav/nav_chat_enabled.svg";
 import ImgNavAboutEnabled from "@/assets/icon/nav/nav_about_enabled.svg";
+import ImgNavChatEnabled from "@/assets/icon/nav/nav_chat_enabled.svg";
+import ImgNavExploreEnabled from "@/assets/icon/nav/nav_explore_enabled.svg";
+import ImgNavHomeEnabled from "@/assets/icon/nav/nav_home_enabled.svg";
 
 // Disabled Icons
-import ImgNavHomeDisabled from "../../../assets/icon/nav/nav_home_disabled.svg"
-import ImgNavExploreDisabled from "../../../assets/icon/nav/nav_explore_disabled.svg";
-import ImgNavChatDisabled from "../../../assets/icon/nav/nav_chat_disabled.svg";
 import ImgNavAboutDisabled from "../../../assets/icon/nav/nav_about_disabled.svg";
+import ImgNavChatDisabled from "../../../assets/icon/nav/nav_chat_disabled.svg";
+import ImgNavExploreDisabled from "../../../assets/icon/nav/nav_explore_disabled.svg";
+import ImgNavHomeDisabled from "../../../assets/icon/nav/nav_home_disabled.svg";
 
 type TabType = "home" | "explore" | "chat" | "about";
 

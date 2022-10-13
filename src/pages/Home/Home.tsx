@@ -5,6 +5,8 @@ import { Outlet } from "react-router-dom";
 import BottomNavigationBar from "./components/BottomNavigationBar";
 import Modal from 'react-modal';
 
+export const BOTTOM_NAV_HEIGHT_PIXEL = 70;
+
 const Home: React.FC = () => {
 
     useEffect(() => {
@@ -29,14 +31,12 @@ const Container = styled.div`
 `;
 
 const Body = styled.div`
+    height: calc(100vh - ${BOTTOM_NAV_HEIGHT_PIXEL}px);
     overflow-y: scroll;
 `;
 
 const NavWrapper = styled.div`
-    position: absolute;
-    z-index: 99;
-    width: 100%;
-    bottom: 0;
+    height: ${BOTTOM_NAV_HEIGHT_PIXEL}px;
 `;
 
 export default Home;
