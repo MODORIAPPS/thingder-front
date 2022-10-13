@@ -5,6 +5,7 @@ import Spacing from "../../../../../components/Spacing";
 import Stack from "../../../../../components/Stack";
 import Typography from "../../../../../components/Typography";
 import ImgInfo from "@/assets/icon/info.png";
+import { formatRelativeToAbsoluteURL } from "@/utils/formatter";
 
 interface Props {
     onClickInfo: (uid: string) => void;
@@ -26,7 +27,7 @@ interface Props {
 const ItemCardBig: React.FC<Props> = (props) => {
     return (
         <Container>
-            <ItemImage src={props.thumbnail_src} />
+            <ItemImage src={props.thumbnail_src} srcSet={formatRelativeToAbsoluteURL(props.thubmnail_srcSet)} />
 
             <BlackGradient>
                 <Stack.Horizontal>
@@ -134,4 +135,4 @@ const BottomProperty = styled.span`
     line-height: 1.125;
 `;
 
-export default ItemCardBig;
+export default React.memo(ItemCardBig);
