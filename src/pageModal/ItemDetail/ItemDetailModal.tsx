@@ -138,7 +138,7 @@ const styles = {
     }
 }
 
-interface MatchingPickResponse {
+export interface MatchingPickResponse {
     match: boolean;
     member: MemberDetail;
 }

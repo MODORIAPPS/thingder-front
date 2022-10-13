@@ -27,11 +27,11 @@ const Home: React.FC = () => {
 
 const Container = styled.div`
     width: 100%;
-    height: 100vh;
+    height: 100%;
 `;
 
 const Body = styled.div`
-    height: calc(100vh - ${BOTTOM_NAV_HEIGHT_PIXEL}px);
+    height: calc(100% - ${BOTTOM_NAV_HEIGHT_PIXEL}px);
     overflow-y: scroll;
 `;
 

@@ -139,7 +139,7 @@ const Register: React.FC = () => {
 };
 
 const Screen = styled.div`
-    height: 100vh;
+    height: 100%;
     overflow: scroll;
 `;
 

@@ -3,13 +3,15 @@ import { useAppDispatch } from "@/hooks/redux";
 import ItemDetailModal from "@/pageModal/ItemDetail/ItemDetailModal";
 import { showMemberDetailAction } from "@/store/ui/ui.reducer";
 import styled from "@emotion/styled";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { Children, useEffect, useMemo, useRef, useState } from "react";
 import TinderCard from 'react-tinder-card';
+import { toast } from "react-toastify";
 import Spacing from "../../../../components/Spacing";
 import { ItemCardType } from "../Explore/components/ItemCard";
 import ChooseButton from "./components/ChooseButton";
 import HomeFragTopBar from "./components/HomeFragTopBar";
 import ItemCardBig from "./components/ItemCardBig";
+import usePick from "./hooks/usePick";
 import { API, Direction } from "./types";
 
 interface ItemListResponse {
@@ -20,18 +22,36 @@ const HomeFragment: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const [itemList, setItemList] = useState<ItemCardType[]>([]);
-    const [currentIndex, setCurrentIndex] = useState(itemList.length - 1)
+
+    const [currentIndex, setCurrentIndex] = useState(itemList.length - 1);
     const currentIndexRef = useRef(currentIndex);
+
+    useEffect(() => {
+        fetchItemList();
+    }, []);
+
+    useEffect(() => {
+        if (itemList.length > 0) {
+            setCurrentIndex(itemList.length - 1)
+        }
+    }, [itemList]);
 
     const childRefs = useMemo(
         () =>
             Array(itemList.length)
+                .fill(0)
                 .map((i) => React.createRef<API>()),
         [itemList]
-    )
+    );
 
     const swiped = (direction: Direction, index: number) => {
-        updateCurrentIndex(index - 1)
+        const uid = itemList[index].uid;
+        updateCurrentIndex(index - 1);
+        usePick(uid, direction).then(({ data }) => {
+            if (data.match) {
+                toast("축하드려요 매치되셨습니다!");
+            }
+        });
     }
 
     const updateCurrentIndex = (val: number) => {
@@ -48,17 +68,10 @@ const HomeFragment: React.FC = () => {
     const handleClickPositiveButton = () => { swipe("right") };
 
     const handleClickInfo = (uid: string) => {
-        console.log('fawfe');
         dispatch(showMemberDetailAction(uid));
     }
 
-    useEffect(() => {
-        fetchItemList();
-    }, []);
-
     const canSwipe = currentIndex >= 0;
-
-    console.log(canSwipe);
 
     const swipe = async (dir: Direction) => {
         if (canSwipe && currentIndex < itemList.length) {

@@ -116,7 +116,7 @@ const DetailFragment: React.FC<Props> = (props) => {
 
 const Screen = styled.div`
     width: 100%;
-    height: 100vh;
+    height: 100%;
 
     overflow-y: scroll;
 `;
