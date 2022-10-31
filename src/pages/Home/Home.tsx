@@ -25,17 +25,17 @@ const Home: React.FC = () => {
     );
 };
 
-const Container = styled.div`
+export const Container = styled.div`
     width: 100%;
     height: 100%;
 `;
 
-const Body = styled.div`
+export const Body = styled.div`
     height: calc(100% - ${BOTTOM_NAV_HEIGHT_PIXEL}px);
     overflow-y: scroll;
 `;
 
-const NavWrapper = styled.div`
+export const NavWrapper = styled.div`
     height: ${BOTTOM_NAV_HEIGHT_PIXEL}px;
 `;
 

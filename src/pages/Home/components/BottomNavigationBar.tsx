@@ -56,7 +56,7 @@ const BottomNavigationBar: React.FC = () => {
     );
 };
 
-const TabLayout = styled.div`
+export const TabLayout = styled.div`
     border-top: 1px solid #EFEFF0;
 
     display: flex;
@@ -76,14 +76,14 @@ const TabLayout = styled.div`
     }
 `;
 
-const TabWrapper = styled.div`
+export const TabWrapper = styled.div`
     display: flex;
     flex: 1;
     justify-content: center;
     align-items: center;
 `;
 
-const TabItem = styled.div`
+export const TabItem = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -95,9 +95,10 @@ const Icon = styled.img`
     height: 28px;
 `;
 
-const Text = styled.p<{ selected: boolean }>`
+export const Text = styled.p<{ selected: boolean }>`
     margin-top: 6px;
     margin-bottom: 0;
+    text-align: center;
 
     font-size: 12px;
     line-height: 16px;

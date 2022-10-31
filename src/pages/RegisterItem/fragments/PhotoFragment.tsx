@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import { useAppDispatch } from "@/hooks/redux";
 import { changeRegisterProperty } from "@/store/register/register.reducer";
 import api from "@/api";
-import { BASE_URL } from "./DetailFragment";
 
 interface ImageResponse {
     src: string;
@@ -41,7 +40,7 @@ const PhotoFragment: React.FC<Props> = ({ onClickContinueButton }) => {
         });
 
         const image: ImageResponse = {
-            src: BASE_URL + data.src,
+            src: import.meta.env.VITE_API_CLIENT_BASEURL + data.src,
             srcSet: data.srcSet
         };
         const array = [...photo];

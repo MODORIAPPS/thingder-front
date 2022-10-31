@@ -3,8 +3,9 @@ export interface RegisterState {
     brand: string;
     description: string;
     genCountry: string;
-    genMonth: string;
-    genYear: string;
+    
+    madeAt: string;
+
     images: RegisterImage[];
 
     nickname: string;

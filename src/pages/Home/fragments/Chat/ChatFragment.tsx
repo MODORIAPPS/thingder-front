@@ -1,11 +1,16 @@
 import Spacing from "@/components/Spacing";
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useEffect } from "react";
 import Typography from "../../../../components/Typography";
 import ChatRoomItem from "./components/ChatRoomItem";
 import TopBar from "./components/TopBar";
 
 const ChatFragment: React.FC = () => {
+
+    useEffect(() => {
+        requestPushNotification();
+    }, []);
+
     return (
         <Container>
             <TopBar />
@@ -27,6 +32,18 @@ const ChatFragment: React.FC = () => {
             {/* <WhiteGradient /> */}
         </Container>
     )
+};
+
+const requestPushNotification = () => {
+    console.log(Notification.permission);
+    if (Notification.permission === "default") {
+        Notification.requestPermission().then(result => {
+            if (result === "granted") {
+                new Notification("이렇게 알려드릴게요!");
+            }
+        });
+        return;
+    }
 };
 
 const Container = styled.div`

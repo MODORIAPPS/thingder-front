@@ -20,6 +20,8 @@ interface ItemListResponse {
 
 const HomeFragment: React.FC = () => {
 
+    const [isOffline, setIsOffline] = useState(false);
+
     const dispatch = useAppDispatch();
     const [itemList, setItemList] = useState<ItemCardType[]>([]);
 
@@ -84,37 +86,42 @@ const HomeFragment: React.FC = () => {
             <HomeFragTopBar />
             <Spacing.Vertical height={24} />
 
-            <Container>
-                <CardContainer>
-                    {
-                        itemList.map((item, index) =>
-                            <TinderCard
-                                key={item.uid}
-                                className="slide"
-                                ref={childRefs[index]}
-                                onSwipe={(dir) => swiped(dir, index)}>
-                                <ItemCardBig
-                                    onClickInfo={handleClickInfo}
-                                    uid={item.uid}
-                                    nickname={item.nickname}
-                                    name={item.nickname}
-                                    madeIn={item.genCountry}
-                                    brand={item.brand}
-                                    genYear={item.genYear}
-                                    genMonth={item.genMonth}
-                                    thumbnail_src={item.image.src}
-                                    thubmnail_srcSet={item.image.srcSet} />
-                            </TinderCard>
-                        )
-                    }
-                </CardContainer>
-                <Spacing.Vertical height={24} />
-                <ChooseButtonWrapper>
-                    <ChooseButton.Negative onClick={handleClickNegativeButton} />
-                    <Spacing.Horizontal width={65} />
-                    <ChooseButton.Positive onClick={handleClickPositiveButton} />
-                </ChooseButtonWrapper>
-            </Container>
+            {
+                isOffline ?
+                    <span>Offline mode...</span>
+                    :
+                    <Container>
+                        <CardContainer>
+                            {
+                                itemList.map((item, index) =>
+                                    <TinderCard
+                                        key={item.uid}
+                                        className="slide"
+                                        ref={childRefs[index]}
+                                        onSwipe={(dir) => swiped(dir, index)}>
+                                        <ItemCardBig
+                                            onClickInfo={handleClickInfo}
+                                            uid={item.uid}
+                                            nickname={item.nickname}
+                                            name={item.nickname}
+                                            madeIn={item.genCountry}
+                                            brand={item.brand}
+                                            genYear={item.genYear}
+                                            genMonth={item.genMonth}
+                                            thumbnail_src={item.image.src}
+                                            thubmnail_srcSet={item.image.srcSet} />
+                                    </TinderCard>
+                                )
+                            }
+                        </CardContainer>
+                        <Spacing.Vertical height={24} />
+                        <ChooseButtonWrapper>
+                            <ChooseButton.Negative onClick={handleClickNegativeButton} />
+                            <Spacing.Horizontal width={65} />
+                            <ChooseButton.Positive onClick={handleClickPositiveButton} />
+                        </ChooseButtonWrapper>
+                    </Container>
+            }
 
             <ItemDetailModal />
         </Screen>

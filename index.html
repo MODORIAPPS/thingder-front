@@ -3,9 +3,13 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Thingder - 팅더</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+  <link rel="mask-icon" href="/mask-icon.svg" color="#FFFFFF">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#ff0000">
   <style>
     html {
       height: 100%;
@@ -16,6 +20,15 @@
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (navigator.serviceWorker) {
+        navigator.serviceWorker.register('./firebase-messaging-sw.js')
+          .then(function (reg) { console.log('서비스워커 등록성공 :', reg) })
+          .catch(function (error) { console.log('서비스워커 등록실패 :', error) });
+      }
+    });
+  </script>
 </body>
 
 </html>

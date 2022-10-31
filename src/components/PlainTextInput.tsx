@@ -25,7 +25,7 @@ const PlainTextInput: React.FC<Props> = ({ label, value, placeholder, onChange }
     );
 };
 
-const Input = styled.input`
+export const Input = styled.input`
     overflow: hidden;
 
     width: 100%;

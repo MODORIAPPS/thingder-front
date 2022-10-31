@@ -6,16 +6,19 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:api": "node swagger-codegen.js"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@reduxjs/toolkit": "^1.8.5",
+    "@stomp/stompjs": "^6.1.2",
     "@tanstack/react-query": "^4.9.0",
     "add": "^2.0.6",
     "axios": "^1.1.0",
     "dayjs": "^1.11.5",
+    "firebase": "^9.12.1",
     "i18next": "^21.9.2",
     "i18next-browser-languagedetector": "^6.1.5",
     "i18next-http-backend": "^1.4.4",
@@ -35,12 +38,21 @@
     "redux-thunk": "^2.4.1"
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.5.2",
     "@types/react": "^18.0.17",
+    "@types/react-datepicker": "^4.4.2",
     "@types/react-dom": "^18.0.6",
     "@types/react-modal": "^3.13.1",
     "@vitejs/plugin-react": "^2.1.0",
     "msw": "^0.47.3",
+    "openapi-generator": "^0.1.39",
+    "swagger-axios-codegen": "^0.14.3",
     "typescript": "^4.6.4",
-    "vite": "^3.1.0"
+    "version": "^0.1.2",
+    "vite": "^3.1.0",
+    "vite-plugin-pwa": "^0.13.1",
+    "workbox-core": "^6.5.4",
+    "workbox-precaching": "^6.5.4",
+    "workbox-window": "^6.5.4"
   }
 }

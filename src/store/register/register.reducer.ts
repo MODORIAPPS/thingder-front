@@ -2,6 +2,7 @@ import { ThunkAction } from "redux-thunk";
 import { AnyAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { RegisterState } from "./register.type";
+import dayjs from "dayjs";
 
 const CHANGE_REGISTER_PROPERTY = "CHANGE_REGISTER_PROPERTY" as const;
 const RESET_REGISTER_STATE = "RESET_REGISTER_STATE" as const;
@@ -24,8 +25,7 @@ const initState: RegisterState = {
     brand: "",
     description: "",
     genCountry: "",
-    genMonth: "",
-    genYear: "",
+    madeAt: dayjs(new Date()).format("YYYY-MM"),
     images: [],
     nickname: "",
     password: "",

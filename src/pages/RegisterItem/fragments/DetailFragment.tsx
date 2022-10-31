@@ -10,12 +10,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spacing from "../../../components/Spacing";
+import InputMadeAt from "./components/InputMadeAt";
 
 interface Props {
     onClickBackButton: () => void;
 }
-
-export const BASE_URL = "https://api.thingder.app";
 
 interface RegisterResponse {
     email: string;
@@ -71,18 +70,21 @@ const DetailFragment: React.FC<Props> = (props) => {
                     value={state.genCountry}
                     onChange={(genCountry) => dispatch(changeRegisterProperty({ genCountry }))} />
                 <Spacing.Vertical height={36} />
-                <PlainTextInput
-                    label={"물건의 제조년도를 알려주세요."}
-                    placeholder="예) 2002"
-                    value={state.genYear}
-                    onChange={(genYear) => dispatch(changeRegisterProperty({ genYear }))} />
+
+                <InputMadeAt
+                    value={state.madeAt}
+                    onChange={(madeAt) => dispatch(changeRegisterProperty({ madeAt }))}
+                />
                 <Spacing.Vertical height={36} />
-                <PlainTextInput
+
+                {/* <PlainTextInput
                     label={"물건의 제조월을 알려주세요."}
                     placeholder="예) 12"
                     value={state.genMonth}
                     onChange={(genMonth) => dispatch(changeRegisterProperty({ genMonth }))} />
-                <Spacing.Vertical height={36} />
+                <Spacing.Vertical height={36} /> */}
+
+
                 <PlainTextInput
                     label={"물건의 브랜드를 알려주세요."}
                     placeholder="브랜드명을 입력해주세요."

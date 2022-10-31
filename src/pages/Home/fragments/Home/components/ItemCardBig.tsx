@@ -6,9 +6,16 @@ import Stack from "../../../../../components/Stack";
 import Typography from "../../../../../components/Typography";
 import ImgInfo from "@/assets/icon/info.png";
 import { formatRelativeToAbsoluteURL } from "@/utils/formatter";
+import { Direction } from "../types";
+
+// image
+import LikeImg from "@/assets/like_text.png";
+import DislikeImg from "@/assets/dislike_text.png";
 
 interface Props {
     onClickInfo: (uid: string) => void;
+
+    isCursor: boolean;
 
     uid: string;
 
@@ -22,13 +29,26 @@ interface Props {
 
     thumbnail_src: string;
     thubmnail_srcSet: string;
+
+    currentDirection: Direction | undefined;
 }
 
 const ItemCardBig: React.FC<Props> = (props) => {
+
+    const renderLikeImageView = () => {
+        // props.cancel === true return null;
+
+        return (
+            props.isCursor && <LikeImageView left={isLike} src={image} />
+        );
+    };
+    const isLike = props.currentDirection === "left" || props.currentDirection === "down";
+    const image = isLike ? LikeImg : DislikeImg;
+
     return (
         <Container>
             <ItemImage src={props.thumbnail_src} srcSet={formatRelativeToAbsoluteURL(props.thubmnail_srcSet)} />
-
+            {/* {renderLikeImageView()} */}
             <BlackGradient>
                 <Stack.Horizontal>
                     <Typography.Header1>{props.nickname}</Typography.Header1>
@@ -51,6 +71,19 @@ const ItemCardBig: React.FC<Props> = (props) => {
         </Container>
     );
 };
+
+/**
+ * ItemCardBig
+ */
+const LikeImageView = styled.img<{ left: boolean }>`
+    width: 158px;
+    height: 53px;
+    object-fit: cover;
+
+    position: absolute;
+    top: 16px;
+    ${({ left }) => left ? 'left: 16px' : 'right: 16px'};
+`;
 
 const Container = styled.div`
     position: relative;
@@ -135,4 +168,4 @@ const BottomProperty = styled.span`
     line-height: 1.125;
 `;
 
-export default React.memo(ItemCardBig);
+export default ItemCardBig;

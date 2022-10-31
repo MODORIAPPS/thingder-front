@@ -1,4 +1,3 @@
-import ActionBar from "@/components/ActionBar";
 import styled from "@emotion/styled";
 import React from "react";
 import AdminItem from "./components/AdminItem";
@@ -10,17 +9,16 @@ import Redcut from "@/assets/logo/redcut_logo.png";
 import ImgReview from "@/assets/icon/admin/review.svg";
 import ImgViewHide from "@/assets/icon/admin/view_hide.svg";
 import AlarmFill from "@/assets/icon/admin/alarm_fill.svg";
-import Message from "@/assets/icon/admin/message.svg";
+import ActionBar from "./components/AdminActionBar";
 
 const Admin: React.FC = () => {
 
     const navigate = useNavigate();
 
-    const handleClickReview = () => { };
-    const handleClickChatReport = () => { };
-    const handleClickProfileReport = () => { };
-    const handleClickAsk = () => { };
-    const handleClickResult = () => { };
+    const handleClickReview = () => navigate("review");
+    const handleClickChatReport = () => navigate("review/chat");
+    const handleClickProfileReport = () => navigate("review/profile");
+    const handleClickAsk = () => navigate("review/ask");
 
     return (
         <>
@@ -61,12 +59,6 @@ const Admin: React.FC = () => {
                     subTitle={"물건들의 할 말 확인"}
                     onClick={handleClickAsk} />
                 <Spacing.Vertical height={10} />
-                <AdminItem
-                    icon={<Icon src={Message} />}
-                    iconColor={"#DDF45B"}
-                    title={"처리 내역"}
-                    subTitle={"차단 처리 내역"}
-                    onClick={handleClickResult} />
             </Container>
         </>
     );

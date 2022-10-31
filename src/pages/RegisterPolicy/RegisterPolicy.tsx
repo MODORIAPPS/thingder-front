@@ -15,7 +15,11 @@ const RegisterPolicy: React.FC = () => {
 
     const [checked, setChecked] = useState(false);
 
-    const handleClickContinue = () => { navigate("/auth/register/item") }
+    const handleClickContinue = () => {
+        if (checked) {
+            navigate("/auth/register/item")
+        }
+    }
 
     return (
         <>
