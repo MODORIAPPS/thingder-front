@@ -13,14 +13,14 @@ interface Props {
     onChange: (date: string) => void;
 }
 
-interface ForwardRefType {
-    onClick: () => void;
-    ref: LegacyRef<HTMLInputElement>;
-}
-
 const InputMadeAt: React.FC<Props> = ({ value, onChange }) => {
 
-    const ExampleCustomInput = forwardRef<ReactElement, ForwardRefType>(({ onClick, ref }) => (
+    const ExampleCustomInput = forwardRef<HTMLInputElement,
+        React.DetailedHTMLProps<
+            React.InputHTMLAttributes<HTMLInputElement>,
+            HTMLInputElement
+        >
+    >(({ onClick, ref }) => (
         <Input
             onClick={onClick}
             ref={ref}
