@@ -1,16 +1,20 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { InputHTMLAttributes } from "react";
 import Spacing from "./Spacing";
 import Typography from "./Typography";
 
-interface Props {
-    label: string;
-    value: string;
-    placeholder?: string
-    onChange: (value: string) => void;
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
+    label: string
+    handleChange: (value: string) => void;
 }
 
-const PlainTextInput: React.FC<Props> = ({ label, value, placeholder, onChange }) => {
+const PlainTextInput: React.FC<Props> = ({
+    label,
+    value,
+    placeholder,
+    handleChange,
+    ...rest
+}) => {
     return (
         <>
             <Typography.Body2 style={{ color: "rgba(0, 0, 0, 0.75)" }}>{label}</Typography.Body2>
@@ -18,7 +22,8 @@ const PlainTextInput: React.FC<Props> = ({ label, value, placeholder, onChange }
             <Input
                 placeholder={placeholder}
                 value={value}
-                onChange={e => onChange(e.currentTarget.value)} />
+                onChange={e => handleChange(e.currentTarget.value)}
+                {...rest} />
             <Spacing.Vertical height={2} />
             <Divider />
         </>

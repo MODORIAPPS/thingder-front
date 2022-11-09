@@ -36,6 +36,8 @@ const Container = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    box-sizing: border-box;
     height: 56px;
 
     padding: 6px 24px;

@@ -6,6 +6,9 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import Welcome from "../pages/Welcome";
 import { getMessaging, getToken } from "firebase/messaging";
 import DetailFragment from "@/pages/RegisterItem/fragments/DetailFragment";
+import MatchModal from "@/pages/Home/fragments/Home/modals/MatchModal";
+import CancelMatchModal from "@/pages/Home/fragments/Chat/modals/CancelMatchModal";
+import Chat from "@/pages/Chat";
 
 const AdminNavigator = lazy(() => import("./admin.navigator"));
 const AuthNavigator = lazy(() => import("./auth.navigator"));
@@ -46,6 +49,8 @@ const RootNavigator = () => {
 
                 {/* 앱 시작점 */}
                 <Route index element={<Welcome />} />
+
+                <Route path="hello" element={<Chat />} />
 
                 {/* 로그인, 회원가입, 비밀번호 찾기 */}
                 <Route path="auth/*" element={<AuthNavigator />} />

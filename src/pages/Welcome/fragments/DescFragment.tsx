@@ -38,6 +38,7 @@ const DescFragment: React.FC<Props> = ({ handleClickStartService, handleClickSha
 };
 
 const Container = styled.div`
+    position: relative;
     overflow: scroll;
     height: 100%;
 `;

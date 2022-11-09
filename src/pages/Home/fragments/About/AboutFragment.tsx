@@ -54,6 +54,8 @@ const AboutFragment: React.FC = () => {
                 <Spacing.Vertical height={40} />
 
                 <Button text="로그아웃" onClick={handleClickSignOut} />
+
+                <Spacing.Vertical height={24} />
             </Container>
 
             <AskToTalkModal open={modal} onClickBackButton={() => setModal(false)} />

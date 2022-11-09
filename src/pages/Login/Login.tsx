@@ -4,7 +4,6 @@ import { signInUser } from "@/store/user/user.reducer";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import ActionBar from "../../components/ActionBar";
 import Button from "../../components/Button";
 import Spacing from "../../components/Spacing";
@@ -44,8 +43,6 @@ const Login: React.FC = () => {
             dispatch(signInUser(data.token));
 
             navigate("/home");
-
-            toast("안녕하세요!");
         } catch (e) {
             setEmailError("유효하지 않은 이메일 주소입니다.");
             setPwdError("비밀번호가 일치하지 않습니다.")

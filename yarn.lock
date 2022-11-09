@@ -2720,6 +2720,11 @@ electron-to-chromium@^1.4.251:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.268.tgz#5a902075f0209a628837e508a66d40ace04d54ab"
   integrity sha512-PO90Bv++vEzdln+eA9qLg1IRnh0rKETus6QkTzcFm5P3Wg3EQBZud5dcnzkpYXuIKWBjKe5CO8zjz02cicvn1g==
 
+emoji-regex@^10.2.1:
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-10.2.1.tgz#a41c330d957191efd3d9dfe6e1e8e1e9ab048b3f"
+  integrity sha512-97g6QgOk8zlDRdgq1WxwgTMgEWGVAQvB5Fdpgc1MkNy56la5SKP9GsMXKDOdqwn90/41a8yPwIGk1Y6WVbeMQA==
+
 emoji-regex@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-8.0.0.tgz#e818fd69ce5ccfcb404594f842963bf53164cc37"
@@ -4570,6 +4575,11 @@ react-fast-compare@^3.0.1:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
   integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
+
+react-hooks-async-modal@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-hooks-async-modal/-/react-hooks-async-modal-3.0.0.tgz#ad0d0cc665011b3aea0370bdc7b7de19b6288797"
+  integrity sha512-Q9yPIu+CoeA99WQ/GHWyXQfzaSRC3Do/84B0VG3es2gKL3eVRikGGjbuwXzf/INhtSYePZ/Eomz1g8EXrS1mPA==
 
 react-i18next@^11.18.6:
   version "11.18.6"

@@ -16,6 +16,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import firebaseConfig from "./firebase";
+import { ModalProvider } from 'react-hooks-async-modal'
 
 const queryClient = new QueryClient();
 
@@ -28,7 +29,7 @@ const messaging = getMessaging(app);
 if ("serviceWorker" in navigator) {
     // && !/localhost/.test(window.location)) {
     registerSW();
-  }
+}
 
 onMessage(messaging, (payload) => {
     console.log(payload);
@@ -37,11 +38,13 @@ onMessage(messaging, (payload) => {
 ReactDOM.createRoot(window.document.getElementById("root")!).render(
     <React.StrictMode>
         <Provider store={store}>
-            <QueryClientProvider client={queryClient}>
-                <BrowserRouter>
-                    <RootNavigator />
-                </BrowserRouter>
-            </QueryClientProvider>
+            <ModalProvider>
+                <QueryClientProvider client={queryClient}>
+                    <BrowserRouter>
+                        <RootNavigator />
+                    </BrowserRouter>
+                </QueryClientProvider>
+            </ModalProvider>
         </Provider>
         <ToastContainer />
     </React.StrictMode>

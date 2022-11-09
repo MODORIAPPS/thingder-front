@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useAppDispatch } from "@/hooks/redux";
 import { changeRegisterProperty } from "@/store/register/register.reducer";
 import api from "@/api";
+import AddRoundBtn from "@/assets/button/add_round.png";
 
 interface ImageResponse {
     src: string;
@@ -152,13 +153,22 @@ interface PhotoBoxProps {
     onClick: (index: number) => void;
 }
 
-const PhotoBox: React.FC<PhotoBoxProps> = (props) => {
+export const PhotoBox: React.FC<PhotoBoxProps> = (props) => {
     if (props.src || props.srcSet) {
-        return <Photo
-            onClick={() => props.onClick(props.index)}
-            big={props.big}
-            src={props.src}
-        />
+        return <PhotoWrapper>
+            <Photo
+                onClick={() => props.onClick(props.index)}
+                big={props.big}
+                src={props.src}
+            />
+            {(props.src)
+                &&
+                <DeleteButton
+                    src={AddRoundBtn}
+                    onClick={() => props.onClick(0)}
+                />
+            }
+        </PhotoWrapper>
     }
 
     return (
@@ -168,7 +178,16 @@ const PhotoBox: React.FC<PhotoBoxProps> = (props) => {
     );
 };
 
+const PhotoWrapper = styled.div`
+    width: 333px;
+    height: 333px;
+    position: relative;
+
+    margin: 0 auto;
+`;
+
 const Photo = styled.img<{ big?: boolean }>`
+    position: absolute;
     display: flex;
     background-color: #292929;
     border-radius: 20px;
@@ -188,7 +207,16 @@ const Photo = styled.img<{ big?: boolean }>`
     }
 `;
 
+const DeleteButton = styled.img`
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 42px;
+    height: 42px;
+`;
+
 const PhotoAddWrapper = styled.div<{ big?: boolean }>`
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -31,12 +31,12 @@ const Wrapper = styled.span`
     color: #404040;
 `;
 
-const HighLight = styled.span`
+export const HighLight = styled.span`
     font-weight: bold;
     color: #FF5100;
 `;
 
-const RedCut = styled.span`
+export const RedCut = styled.span`
     font-weight: bold;
     text-decoration: underline;
     color: #FF0000;

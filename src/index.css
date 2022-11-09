@@ -92,3 +92,33 @@ body {
     opacity: 0;
   }
 }
+
+@media only screen and (min-width: 600px) {
+  body {
+    margin: 0 auto;
+    width: 70%;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  body {
+    margin: 0 auto;
+    width: 40;
+  }
+}
+
+/**
+* 숫자 입력시 arrow key 방지
+*/
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

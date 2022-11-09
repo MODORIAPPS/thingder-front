@@ -93,6 +93,7 @@ const Container = styled.div`
 
     overflow: hidden;
 
+    background-color: #273a49;
     color: white;
 
     filter: drop-shadow(0px 13px 19px rgba(0, 0, 0, 0.0701213));

@@ -36,14 +36,6 @@ const MemberItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    &:hover {
-        opacity: .8;
-    }
-    
-    &:active {
-        opacity: .8;
-    }
 `;
 
 const MemberPhoto = styled.img`

@@ -11,7 +11,6 @@ import Stack from "@/components/Stack";
 import Typography from "@/components/Typography";
 import { ChooseButtonWrapper } from "@/pages/Home/fragments/Home/HomeFragment";
 import ChooseButton from "@/pages/Home/fragments/Home/components/ChooseButton";
-import { toast } from "react-toastify";
 
 export const RELATION = {
     BLOCK: "BLOCK",
@@ -44,8 +43,6 @@ const ItemDetailModal: React.FC = () => {
             relation: RELATION.DISLIKE,
             uid,
         });
-        toast("맘에 들지 않으셨군요!")
-        console.log(data);
     };
 
     const handleClickPositiveButton = async () => {
@@ -53,8 +50,6 @@ const ItemDetailModal: React.FC = () => {
             relation: RELATION.LIKE,
             uid,
         });
-        toast("맘에 드셨군요!");
-        console.log(data);
     };
 
 

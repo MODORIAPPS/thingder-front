@@ -13,7 +13,7 @@ const CounterpartChat: React.FC<Props> = (props) => {
     return (
         <Container>
             <Thumbnail src={props.thumbnail_src} srcSet={props.thumbnail_srcSet} />
-            <Spacing.Vertical height={20} />
+            <Spacing.Horizontal width={20} />
             <Chat>
                 <span>
                     {props.text}
@@ -29,6 +29,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: row;
 
+    margin-bottom: 20px;
 `;
 
 const Thumbnail = styled.img`
@@ -36,6 +37,8 @@ const Thumbnail = styled.img`
     height: 56px;
     
     object-fit: cover;
+
+    border-radius: 28px;
 `;
 
 const Chat = styled.div`
@@ -49,6 +52,7 @@ const Chat = styled.div`
         font-weight: 700;
         font-size: 14px;
         line-height: 24px;
+        word-break: break-all;
     }
 `;
 

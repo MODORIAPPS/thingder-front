@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ActionBar from "../../components/ActionBar";
 import Spacing from "../../components/Spacing";
 import Typography from "../../components/Typography";
@@ -8,18 +9,18 @@ import PhotoFragment from "./fragments/PhotoFragment";
 
 const RegisterItem: React.FC = () => {
 
-    const [page, setPage] = useState<"photo" | "detail">("photo");
+    const navigate = useNavigate();
 
-    const handleClickContinue = () => setPage("detail");
+    const handleClickBackButton = () => {
+        const confirm = window.confirm("회원가입을 취소하시겠어요?");
+        if (confirm) {
+            navigate(-1);
+        }
+    };
+
     return (
         <Container>
-            {
-                page === "photo"
-                    ?
-                    <PhotoFragment onClickContinueButton={handleClickContinue} />
-                    :
-                    <DetailFragment onClickBackButton={() => setPage("photo")} />
-            }
+            <DetailFragment onClickBackButton={handleClickBackButton} />
         </Container>
     );
 };

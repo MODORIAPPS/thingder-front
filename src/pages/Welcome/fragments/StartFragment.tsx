@@ -26,6 +26,7 @@ const StartFragment: React.FC<Props> = ({ handleClickHello }) => {
 
 const Container = styled.div`
     height: 100%;
+    position: relative;
 `;
 
 const VerticalStack = styled.div`

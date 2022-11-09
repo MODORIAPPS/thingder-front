@@ -5,7 +5,6 @@ import { showMemberDetailAction } from "@/store/ui/ui.reducer";
 import styled from "@emotion/styled";
 import React, { Children, useEffect, useMemo, useRef, useState } from "react";
 import TinderCard from 'react-tinder-card';
-import { toast } from "react-toastify";
 import Spacing from "../../../../components/Spacing";
 import { ItemCardType } from "../Explore/components/ItemCard";
 import ChooseButton from "./components/ChooseButton";
@@ -51,7 +50,8 @@ const HomeFragment: React.FC = () => {
         updateCurrentIndex(index - 1);
         usePick(uid, direction).then(({ data }) => {
             if (data.match) {
-                toast("축하드려요 매치되셨습니다!");
+                // TODO: 매칭 기능 개발
+                // toast("축하드려요 매치되셨습니다!");
             }
         });
     }
