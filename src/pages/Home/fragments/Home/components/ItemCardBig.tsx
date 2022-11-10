@@ -36,19 +36,21 @@ interface Props {
 const ItemCardBig: React.FC<Props> = (props) => {
 
     const renderLikeImageView = () => {
-        // props.cancel === true return null;
+        console.log(props.currentDirection)
+        if (props.currentDirection !== "right" && props.currentDirection !== "left") return;
+        const isLike = props.currentDirection === "right";
+        const image = isLike ? LikeImg : DislikeImg;
+
 
         return (
             props.isCursor && <LikeImageView left={isLike} src={image} />
         );
     };
-    const isLike = props.currentDirection === "left" || props.currentDirection === "down";
-    const image = isLike ? LikeImg : DislikeImg;
 
     return (
         <Container>
             <ItemImage src={props.thumbnail_src} srcSet={formatRelativeToAbsoluteURL(props.thubmnail_srcSet)} />
-            {/* {renderLikeImageView()} */}
+            {renderLikeImageView()}
             <BlackGradient>
                 <Stack.Horizontal>
                     <Typography.Header1>{props.nickname}</Typography.Header1>

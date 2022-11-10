@@ -1,18 +1,47 @@
 import Spacing from "@/components/Spacing";
 import styled from "@emotion/styled";
-import React from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import ChatInput from "./components/ChatInput";
 import CounterpartChat from "./components/CounterpartChat";
 import MinepartChat from "./components/MinepartChat";
 import TopBar from "./components/TopBar";
+import { Client, IFrame, Message } from '@stomp/stompjs';
 
 const Chat: React.FC = () => {
 
+    const { id } = useParams();
+    console.log(id);
     const navigate = useNavigate();
 
     const handleClickClose = () => navigate(-1);
     const handleClickGuard = () => navigate("report");
+
+    useEffect(() => {
+        let client: Client;
+        (async () => {
+            // STOMP
+            const client = new Client({
+                brokerURL: "wss://api.thingder.app/chat/message",
+                connectHeaders: {
+                    roomUid: id ?? ""
+                }
+            });
+
+            client.onConnect = (frame: IFrame) => {
+                console.log('connected', frame);
+            }
+            client.activate();
+
+            client?.subscribe(id ?? "", (message) => {
+                console.log(message)
+            });
+        })();
+
+        return () => {
+            client?.deactivate();
+        }
+    });
 
     return (
         <Container>

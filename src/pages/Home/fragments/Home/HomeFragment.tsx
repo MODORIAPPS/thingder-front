@@ -1,7 +1,9 @@
 import api from "@/api";
 import { useAppDispatch } from "@/hooks/redux";
+import useDebounce from "@/hooks/useDebounce";
 import ItemDetailModal from "@/pageModal/ItemDetail/ItemDetailModal";
 import { showMemberDetailAction } from "@/store/ui/ui.reducer";
+import ChatRoomAction from "@/utils/db";
 import styled from "@emotion/styled";
 import React, { Children, useEffect, useMemo, useRef, useState } from "react";
 import TinderCard from 'react-tinder-card';
@@ -11,6 +13,7 @@ import ChooseButton from "./components/ChooseButton";
 import HomeFragTopBar from "./components/HomeFragTopBar";
 import ItemCardBig from "./components/ItemCardBig";
 import usePick from "./hooks/usePick";
+import MatchModal from "./modals/MatchModal";
 import { API, Direction } from "./types";
 
 interface ItemListResponse {
@@ -23,9 +26,13 @@ const HomeFragment: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const [itemList, setItemList] = useState<ItemCardType[]>([]);
+    const [matched, setMatched] = useState(false);
 
     const [currentIndex, setCurrentIndex] = useState(itemList.length - 1);
+    const [direction, setDirection] = useState<Direction>();
     const currentIndexRef = useRef(currentIndex);
+
+    const debouncedDirection = useDebounce({ value: direction, delay: 300 });
 
     useEffect(() => {
         fetchItemList();
@@ -46,12 +53,21 @@ const HomeFragment: React.FC = () => {
     );
 
     const swiped = (direction: Direction, index: number) => {
+        console.log(direction, index)
         const uid = itemList[index].uid;
+        setDirection(direction);
         updateCurrentIndex(index - 1);
         usePick(uid, direction).then(({ data }) => {
             if (data.match) {
-                // TODO: 매칭 기능 개발
-                // toast("축하드려요 매치되셨습니다!");
+                console.log('match!');
+                const item = itemList[index];
+                ChatRoomAction.createNewChatRoom(
+                    data.chatUid,
+                    item.nickname,
+                    item.image.src,
+                    item.image.srcSet
+                );
+                setMatched(true);
             }
         });
     }
@@ -71,7 +87,7 @@ const HomeFragment: React.FC = () => {
 
     const handleClickInfo = (uid: string) => {
         dispatch(showMemberDetailAction(uid));
-    }
+    };
 
     const canSwipe = currentIndex >= 0;
 
@@ -79,7 +95,17 @@ const HomeFragment: React.FC = () => {
         if (canSwipe && currentIndex < itemList.length) {
             await childRefs[currentIndex]?.current?.swipe(dir)
         }
-    }
+    };
+
+    const handleBeforeSwipe = (direction: Direction) => {
+        setDirection(direction);
+    };
+
+    useEffect(() => {
+        if (debouncedDirection) {
+            setDirection(debouncedDirection)
+        }
+    }, [debouncedDirection]);
 
     return (
         <Screen>
@@ -98,6 +124,7 @@ const HomeFragment: React.FC = () => {
                                         key={item.uid}
                                         className="slide"
                                         ref={childRefs[index]}
+                                        onSwipeRequirementFulfilled={handleBeforeSwipe}
                                         onSwipe={(dir) => swiped(dir, index)}>
                                         <ItemCardBig
                                             onClickInfo={handleClickInfo}
@@ -109,7 +136,10 @@ const HomeFragment: React.FC = () => {
                                             genYear={item.genYear}
                                             genMonth={item.genMonth}
                                             thumbnail_src={item.image.src}
-                                            thubmnail_srcSet={item.image.srcSet} isCursor={false} currentDirection={undefined} />
+                                            thubmnail_srcSet={item.image.srcSet}
+                                            isCursor={true}
+                                            currentDirection={debouncedDirection}
+                                        />
                                     </TinderCard>
                                 )
                             }
@@ -124,6 +154,22 @@ const HomeFragment: React.FC = () => {
             }
 
             <ItemDetailModal />
+
+            {
+                itemList[currentIndex] &&
+                <MatchModal
+                    open={matched}
+                    uid={itemList[currentIndex].uid}
+                    nickname={itemList[currentIndex].nickname}
+                    name={itemList[currentIndex].nickname}
+                    madeIn={itemList[currentIndex].genCountry}
+                    brand={itemList[currentIndex].brand}
+                    genYear={itemList[currentIndex].genYear}
+                    genMonth={itemList[currentIndex].genMonth}
+                    thumbnail_src={itemList[currentIndex].image.src}
+                    thubmnail_srcSet={itemList[currentIndex].image.srcSet}
+                />
+            }
         </Screen>
     );
 };

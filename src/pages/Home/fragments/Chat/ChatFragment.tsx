@@ -1,4 +1,5 @@
 import Spacing from "@/components/Spacing";
+import ChatRoomAction from "@/utils/db";
 import styled from "@emotion/styled";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -22,22 +23,18 @@ const ChatFragment: React.FC = () => {
         <Container>
             <TopBar />
             <List>
-
                 {
-                    [1, 1, 1, 1, 1, 1, 1, 1].map(() =>
+                    ChatRoomAction.getChatRoomList().map((room) =>
                         <ChatRoomItem
                             onClick={handleClickChatRoom}
-                            uid={"ewafaew"}
-                            isRead={true}
-                            thumbnail_src={"http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg"}
-                            thumbnail_srcSet={"http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg"}
-                            itemNickname={"전자정보통신공학과머그컵"}
-                            lastChat={"응애 나 아기 전정통"} />)
+                            uid={room.chatRoomUid}
+                            isRead={room.isRead}
+                            thumbnail_src={room.thumbnail_src}
+                            thumbnail_srcSet={room.thumbnail_srcSet}
+                            itemNickname={room.nickname}
+                            lastChat={room.lastChat ?? ""} />)
                 }
-
             </List>
-
-            {/* <WhiteGradient /> */}
         </Container>
     )
 };

@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import React from "react";
 import ImgNotifeeDot from "@/assets/notifee_dot.png";
 import Spacing from "@/components/Spacing";
+import { formatRelativeToAbsoluteURL } from "@/utils/formatter";
 
 interface Props {
     uid: string;
@@ -13,17 +14,20 @@ interface Props {
 
     itemNickname: string;
     lastChat: string;
-    
+
     onClick: (chatroomUid: string) => void;
 }
 
 const ChatRoomItem: React.FC<Props> = (props) => {
+
+    if (!props.uid) return <></>
+
     return (
         <Container onClick={() => props.onClick(props.uid)}>
             <ImageWrapper>
-                <Image src={props.thumbnail_src} srcSet={props.thumbnail_srcSet} />
+                <Image src={formatRelativeToAbsoluteURL(props.thumbnail_src)} srcSet={formatRelativeToAbsoluteURL(props.thumbnail_srcSet)} />
                 {
-                    props.isRead &&
+                    !props.isRead &&
                     <NotifeeDot src={ImgNotifeeDot} />
                 }
             </ImageWrapper>
@@ -64,6 +68,8 @@ const Image = styled.img`
 
     object-fit: cover;
     border-radius: 65px;
+
+    background-color: gray;
 `;
 
 const NotifeeDot = styled.img`

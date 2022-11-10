@@ -5,8 +5,36 @@ import MatchedEffect from "./MatchedEffect";
 import MatchedItemCard from "./MatchedItemCard";
 import SendMessageInput from "./SendMessageInput";
 import TopBar from "./TopBar";
+import Modal from 'react-modal';
 
-const MatchModal: React.FC = () => {
+interface Props {
+    open: boolean;
+    uid: string;
+
+    nickname: string;
+    name: string;
+    madeIn: string;
+    brand: string;
+
+    genYear: number;
+    genMonth: number;
+
+    thumbnail_src: string;
+    thubmnail_srcSet: string;
+}
+
+const MatchModal: React.FC<Props> = ({
+    open,
+    uid,
+    nickname,
+    name,
+    madeIn,
+    brand,
+    genYear,
+    genMonth,
+    thumbnail_src,
+    thubmnail_srcSet
+}) => {
 
     const [text, setText] = useState("");
 
@@ -17,30 +45,45 @@ const MatchModal: React.FC = () => {
     };
 
     return (
-        <Container>
-            <TopBar onClickClose={handleClickClose} />
-            <Spacing.Vertical height={24} />
-            <MatchedEffect />
-            <Spacing.Vertical height={24} />
-            <MatchedItemCard
-                nickname={"미야오옹"}
-                name={"고양이 주전자"}
-                madeIn={"중국"}
-                brand={"구찌"}
-                genYear={2013}
-                genMonth={6}
-                thumbnail_src={"https://newsimg.sedaily.com/2020/12/01/1ZBIJQNGIG_1.jpg"}
-                thubmnail_srcSet={"https://newsimg.sedaily.com/2020/12/01/1ZBIJQNGIG_1.jpg"}
-            />
-            <Spacing.Vertical height={16} />
-            <SendMessageInput
-                onChangeText={(text) => setText(text)}
-                text={text}
-                onClickSend={handleClickSend}
-            />
-        </Container>
+        <Modal isOpen={open} style={styles}>
+            <Container>
+                <TopBar onClickClose={handleClickClose} />
+                <Spacing.Vertical height={24} />
+                <MatchedEffect />
+                <Spacing.Vertical height={24} />
+                <MatchedItemCard
+                    nickname={nickname}
+                    name={name}
+                    madeIn={madeIn}
+                    brand={brand}
+                    genYear={genYear}
+                    genMonth={genMonth}
+                    thumbnail_src={thumbnail_src}
+                    thubmnail_srcSet={thubmnail_srcSet}
+                />
+                <Spacing.Vertical height={16} />
+                <SendMessageInput
+                    onChangeText={(text) => setText(text)}
+                    text={text}
+                    onClickSend={handleClickSend}
+                />
+            </Container>
+        </Modal>
     );
 };
+
+const styles = {
+    overlay: {
+
+    },
+    content: {
+        padding: 0,
+        margin: 0,
+        inset: 0,
+        width: '100%',
+        height: 'calc(100%-70px)',
+    }
+}
 
 const Container = styled.div`
     background-color: #FF5100;
