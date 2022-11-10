@@ -22,7 +22,7 @@ const Chat: React.FC = () => {
         (async () => {
             // STOMP
             const client = new Client({
-                brokerURL: "wss://api.thingder.app/chat/message",
+                brokerURL: "wss://api.thingder.app/chat/message/" + id ?? "",
                 connectHeaders: {
                     roomUid: id ?? ""
                 }

@@ -19,7 +19,10 @@ const AboutFragment: React.FC = () => {
     const [modal, setModal] = useState(false);
 
     const handleClickShare = () => {
-        alert("어떤 메시지 담을 건지 클라이언트분께 여쭈어봅시다.")
+        window.navigator.share({
+            url: "https://thingder.app",
+            title: "띵더"
+        });
     }
 
     const handleClickAskToTalk = () => {

@@ -58,11 +58,10 @@ const DetailFragment: React.FC<Props> = (props) => {
         });
 
         const image: ImageResponse = {
-            src: import.meta.env.VITE_API_CLIENT_BASEURL + data.src,
+            src: data.src,
             srcSet: data.srcSet
         };
         setPhoto(image);
-        dispatch(changeRegisterProperty({ images: [image] }));
     }, [photo]);
 
     const clickImageUploadButton = useCallback(() => {
@@ -75,7 +74,6 @@ const DetailFragment: React.FC<Props> = (props) => {
     const handleClickPhotoBox = () => {
         if (photo) {
             setPhoto(undefined);
-            dispatch(changeRegisterProperty({ images: undefined }));
         } else {
             clickImageUploadButton();
         }
@@ -89,7 +87,21 @@ const DetailFragment: React.FC<Props> = (props) => {
         }
 
         try {
-            const { data } = await api.main.post<RegisterResponse>("/auth/register", state);
+            const madeAt = state.madeAt;
+            const genYear = Number(madeAt.split("-")[0]) ?? 2002;
+            const genMonth = Number(madeAt.split("-")[1]) ?? 4;
+
+            const { data } = await api.main.post<RegisterResponse>("/auth/register", {
+                ...state,
+                images: [
+                    {
+                        src: photo.src,
+                        srcSet: photo.srcSet
+                    }
+                ],
+                genYear,
+                genMonth
+            });
             if (data.token) {
                 localStorage.setItem(ACCESS_TOKEN_KEY, data.token);
                 dispatch(signInUser(data.token));
@@ -127,7 +139,7 @@ const DetailFragment: React.FC<Props> = (props) => {
                     index={0}
                     onClick={handleClickPhotoBox}
                     src={photo?.src}
-                    srcSet={photo?.srcSet}
+                    // srcSet={photo?.srcSet}
                     big={true} />
                 {(photo &&
                     <>

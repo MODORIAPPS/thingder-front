@@ -43,7 +43,8 @@ const PhotoBox: React.FC<PhotoBoxProps> = (props) => {
             onClick={() => props.onClick(props.index)}
             src={props.src}
             big={props.big}
-            srcSet={props.srcSet} />
+            // srcSet={props.srcSet}
+        />
     }
 
     return (

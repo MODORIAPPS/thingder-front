@@ -16,7 +16,11 @@ const ChatFragment: React.FC = () => {
     };
 
     useEffect(() => {
-        requestPushNotification();
+        try {
+            requestPushNotification();
+        } catch (e) {
+
+        }
     }, []);
 
     return (

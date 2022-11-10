@@ -5,7 +5,6 @@ import Spacing from "../../../../../components/Spacing";
 import Stack from "../../../../../components/Stack";
 import Typography from "../../../../../components/Typography";
 import ImgInfo from "@/assets/icon/info.png";
-import { formatRelativeToAbsoluteURL } from "@/utils/formatter";
 import { Direction } from "../types";
 
 // image
@@ -49,7 +48,10 @@ const ItemCardBig: React.FC<Props> = (props) => {
 
     return (
         <Container>
-            <ItemImage src={props.thumbnail_src} srcSet={formatRelativeToAbsoluteURL(props.thubmnail_srcSet)} />
+            <ItemImage
+                src={props.thumbnail_src}
+                // srcSet={props.thubmnail_srcSet}
+            />
             {renderLikeImageView()}
             <BlackGradient>
                 <Stack.Horizontal>

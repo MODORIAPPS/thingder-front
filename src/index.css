@@ -53,7 +53,8 @@ html, body, #root {
 
 body {
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
+  max-width: 400px;
 }
 
 .slide {

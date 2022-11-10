@@ -1,4 +1,3 @@
-import { formatRelativeToAbsoluteURL } from "@/utils/formatter";
 import styled from "@emotion/styled";
 import React from "react";
 
@@ -18,7 +17,10 @@ interface Props {
 const ItemCard: React.FC<Props> = (props) => {
     return (
         <Container onClick={() => props.onClick(props.uid)}>
-            <ItemImage src={props.thumbnail_src} srcSet={formatRelativeToAbsoluteURL(props.thumbnail_srcSet)} />
+            <ItemImage
+                src={props.thumbnail_src}
+                // srcSet={props.thumbnail_srcSet}
+            />
             <PropertyWrapper>
                 <Nickname>{props.nickname}</Nickname>
                 <Name>{props.nickname}</Name>

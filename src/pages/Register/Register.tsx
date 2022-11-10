@@ -64,7 +64,6 @@ const Register: React.FC = () => {
             setPhoneError("");
             const CODE_EXPIRY_TIME = new Date(new Date().setMinutes(new Date().getMinutes() + 3));
             restart(CODE_EXPIRY_TIME, true);
-            toast("인증코드가 전송되었습니다!");
             setEnd(false);
         } catch (e) {
             console.error(e);

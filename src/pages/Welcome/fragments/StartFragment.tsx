@@ -37,6 +37,7 @@ export const StickToBottom = styled.div`
     width: 100%;
     position: absolute;
     bottom: 35px;
+    left: 0;
     box-sizing: border-box;
     padding: 0 30px;
 `;

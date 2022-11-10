@@ -11,15 +11,15 @@ interface Props {
 }
 
 const Button: React.FC<Props> = (props) => {
-    
+
     const handleClick = () => {
-        if(props.disable) return;
+        if (props.disable) return;
 
         props.onClick();
     }
 
     return (
-        <Container style={{ backgroundColor: props.disable ? "#7c2700d1" : Colors.Primary }} onClick={handleClick}>
+        <Container style={{ backgroundColor: Colors.Primary }} onClick={handleClick}>
             <Typography.Subtitle2 style={{ color: "#ffffff" }}>{props.text}</Typography.Subtitle2>
         </Container>
     );

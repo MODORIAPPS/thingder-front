@@ -1,7 +1,6 @@
 import Spacing from "@/components/Spacing";
 import Stack from "@/components/Stack";
 import Typography from "@/components/Typography";
-import { formatRelativeToAbsoluteURL } from "@/utils/formatter";
 import styled from "@emotion/styled";
 import React from "react";
 
@@ -32,7 +31,10 @@ const MatchedItemCard: React.FC<Props> = (
 ) => {
     return (
         <Container>
-            <ItemImage src={thumbnail_src} srcSet={formatRelativeToAbsoluteURL(thubmnail_srcSet)} />
+            <ItemImage
+                src={thumbnail_src}
+                // srcSet={thubmnail_srcSet}
+            />
             <BlackGradient>
                 <Stack.Horizontal>
                     <Typography.Header1>{nickname}</Typography.Header1>

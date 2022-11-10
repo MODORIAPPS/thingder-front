@@ -137,7 +137,7 @@ const HomeFragment: React.FC = () => {
                                             genMonth={item.genMonth}
                                             thumbnail_src={item.image.src}
                                             thubmnail_srcSet={item.image.srcSet}
-                                            isCursor={true}
+                                            isCursor={currentIndex === index}
                                             currentDirection={debouncedDirection}
                                         />
                                     </TinderCard>
