@@ -94,7 +94,7 @@ body {
   }
 }
 
-@media only screen and (min-width: 600px) {
+/* @media only screen and (min-width: 600px) {
   body {
     margin: 0 auto;
     width: 70%;
@@ -104,9 +104,9 @@ body {
 @media only screen and (min-width: 768px) {
   body {
     margin: 0 auto;
-    width: 40;
+    width: 40%;
   }
-}
+} */
 
 /**
 * 숫자 입력시 arrow key 방지

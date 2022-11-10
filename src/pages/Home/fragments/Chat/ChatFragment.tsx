@@ -1,11 +1,18 @@
 import Spacing from "@/components/Spacing";
 import styled from "@emotion/styled";
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Typography from "../../../../components/Typography";
 import ChatRoomItem from "./components/ChatRoomItem";
 import TopBar from "./components/TopBar";
 
 const ChatFragment: React.FC = () => {
+
+    const navigate = useNavigate();
+
+    const handleClickChatRoom = (chatRoomUid: string) => {
+        navigate(chatRoomUid)
+    };
 
     useEffect(() => {
         requestPushNotification();
@@ -19,6 +26,7 @@ const ChatFragment: React.FC = () => {
                 {
                     [1, 1, 1, 1, 1, 1, 1, 1].map(() =>
                         <ChatRoomItem
+                            onClick={handleClickChatRoom}
                             uid={"ewafaew"}
                             isRead={true}
                             thumbnail_src={"http://geojeseaworld.cafe24.com/wp-content/uploads/2018/03/bel6000.jpg"}

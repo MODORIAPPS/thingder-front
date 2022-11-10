@@ -81,12 +81,10 @@ const MonthInput = styled.input`
     bottom: 0;
     color: transparent;
     cursor: pointer;
-    height: auto;
     left: 0;
     position: absolute;
     right: 0;
     top: 0;
-    width: auto;
     opacity: 0;
 `;
 

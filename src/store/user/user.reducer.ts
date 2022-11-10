@@ -93,6 +93,7 @@ const userReducer = (
                 loading: false,
                 error: null,
                 data: {
+                    type: action.userType,
                     isLogin: true
                 }
             }

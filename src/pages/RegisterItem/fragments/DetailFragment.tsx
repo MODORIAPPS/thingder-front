@@ -62,6 +62,7 @@ const DetailFragment: React.FC<Props> = (props) => {
             srcSet: data.srcSet
         };
         setPhoto(image);
+        dispatch(changeRegisterProperty({ images: [image] }));
     }, [photo]);
 
     const clickImageUploadButton = useCallback(() => {
@@ -74,6 +75,7 @@ const DetailFragment: React.FC<Props> = (props) => {
     const handleClickPhotoBox = () => {
         if (photo) {
             setPhoto(undefined);
+            dispatch(changeRegisterProperty({ images: undefined }));
         } else {
             clickImageUploadButton();
         }
@@ -87,7 +89,6 @@ const DetailFragment: React.FC<Props> = (props) => {
         }
 
         try {
-            dispatch(changeRegisterProperty({ images: [photo] }));
             const { data } = await api.main.post<RegisterResponse>("/auth/register", state);
             if (data.token) {
                 localStorage.setItem(ACCESS_TOKEN_KEY, data.token);

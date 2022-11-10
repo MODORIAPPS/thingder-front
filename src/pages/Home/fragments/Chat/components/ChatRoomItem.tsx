@@ -13,11 +13,13 @@ interface Props {
 
     itemNickname: string;
     lastChat: string;
+    
+    onClick: (chatroomUid: string) => void;
 }
 
 const ChatRoomItem: React.FC<Props> = (props) => {
     return (
-        <Container>
+        <Container onClick={() => props.onClick(props.uid)}>
             <ImageWrapper>
                 <Image src={props.thumbnail_src} srcSet={props.thumbnail_srcSet} />
                 {

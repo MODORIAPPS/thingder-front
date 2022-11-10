@@ -1,19 +1,22 @@
 import Spacing from "@/components/Spacing";
 import styled from "@emotion/styled";
 import React from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import ChatInput from "./components/ChatInput";
 import CounterpartChat from "./components/CounterpartChat";
 import MinepartChat from "./components/MinepartChat";
 import TopBar from "./components/TopBar";
 
 const Chat: React.FC = () => {
+
+    const navigate = useNavigate();
+
+    const handleClickClose = () => navigate(-1);
+    const handleClickGuard = () => navigate("report");
+
     return (
         <Container>
-            <TopBar onClickBack={function (): void {
-                throw new Error("Function not implemented.");
-            }} onClickGuard={function (): void {
-                throw new Error("Function not implemented.");
-            }} title={"미야오옹"} />
+            <TopBar onClickBack={handleClickClose} onClickGuard={handleClickGuard} title={"미야오옹"} />
 
             <ChatBody>
                 <CounterpartChat

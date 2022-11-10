@@ -1,4 +1,5 @@
 import { useAppSelector } from "@/hooks/redux";
+import Chat from "@/pages/Chat";
 import Report from "@/pages/Chat/Report";
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
@@ -24,10 +25,10 @@ const HomeNavigator: React.FC = () => {
                 <Route path="explore" element={<ExploreFragment />} />
 
                 {/* 메시지 프래그먼트 */}
-                <Route path="chat" element={<ChatFragment />} >
-                    <Route path="report" element={<Report />} />
-                </Route>
-
+                <Route path="chat" element={<ChatFragment />} />
+                <Route path="chat/:id" element={<Chat />} />
+                <Route path="chat/:id/report" element={<Report />} />
+                
                 {/* 커틀러리(About) 프래그먼트 */}
                 <Route path="about" element={<AboutFragment />} />
             </Route>
