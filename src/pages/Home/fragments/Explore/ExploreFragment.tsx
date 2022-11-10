@@ -59,7 +59,7 @@ const ExploreFragment: React.FC = () => {
     )
 };
 
-const ListView = styled.div`
+export const ListView = styled.div`
 
     padding: 0 22px;
     box-sizing: border-box;

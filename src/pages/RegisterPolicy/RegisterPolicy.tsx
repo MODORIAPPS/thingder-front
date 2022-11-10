@@ -1,5 +1,6 @@
 import ActionBar from "@/components/ActionBar";
 import Button from "@/components/Button";
+import Container from "@/components/Container";
 import Spacing from "@/components/Spacing";
 import Typography from "@/components/Typography";
 import styled from "@emotion/styled";
@@ -22,10 +23,10 @@ const RegisterPolicy: React.FC = () => {
     }
 
     return (
-        <>
+        <Container>
             <ActionBar />
             <Spacing.Vertical height={42} />
-            <Container>
+            <Body>
                 <Typography.Header1>이용약관</Typography.Header1>
                 <Spacing.Vertical height={26} />
                 <PolicyBox>
@@ -43,15 +44,15 @@ const RegisterPolicy: React.FC = () => {
                     <Spacing.Horizontal width={8} />
                     <Typography.Subtitle4>본인은 19세 이상이며 이용약관에 동의합니다.</Typography.Subtitle4>
                 </CheckboxWrapper>
-            </Container>
+            </Body>
             <StickToBottom>
                 <Button onClick={handleClickContinue} text="계속" />
             </StickToBottom>
-        </>
+        </Container>
     );
 };
 
-const Container = styled.div`
+const Body = styled.div`
     position: relative;
     padding: 0 20px;
     box-sizing: border-box;
@@ -68,11 +69,19 @@ const PolicyBox = styled.div`
     font-weight: 400;
     white-space: pre-wrap;
 
-    max-height: 500px;
+    max-height: 350px;
 
     overflow-y: scroll;
 
     color: grey;
+
+    @media (max-height: 500px) {
+        height: 500px;
+    }
+
+    @media (max-height: 600px) {
+        height: 800px;
+    }
 `;
 
 const CheckboxWrapper = styled.div`

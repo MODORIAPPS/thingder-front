@@ -6,6 +6,8 @@ import Spacing from "../../../components/Spacing";
 import { useTranslation, Trans } from "react-i18next";
 import Introduction from "@/pages/Home/fragments/About/components/Introduction";
 import Button from "@/components/Button";
+import Typography from "@/components/Typography";
+import Container from "@/components/Container";
 
 interface Props {
     handleClickStartService: () => void;
@@ -23,11 +25,10 @@ const DescFragment: React.FC<Props> = ({ handleClickStartService, handleClickSha
             <Spacing.Vertical height={24} />
 
             <Body>
-                <span>어서오세요</span>
+                <Typography.Header2>어서오세요 ❣️</Typography.Header2>
                 <Spacing.Vertical height={32} />
                 <Introduction />
-
-                <Spacing.Vertical height={200} />
+                <Spacing.Vertical height={100} />
             </Body>
 
             <StickToBottom>
@@ -37,15 +38,10 @@ const DescFragment: React.FC<Props> = ({ handleClickStartService, handleClickSha
     );
 };
 
-const Container = styled.div`
-    position: relative;
-    overflow: scroll;
-    height: 100%;
-`;
-
 const Body = styled.div`
     padding: 0 30px;
     color: #404040;
+    overflow-y: scroll;
 `;
 
 const ActionBar = styled.div`

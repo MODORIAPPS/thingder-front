@@ -14,6 +14,7 @@ import Spacing from "../../../components/Spacing";
 import InputMadeAt from "./components/InputMadeAt";
 import { PhotoBox } from "./PhotoFragment";
 import emojiRegex from "emoji-regex";
+import Container from "@/components/Container";
 
 const regex = emojiRegex();
 
@@ -103,16 +104,16 @@ const DetailFragment: React.FC<Props> = (props) => {
 
     const handleChangeEmoji = (value: string) => {
         const description = value.match(regex)?.join("");
-        if(!description) return;
+        if (!description) return;
         dispatch(changeRegisterProperty({ description }))
     };
 
     return (
-        <Screen>
+        <Container>
             <ActionBar onClickBackButton={props.onClickBackButton} />
             <Spacing.Vertical height={16} />
 
-            <Container>
+            <Body>
                 {/* 앱 소개 */}
                 <HighLight>띵더</HighLight>는 <RedCut>레드커틀러리</RedCut>
                 가 만든 예술실험적 데이팅 앱입니다.
@@ -189,11 +190,16 @@ const DetailFragment: React.FC<Props> = (props) => {
                 <Spacing.Vertical height={60} />
                 <Button onClick={handleClickCompleteRegister} text="회원가입 완료!" />
                 <Spacing.Vertical height={40} />
-            </Container>
+            </Body>
             <input style={{ visibility: "hidden" }} type="file" accept="image/*" ref={inputRef} onChange={onUploadImage} />
-        </Screen>
+        </Container>
     );
 };
+
+const Body = styled.div`
+    box-sizing: border-box;
+    padding: 0 36px;
+`;
 
 const Description = styled.span`
     font-size: 14px;
@@ -208,23 +214,5 @@ const PhotoDescription = styled.div`
     text-align: right;
 `;
 
-const Screen = styled.div`
-    width: 100%;
-    height: 100%;
-
-    overflow-y: scroll;
-`;
-
-const Container = styled.div`
-    box-sizing: border-box;
-    padding: 0 36px;
-`;
-
-const PresentImage = styled.img`
-    width: 100%;
-    max-height: 400px;
-
-    object-fit: contain;
-`;
 
 export default DetailFragment;

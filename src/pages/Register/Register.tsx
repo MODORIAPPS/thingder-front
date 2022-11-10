@@ -1,5 +1,6 @@
 import api from "@/api";
 import Button from "@/components/Button";
+import Container from "@/components/Container";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { changeRegisterProperty, resetRegisterStateAction } from "@/store/register/register.reducer";
 import styled from "@emotion/styled";
@@ -10,7 +11,7 @@ import { toast } from "react-toastify";
 import ActionBar from "../../components/ActionBar";
 import Spacing from "../../components/Spacing";
 import Typography from "../../components/Typography";
-import EmailInput from "./components/EmailInput";
+import EmailInput from "./components/EmaiInput";
 import PasswordConfirmInput from "./components/PasswordConfirmInput";
 import PasswordInput from "./components/PasswordInput";
 import PhoneCodeInput from "./components/PhoneCodeInput";
@@ -61,6 +62,7 @@ const Register: React.FC = () => {
         try {
             const { data } = await api.main.post("/auth/pin/send?phone=" + phone);
             setPhoneError("");
+            const CODE_EXPIRY_TIME = new Date(new Date().setMinutes(new Date().getMinutes() + 3));
             restart(CODE_EXPIRY_TIME, true);
             toast("인증코드가 전송되었습니다!");
             setEnd(false);
@@ -93,10 +95,10 @@ const Register: React.FC = () => {
 
 
     return (
-        <Screen>
+        <Container>
             <ActionBar onClickBackButton={handleClickBackButton} />
             <Spacing.Vertical height={16} />
-            <Container>
+            <Body>
                 <Typography.Header1>회원가입</Typography.Header1>
 
                 <Spacing.Vertical height={36} />
@@ -133,15 +135,12 @@ const Register: React.FC = () => {
                 <Spacing.Vertical height={32} />
 
                 <Button disable={!(password === passwordConfirm && isCodeConfirmed)} onClick={handleClickContinue} text="계속" />
-            </Container>
-        </Screen>
+                <Spacing.Vertical height={24} />
+            </Body>
+        </Container>
     );
 };
 
-const Screen = styled.div`
-    height: 100%;
-    overflow: scroll;
-`;
 
 const ConfirmCodeButton = styled.span` 
     display: inline-block;
@@ -160,7 +159,7 @@ export const CODE_EXPIRY_TIME = new Date(new Date().setMinutes(new Date().getMin
 export const PHONE_NUMBER_ERROR = "유효하지 않은 휴대폰 번호입니다";
 export const CODE_CONFIRM_ERROR = "인증코드가 일치하지 않습니다";
 
-const Container = styled.div`
+const Body = styled.div`
     padding: 0 20px;
     box-sizing: border-box;
 `;

@@ -87,7 +87,7 @@ const ChatBody = styled.div`
 `;
 
 const BottomChat = styled.div`
-    position: absolute;
+    position: fixed;
     width: 100%;
     box-sizing: border-box;
     bottom: 0;

@@ -4,6 +4,7 @@ import ImgThingderLogoStart from "@/assets/logo/thingder_logo_start.png";
 import Button from "../../../components/Button";
 import Spacing from "../../../components/Spacing";
 import Typography from "../../../components/Typography";
+import Container from "@/components/Container";
 
 interface Props {
     handleClickHello: () => void;
@@ -23,11 +24,6 @@ const StartFragment: React.FC<Props> = ({ handleClickHello }) => {
         </Container>
     );
 };
-
-const Container = styled.div`
-    height: 100%;
-    position: relative;
-`;
 
 const VerticalStack = styled.div`
     text-align: center;

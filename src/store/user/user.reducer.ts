@@ -4,6 +4,8 @@ import { ThunkAction } from "redux-thunk";
 import api, { ACCESS_TOKEN_KEY } from "@/api";
 import { RootState } from "../store";
 
+type UserType = "ADMIN" | "USER";
+
 const USER_SIGN_IN = "USER_SIGN_IN" as const;
 const USER_SIGN_IN_SUCCESS = "USER_SIGN_IN_SUCCESS" as const;
 const USER_SIGN_IN_ERROR = "USER_SIGN_IN_ERROR" as const;
@@ -12,7 +14,7 @@ const USER_INFO_UPDATE = "USER_INFO_UPDATE" as const;
 const USER_SIGN_OUT = "USER_SIGN_OUT" as const;
 
 const userSignInAction = () => ({ type: USER_SIGN_IN });
-const userSignInSuccessAction = () => ({ type: USER_SIGN_IN_SUCCESS });
+const userSignInSuccessAction = (userType: UserType) => ({ type: USER_SIGN_IN_SUCCESS, userType });
 const userSignInErrorAction = (error: string) => ({ type: USER_SIGN_IN_ERROR, error });
 const userSignOutAction = () => ({ type: USER_SIGN_OUT });
 const userInfoUpdateAction = (data: User) => ({ type: USER_INFO_UPDATE, data });
@@ -50,10 +52,8 @@ export const signInUser = (token?: string): ThunkAction<void, RootState, unknown
 
             localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
 
-
-            console.log('accessToken', accessToken);
-
-            dispatch({ type: USER_SIGN_IN_SUCCESS });
+            const { data: my } = await api.main.get<("ADMIN" | "USER")[]>("/auth/my");
+            dispatch({ type: USER_SIGN_IN_SUCCESS, userType: my[0] });
 
             console.log("user/reducer token", accessToken);
         } catch (e) {

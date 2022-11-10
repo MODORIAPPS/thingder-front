@@ -34,6 +34,7 @@ const Login: React.FC = () => {
 
     const handleClickLogin = async () => {
         try {
+            api.main.defaults.headers.common['Authorization'] = "";
             const { data } = await api.main.post<LoginResponse>("/auth/login", {
                 email,
                 password: pwd
@@ -41,8 +42,6 @@ const Login: React.FC = () => {
 
             localStorage.setItem(ACCESS_TOKEN_KEY, data.token);
             dispatch(signInUser(data.token));
-
-            navigate("/home");
         } catch (e) {
             setEmailError("유효하지 않은 이메일 주소입니다.");
             setPwdError("비밀번호가 일치하지 않습니다.")
@@ -65,7 +64,10 @@ const Login: React.FC = () => {
     }
 
     const handleClickFindPassword = () => navigate("reset");
-    const handleClickRegister = () => navigate("register");
+    const handleClickRegister = () => {
+        api.main.defaults.headers.common['Authorization'] = "";
+        navigate("register");
+    }
 
     return (
         <>

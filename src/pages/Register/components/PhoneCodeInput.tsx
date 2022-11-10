@@ -1,6 +1,6 @@
 import TextInput from "@/components/TextInput";
 import React from "react";
-import ImgEmail from "@/assets/icon/message_alt_fill.png";
+import LockFill from "@/assets/icon/lock_fill.svg";
 import styled from "@emotion/styled";
 import { InputCommonType } from "@/pages/Login/components/input.type";
 
@@ -11,7 +11,7 @@ interface Props extends InputCommonType {
 const PhoneCodeInput: React.FC<Props> = (props) => {
     return (
         <TextInput
-            leadingIcon={<EmailIcon src={ImgEmail} />}
+            leadingIcon={<EmailIcon src={LockFill} />}
             label="인증 코드"
             placeholder="인증 코드 6자리를 입력해주세요"
             onChange={props.onChange}

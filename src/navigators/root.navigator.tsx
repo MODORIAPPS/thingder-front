@@ -9,6 +9,7 @@ import DetailFragment from "@/pages/RegisterItem/fragments/DetailFragment";
 import MatchModal from "@/pages/Home/fragments/Home/modals/MatchModal";
 import CancelMatchModal from "@/pages/Home/fragments/Chat/modals/CancelMatchModal";
 import Chat from "@/pages/Chat";
+import Report from "@/pages/Chat/Report";
 
 const AdminNavigator = lazy(() => import("./admin.navigator"));
 const AuthNavigator = lazy(() => import("./auth.navigator"));
@@ -18,7 +19,7 @@ const RootNavigator = () => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const isLogin = useAppSelector(state => state.user.data?.isLogin);
+    const { data } = useAppSelector(state => state.user);
 
     const printToken = async () => {
         const messaging = getMessaging();
@@ -35,13 +36,13 @@ const RootNavigator = () => {
         printToken();
     }, []);
 
-    // useEffect(() => {
-    //     if (isLogin) {
-    //         navigate("/home")
-    //     } else {
-    //         navigate("/");
-    //     }
-    // }, [isLogin]);
+    useEffect(() => {
+        if (data) {
+            data.type === "ADMIN" ? navigate("admin") : navigate("home")
+        } else {
+            navigate("/");
+        }
+    }, [data]);
 
     return (
         <Suspense fallback={<></>}>
@@ -50,7 +51,7 @@ const RootNavigator = () => {
                 {/* 앱 시작점 */}
                 <Route index element={<Welcome />} />
 
-                <Route path="hello" element={<Chat />} />
+                {/* <Route path="hello" element={<Chat />} /> */}
 
                 {/* 로그인, 회원가입, 비밀번호 찾기 */}
                 <Route path="auth/*" element={<AuthNavigator />} />
@@ -64,7 +65,7 @@ const RootNavigator = () => {
                 {/* 테스트 라우팅 */}
                 <Route path="test/*" element={<DetailFragment onClickBackButton={() => { }} />} />
             </Routes>
-        </Suspense >
+        </Suspense>
     );
 };
 

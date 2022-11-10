@@ -52,6 +52,7 @@ const InputMadeAt: React.FC<Props> = ({ value, onChange }) => {
                         <MonthInput
                             ref={mobileDPRef}
                             type="month"
+                            style={{ width: 1, height: 1 }}
                             onChange={e => handleChangeMobileDateDP(e.target.value)} />
                     </>
                     :
