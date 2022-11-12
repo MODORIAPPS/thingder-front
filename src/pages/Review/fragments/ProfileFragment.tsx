@@ -1,7 +1,6 @@
 import api from "@/api";
 import Spacing from "@/components/Spacing";
 import { useAppDispatch } from "@/hooks/redux";
-import ItemDetailModal from "@/pageModal/ItemDetail/ItemDetailModal";
 import AdminActionBar from "@/pages/Admin/components/AdminActionBar";
 import ItemCard, { ItemCardType } from "@/pages/Home/fragments/Explore/components/ItemCard";
 import { ListView } from "@/pages/Home/fragments/Explore/ExploreFragment";
@@ -9,6 +8,7 @@ import { showMemberDetailAction } from "@/store/ui/ui.reducer";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PullToRefresh from "react-simple-pull-to-refresh";
+import AdminItemDetailModal from "../modals/AdminItemDetailModal";
 
 interface ItemListResponse {
     members: ItemCardType[];
@@ -58,7 +58,7 @@ const ProfileFragment: React.FC = () => {
             </PullToRefresh>
             <Spacing.Vertical height={40} />
 
-            <ItemDetailModal />
+            <AdminItemDetailModal />
         </>
     );
 };

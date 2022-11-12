@@ -51,7 +51,7 @@ html, body, #root {
   overflow-y: scroll;
 }
 
-body {
+body, #modal {
   padding: 0;
   margin: 0 auto;
   max-width: 400px;

@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from "react";
+import { useEffect, lazy, Suspense, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { signInUser } from "@/store/user/user.reducer";
 
@@ -7,9 +7,9 @@ import Welcome from "../pages/Welcome";
 import { getMessaging, getToken } from "firebase/messaging";
 import DetailFragment from "@/pages/RegisterItem/fragments/DetailFragment";
 import MatchModal from "@/pages/Home/fragments/Home/modals/MatchModal";
-import CancelMatchModal from "@/pages/Home/fragments/Chat/modals/CancelMatchModal";
+import CancelMatchModal from "@/pages/Home/fragments/Chat/modals/ReportMatchModal";
 import Chat from "@/pages/Chat";
-import Report from "@/pages/Chat/Report";
+import PolicyErrorDialog from "@/components/PolicyErrorDialog";
 
 const AdminNavigator = lazy(() => import("./admin.navigator"));
 const AuthNavigator = lazy(() => import("./auth.navigator"));
@@ -20,6 +20,8 @@ const RootNavigator = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { data } = useAppSelector(state => state.user);
+
+    const [policyDialog, setPolicyDialog] = useState(false);
 
     const printToken = async () => {
         const messaging = getMessaging();
@@ -44,28 +46,38 @@ const RootNavigator = () => {
         }
     }, [data]);
 
+    const handleClickEditProfile = () => {
+        navigate("home/mypage")
+    }
+
     return (
-        <Suspense fallback={<></>}>
-            <Routes>
+        <>
+            <Suspense fallback={<></>}>
+                <Routes>
 
-                {/* 앱 시작점 */}
-                <Route index element={<Welcome />} />
+                    {/* 앱 시작점 */}
+                    <Route index element={<Welcome />} />
 
-                {/* <Route path="hello" element={<Chat />} /> */}
+                    {/* 로그인, 회원가입, 비밀번호 찾기 */}
+                    <Route path="auth/*" element={<AuthNavigator />} />
 
-                {/* 로그인, 회원가입, 비밀번호 찾기 */}
-                <Route path="auth/*" element={<AuthNavigator />} />
+                    {/* 홈 화면 */}
+                    <Route path="home/*" element={<HomeNavigator />} />
 
-                {/* 홈 화면 */}
-                <Route path="home/*" element={<HomeNavigator />} />
+                    {/* 어드민 화면 */}
+                    <Route path="admin/*" element={<AdminNavigator />} />
 
-                {/* 어드민 화면 */}
-                <Route path="admin/*" element={<AdminNavigator />} />
+                    {/* 테스트 라우팅 */}
+                    <Route path="test/*" element={<DetailFragment onClickBackButton={() => { }} />} />
 
-                {/* 테스트 라우팅 */}
-                <Route path="test/*" element={<DetailFragment onClickBackButton={() => { }} />} />
-            </Routes>
-        </Suspense>
+                </Routes>
+            </Suspense>
+            <PolicyErrorDialog
+                open={policyDialog}
+                handleClickLeft={handleClickEditProfile}
+                handleClickRight={() => setPolicyDialog(false)}
+            />
+        </>
     );
 };
 

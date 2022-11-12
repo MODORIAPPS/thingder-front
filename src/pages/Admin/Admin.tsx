@@ -10,15 +10,27 @@ import ImgReview from "@/assets/icon/admin/review.svg";
 import ImgViewHide from "@/assets/icon/admin/view_hide.svg";
 import AlarmFill from "@/assets/icon/admin/alarm_fill.svg";
 import ActionBar from "./components/AdminActionBar";
+import { useAppDispatch } from "@/hooks/redux";
+import { signOutUser } from "@/store/user/user.reducer";
+import Button from "@/components/Button";
 
 const Admin: React.FC = () => {
 
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     const handleClickReview = () => navigate("review");
     const handleClickChatReport = () => navigate("review/chat");
     const handleClickProfileReport = () => navigate("review/profile");
     const handleClickAsk = () => navigate("review/ask");
+
+    const handleClickSignOut = () => {
+        const confirm = window.confirm("로그아웃하시겠어요?");
+        if (confirm) {
+            dispatch(signOutUser());
+            navigate("/");
+        }
+    };
 
     return (
         <>
@@ -59,6 +71,11 @@ const Admin: React.FC = () => {
                     subTitle={"물건들의 할 말 확인"}
                     onClick={handleClickAsk} />
                 <Spacing.Vertical height={10} />
+
+                <Button text="로그아웃" onClick={handleClickSignOut} />
+
+                <Spacing.Vertical height={24} />
+
             </Container>
         </>
     );

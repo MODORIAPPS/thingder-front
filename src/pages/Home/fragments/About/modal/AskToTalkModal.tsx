@@ -1,4 +1,5 @@
 import ActionBar from "@/components/ActionBar";
+import Container from "@/components/Container";
 import Spacing from "@/components/Spacing";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
@@ -20,22 +21,24 @@ const AskToTalkModal: React.FC<Props> = ({ open, onClickBackButton }) => {
     return (
         <Modal
             isOpen={open}
-            style={styles}>
-            <ActionBar onClickBackButton={onClickBackButton} />
-            <Spacing.Vertical height={12} />
+            style={modalStyles}>
             <Container>
-                <Description>레드커틀러리들에게 하고 싶은 말을 적어 보아요</Description>
-                <Body value={value} onChange={e => setValue(e.target.value)}/>
-                <Spacing.Vertical height={36} />
-                <Button onClick={handleClickSend}>
-                    보내기
-                </Button>
+                <ActionBar onClickBackButton={onClickBackButton} />
+                <Spacing.Vertical height={12} />
+                <Body>
+                    <Description>레드커틀러리들에게 하고 싶은 말을 적어 보아요</Description>
+                    <TextArea value={value} onChange={e => setValue(e.target.value)} />
+                    <Spacing.Vertical height={36} />
+                    <Button onClick={handleClickSend}>
+                        보내기
+                    </Button>
+                </Body>
             </Container>
         </Modal>
     );
 };
 
-const styles = {
+export const modalStyles = {
     overlay: {
 
     },
@@ -46,14 +49,14 @@ const styles = {
         width: '100%',
         height: 'calc(100%-70px)',
     }
-}
+};
 
-const Container = styled.div`
+const Body = styled.div`
     padding: 0 30px;
     box-sizing: border-box;
 `;
 
-const Body = styled.textarea`
+export const TextArea = styled.textarea`
     border: none;
     outline: none;
     box-sizing: border-box;

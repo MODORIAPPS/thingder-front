@@ -9,7 +9,7 @@ import Typography from "@/components/Typography";
 
 interface Props {
     onClickBack: () => void;
-    onClickGuard: () => void;
+    onClickGuard?: () => void;
     title: string;
 }
 
@@ -20,6 +20,16 @@ const TopBar: React.FC<Props> = (
         title
     }
 ) => {
+
+    const renderRightAction = () => {
+        if (typeof onClickGuard === "function") {
+            return <Guard onClick={onClickGuard} src={SettingFillImg} />
+
+        }
+
+        return <Icon onClick={onClickBack} style={{ opacity: 0 }}/>
+    };
+
     return (
         <Container>
             <LeftWrapper>
@@ -27,10 +37,16 @@ const TopBar: React.FC<Props> = (
                 <Spacing.Horizontal width={54} />
                 <Typography.Header2>{title}</Typography.Header2>
             </LeftWrapper>
-            <Guard onClick={onClickGuard} src={SettingFillImg} />
+            {renderRightAction()}
         </Container>
     );
 };
+
+const Icon = styled.img`
+    width: 27px;
+    height: 25px;
+`;
+
 
 const Container = styled.div`
     width: 100%;

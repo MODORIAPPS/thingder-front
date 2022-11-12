@@ -38,7 +38,7 @@ const Container = styled.div`
     align-items: center;
     width: 100%;
     box-sizing: border-box;
-    padding: 12px 24px;
+    padding: 16px 24px;
 `;
 
 const Icon = styled.img`

@@ -1,16 +1,15 @@
 import api from "@/api";
 import ActionBar from "@/components/ActionBar";
+import Container from "@/components/Container";
+import Spacing from "@/components/Spacing";
+import Stack from "@/components/Stack";
+import Typography from "@/components/Typography";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import Button from "@/pages/Home/fragments/Chat/components/Button";
 import { closeMemberDetailAction } from "@/store/ui/ui.reducer";
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import Modal from 'react-modal';
-import ImgShare from "@/assets/icon/share_white.svg";
-import Spacing from "@/components/Spacing";
-import Stack from "@/components/Stack";
-import Typography from "@/components/Typography";
-import { ChooseButtonWrapper } from "@/pages/Home/fragments/Home/HomeFragment";
-import ChooseButton from "@/pages/Home/fragments/Home/components/ChooseButton";
 
 export const RELATION = {
     BLOCK: "BLOCK",
@@ -19,9 +18,9 @@ export const RELATION = {
 }
 
 /**
- * Member Detail
+ * Admin Member Detail
  */
-const ItemDetailModal: React.FC = () => {
+const AdminItemDetailModal: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const uid = useAppSelector(state => state.ui.memberDetailUid);
@@ -36,22 +35,14 @@ const ItemDetailModal: React.FC = () => {
 
     const handleClickBackButton = () => dispatch(closeMemberDetailAction());
 
-    const handleClickShare = () => alert("어떤 내용을 공유할까요?");
-
     const handleClickNegativeButton = async () => {
-        const { data } = await api.main.post<MatchingPickResponse>("/matching/pick", {
-            relation: RELATION.DISLIKE,
-            uid,
+        await api.main.post(`/admin/report/profile/${uid}`, {
+            status: "BAN"
         });
+        alert("밴 처리되었습니다.")
     };
 
-    const handleClickPositiveButton = async () => {
-        const { data } = await api.main.post<MatchingPickResponse>("/matching/pick", {
-            relation: RELATION.LIKE,
-            uid,
-        });
-    };
-
+    const handleClickPositiveButton = () => handleClickBackButton();
 
     useEffect(() => {
         if (uid) {
@@ -65,23 +56,28 @@ const ItemDetailModal: React.FC = () => {
         <Modal isOpen={open} style={styles}>
             <ActionBar onClickBackButton={handleClickBackButton} />
 
+            <ReportReasonView>
+                유저가 기입한 신고 이유 여기에 스크롤 가능하게 해서 띄워주세요!
+            </ReportReasonView>
+
             {/* 슬라이드 가능하게 */}
-            <PrsentImageWrapper>
+            <PresentImageWrapper>
+                <ButtonWrapper>
+                    <Button
+                        onClick={handleClickNegativeButton}
+                        backgroundColor="#FF5100"
+                        textColor="white">BAN!</Button>
+                    <Spacing.Horizontal width={24} />
+                    <Button
+                        onClick={handleClickPositiveButton}
+                        backgroundColor="#26C485"
+                        textColor="black">DISMISS!</Button>
+                </ButtonWrapper>
                 <PresentImage src={data.images[0].src} />
-
-                {/* 공유 버튼 */}
-                <ShareIcon onClick={handleClickShare} src={ImgShare} />
-
-                {/* 선택 버튼 */}
-                <ChooseButtonWrapper style={{ position: "absolute", bottom: 32, left: 0, right: 0 }}>
-                    <ChooseButton.Negative onClick={handleClickNegativeButton} />
-                    <Spacing.Horizontal width={65} />
-                    <ChooseButton.Positive onClick={handleClickPositiveButton} />
-                </ChooseButtonWrapper>
-            </PrsentImageWrapper>
+            </PresentImageWrapper>
 
             <Spacing.Vertical height={16} />
-            <Container>
+            <Container style={{ padding: '0 40px' }}>
                 <Stack.Horizontal style={{ alignItems: "flex-end" }}>
                     <Typography.Header1>{data.nickname}</Typography.Header1>
                     <Typography.Caution1>{data.genYear}년 {data.genMonth}월 제조</Typography.Caution1>
@@ -138,37 +134,32 @@ export interface MatchingPickResponse {
     member: MemberDetail;
 }
 
-export interface MemberDetail {
+interface MemberDetail {
     uid: string;
     images: { uid: string; src: string; srcSet: string }[];
     nickname: string;
     type: string;
     genYear: number;
     genMonth: number;
-    genCountry: string;
+    genCountry: number;
     brand: string;
     tag: string;
     description: string;
     story: string;
 }
 
-export const Container = styled.div`
-    box-sizing: border-box;
-    padding: 0 40px;
-`;
-
-export const PrsentImageWrapper = styled.div`
+const PresentImageWrapper = styled.div`
     position: relative;
 `;
 
-export const PresentImage = styled.img`
+const PresentImage = styled.img`
     width: 100%;
     height: 375px;
 
     object-fit: cover;
 `;
 
-export const ShareIcon = styled.img`
+const ShareIcon = styled.img`
     position: absolute;
     top: 12px;
     right: 12px;
@@ -177,7 +168,7 @@ export const ShareIcon = styled.img`
     height: 24px;
 `;
 
-export const SubTitle = styled.span`
+const SubTitle = styled.span`
     font-weight: bold;
     font-size: 14px;
     line-height: 18px;
@@ -185,7 +176,7 @@ export const SubTitle = styled.span`
     display: block;
 `;
 
-export const Content = styled.span`
+const Content = styled.span`
     font-weight: 500;
     font-size: 14px;
     line-height: 20px;
@@ -193,31 +184,52 @@ export const Content = styled.span`
     display: block;
 `;
 
-export const Divider = styled.div`
+const Divider = styled.div`
     height: 1px;
     background-color: rgba(0, 0, 0, 0.05);
 
     margin: 12px 0;
 `;
 
-export const BottomWrapper = styled.div`
+const BottomWrapper = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
 `;
 
-export const BottomPropertyDivider = styled.div`
+const BottomPropertyDivider = styled.div`
     width: 2px;
     height: 16px;
     background-color: #26C485;
     margin: 0 10px;
 `;
 
-export const BottomProperty = styled.span`
+const BottomProperty = styled.span`
     font-size: 0.875rem;
     line-height: 1.125;
     font-weight: 400;
     color: rgba(0,0,0,0.75);
 `;
 
-export default ItemDetailModal;
+export const ReportReasonView = styled.div`
+    position: relative;
+    box-sizing: border-box;
+    padding: 16px 28px;
+    background-color: #d4d4d4;
+    height: 155px;
+    overflow-y: scroll;
+    color: black;
+`;
+
+const ButtonWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    z-index: 99;
+    top: -26px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%)
+`;
+
+export default AdminItemDetailModal;

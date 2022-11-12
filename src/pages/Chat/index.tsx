@@ -1,40 +1,40 @@
 import Spacing from "@/components/Spacing";
 import styled from "@emotion/styled";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import ChatInput from "./components/ChatInput";
 import CounterpartChat from "./components/CounterpartChat";
 import MinepartChat from "./components/MinepartChat";
 import TopBar from "./components/TopBar";
-import { Client, IFrame, Message } from '@stomp/stompjs';
+import { Client, IFrame, Message, Stomp } from '@stomp/stompjs';
+import SockJS from "sockjs-client/dist/sockjs"
+import ReportChatModal from "./modal/ReportChatModal";
 
 const Chat: React.FC = () => {
 
     const { id } = useParams();
-    console.log(id);
     const navigate = useNavigate();
 
+    const [reportModal, setReportModal] = useState(false);
+
     const handleClickClose = () => navigate(-1);
-    const handleClickGuard = () => navigate("report");
+    const handleClickGuard = () => {
+        setReportModal(true);
+    }
+
 
     useEffect(() => {
         let client: Client;
         (async () => {
             // STOMP
-            const client = new Client({
-                brokerURL: "wss://api.thingder.app/chat/message/" + id ?? "",
-                connectHeaders: {
-                    roomUid: id ?? ""
-                }
-            });
+            const sock = new SockJS("https://api.thingder.app/chat/message");
+            const ws = Stomp.over(sock);
 
-            client.onConnect = (frame: IFrame) => {
-                console.log('connected', frame);
-            }
-            client.activate();
-
-            client?.subscribe(id ?? "", (message) => {
-                console.log(message)
+            ws.connect({}, (frame: IFrame) => {
+                console.log('connect');
+                ws.subscribe(id ?? "", message => {
+                    console.log('message', message);
+                });
             });
         })();
 
@@ -44,72 +44,79 @@ const Chat: React.FC = () => {
     });
 
     return (
-        <Container>
-            <TopBar onClickBack={handleClickClose} onClickGuard={handleClickGuard} title={"미야오옹"} />
+        <>
+            <Container>
+                <TopBar onClickBack={handleClickClose} onClickGuard={handleClickGuard} title={"미야오옹"} />
 
-            <ChatBody>
-                <CounterpartChat
-                    thumbnail_src={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
-                    thumbnail_srcSet={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
-                    text={"HEllo ihddd fdsfwefewfewfewfewfe ddddddddddddwfwefwefwefewfewa"} />
+                <ChatBody>
+                    <CounterpartChat
+                        thumbnail_src={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
+                        thumbnail_srcSet={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
+                        text={"HEllo ihddd fdsfwefewfewfewfewfe ddddddddddddwfwefwefwefewfewa"} />
 
-                <MinepartChat text={"sdfs"} />
-                <CounterpartChat
-                    thumbnail_src={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
-                    thumbnail_srcSet={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
-                    text={"HEllo ihdd ddfdsfwefewfewfewfewfewfwefwefwefewfewa"} />
+                    <MinepartChat text={"sdfs"} />
+                    <CounterpartChat
+                        thumbnail_src={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
+                        thumbnail_srcSet={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
+                        text={"HEllo ihdd ddfdsfwefewfewfewfewfewfwefwefwefewfewa"} />
 
-                <MinepartChat text={"YO what animal do you want to meet tonight? YO what animal do you."} />
+                    <MinepartChat text={"YO what animal do you want to meet tonight? YO what animal do you."} />
 
-                <MinepartChat text={"sdfs"} />
-                <MinepartChat text={"sdfs"} />
-                <MinepartChat text={"sdfs"} />
-                <CounterpartChat
-                    thumbnail_src={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
-                    thumbnail_srcSet={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
-                    text={"HEllo ihdd ddfdsfwefewfewfewfewfewfwefwefwefewfewa"} />
-                <CounterpartChat
-                    thumbnail_src={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
-                    thumbnail_srcSet={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
-                    text={"HEllo ihdd ddfdsfwefewfewfewfewfewfwefwefwefewfewa"} />
-                <CounterpartChat
-                    thumbnail_src={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
-                    thumbnail_srcSet={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
-                    text={"HEllo ihdd ddfdsfwefewfewfewfewfewfwefwefwefewfewa"} />
-                <CounterpartChat
-                    thumbnail_src={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
-                    thumbnail_srcSet={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
-                    text={"HEllo ihdd ddfdsfwefewfewfewfewfewfwefwefwefewfewa"} />
-                <CounterpartChat
-                    thumbnail_src={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
-                    thumbnail_srcSet={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
-                    text={"HEllo ihdd ddfdsfwefewfewfewfewfewfwefwefwefewfewa"} />
+                    <MinepartChat text={"sdfs"} />
+                    <MinepartChat text={"sdfs"} />
+                    <MinepartChat text={"sdfs"} />
+                    <CounterpartChat
+                        thumbnail_src={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
+                        thumbnail_srcSet={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
+                        text={"HEllo ihdd ddfdsfwefewfewfewfewfewfwefwefwefewfewa"} />
+                    <CounterpartChat
+                        thumbnail_src={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
+                        thumbnail_srcSet={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
+                        text={"HEllo ihdd ddfdsfwefewfewfewfewfewfwefwefwefewfewa"} />
+                    <CounterpartChat
+                        thumbnail_src={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
+                        thumbnail_srcSet={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
+                        text={"HEllo ihdd ddfdsfwefewfewfewfewfewfwefwefwefewfewa"} />
+                    <CounterpartChat
+                        thumbnail_src={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
+                        thumbnail_srcSet={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
+                        text={"HEllo ihdd ddfdsfwefewfewfewfewfewfwefwefwefewfewa"} />
+                    <CounterpartChat
+                        thumbnail_src={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
+                        thumbnail_srcSet={"https://mblogthumb-phinf.pstatic.net/20120515_230/sm72351_1337060427810Gv8Ib_JPEG/1.jpg?type=w2"}
+                        text={"HEllo ihdd ddfdsfwefewfewfewfewfewfwefwefwefewfewa"} />
 
-            </ChatBody>
+                </ChatBody>
 
-            <BottomChat>
-                <WhiteGradient />
-                <InputWrapper>
-                    <ChatInput text={"dd"} onChangeText={function (text: string): void {
-                        throw new Error("Function not implemented.");
-                    }} onClickSend={function (): void {
-                        throw new Error("Function not implemented.");
-                    }} />
-                </InputWrapper>
-            </BottomChat>
-        </Container>
+                <BottomChat>
+                    <WhiteGradient />
+                    <InputWrapper>
+                        <ChatInput text={"dd"} onChangeText={function (text: string): void {
+                            throw new Error("Function not implemented.");
+                        }} onClickSend={function (): void {
+                            throw new Error("Function not implemented.");
+                        }} />
+                    </InputWrapper>
+                </BottomChat>
+            </Container>
+
+            {/* 신고 모달 */}
+            <ReportChatModal
+                chatRoomUid={id ?? ""}
+                open={reportModal}
+                close={() => setReportModal(false)} />
+        </>
     );
 };
 
-const Container = styled.div`
+export const Container = styled.div`
     position: relative;
     height: 100%;
     display: flex;
     flex-direction: column;
-
 `;
 
-const ChatBody = styled.div`
+export const ChatBody = styled.div`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -118,19 +125,19 @@ const ChatBody = styled.div`
     overflow-y: scroll;
 `;
 
-const BottomChat = styled.div`
+export const BottomChat = styled.div`
     position: fixed;
     width: 100%;
     box-sizing: border-box;
     bottom: 0;
 `;
 
-const InputWrapper = styled.div`
+export const InputWrapper = styled.div`
     padding: 0  18px 24px 18px;
     background: white;
 `;
 
-const WhiteGradient = styled.div`
+export const WhiteGradient = styled.div`
     width: 100%;
     height: 51px;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 91.84%);

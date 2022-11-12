@@ -1,8 +1,13 @@
 import api from "@/api";
+import Container from "@/components/Container";
 import { useAppDispatch } from "@/hooks/redux";
 import AdminActionBar from "@/pages/Admin/components/AdminActionBar";
+import ChatRoomItem from "@/pages/Home/fragments/Chat/components/ChatRoomItem";
+import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import RemainedReviewCount from "../components/RemainedReviewCount";
+import AdminChatModal from "../modals/AdminChatModal";
 
 interface ChatReport {
     uid: string;
@@ -16,28 +21,66 @@ const ChatFragment: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
+    /** 채팅 신고 모달 */
+    const [chatRoomUid, setChatRoomUid] = useState("");
+    const [chatModal, setChatModal] = useState(true);
+
+    /** 처리 완료 유무 */
+    const [complete, setComplete] = useState(false);
+
     const handleClickBack = () => navigate("/admin");
 
     const [list, setList] = useState<ChatReport[]>([]);
 
     const fetchItemList = async () => {
-        const { data } = await api.main.get<{chats: ChatReport[]}>("/admin/report/chat");
+        const { data } = await api.main.get<{ chats: ChatReport[] }>("/admin/report/chat");
         setList(data.chats);
     };
 
-    const handleClickChatroom = (chatRoomUid: string) => {
-        
+    const handleClickChatRoom = (chatRoomUid: string) => {
+        setChatRoomUid(chatRoomUid);
+        setChatModal(true);
+
     };
 
     useEffect(() => {
         fetchItemList();
     }, []);
-    
+
     return (
         <>
-            <AdminActionBar onClickBackButton={handleClickBack} />
+            <Container>
+                <AdminActionBar
+                    onClickBackButton={handleClickBack}
+                    isComplete={complete}
+                />
+                <RemainedReviewCount>남은 리뷰 건수: {5}개</RemainedReviewCount>
+                <List>
+                    {
+                        list.map(room =>
+                            <ChatRoomItem
+                                onClick={handleClickChatRoom}
+                                uid={room.chatRoomUid}
+                                isRead={false}
+                                thumbnail_src={""}
+                                thumbnail_srcSet={""}
+                                itemNickname={room.message}
+                                lastChat={""} />)
+                    }
+                </List>
+            </Container>
+
+            <AdminChatModal
+                chatRoomUid={chatRoomUid}
+                open={chatModal}
+                setOpen={setChatModal}
+            />
         </>
     );
 };
+
+const List = styled.div`
+    padding: 0 20px;
+`;
 
 export default ChatFragment;

@@ -10,13 +10,13 @@ interface Props {
     /**
      * 처리 완료 버튼
      */
-    onClickComplete?: () => void;
+    isComplete?: boolean | undefined;
 }
 
 /**
  * Admin 및 Review 페이지에서 사용됨
  */
-const AdminActionBar: React.FC<Props> = ({ onClickBackButton, onClickComplete }) => {
+const AdminActionBar: React.FC<Props> = ({ onClickBackButton, isComplete }) => {
 
     const navigate = useNavigate();
 
@@ -30,8 +30,8 @@ const AdminActionBar: React.FC<Props> = ({ onClickBackButton, onClickComplete })
     };
 
     const renderRightAction = () => {
-        if (typeof onClickComplete === "function") {
-            return <CompleteText onClick={onClickComplete}>처리 완료</CompleteText>
+        if (isComplete !== undefined) {
+            return <CompleteText isComplete={isComplete}>처리 완료</CompleteText>
         }
 
         return <Icon onClick={onClickBack} style={{ opacity: 0 }} src={ImgArrowBack} />
@@ -85,7 +85,14 @@ const AdminLogoText = styled.span`
     font-weight: bold;
 `;
 
-const CompleteText = styled.span`
+const CompleteText = styled.span<{ isComplete: boolean }>`
+    color: ${({ isComplete }) => isComplete ? "#31313185" : "#858585"};
+    font-size: 12px;
+    line-height: 16px;
+`;
+
+/** 처리 완료 */
+const Complete = styled.span`
     color: #858585;
     font-size: 12px;
     line-height: 16px;
