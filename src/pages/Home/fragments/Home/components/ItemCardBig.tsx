@@ -134,6 +134,9 @@ const Nickname = styled.h2`
 const InfoButton = styled.img`
     width: 18px;
     height: 18px;
+    margin-left: 20px;
+    margin-top: 20px;
+    cursor: pointer;
 `;
 
 const BlackGradient = styled.div`

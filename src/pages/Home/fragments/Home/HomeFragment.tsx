@@ -1,5 +1,6 @@
 import api from "@/api";
-import { useAppDispatch } from "@/hooks/redux";
+import Typography from "@/components/Typography";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import useDebounce from "@/hooks/useDebounce";
 import ItemDetailModal from "@/pageModal/ItemDetail/ItemDetailModal";
 import { showMemberDetailAction } from "@/store/ui/ui.reducer";
@@ -8,12 +9,14 @@ import styled from "@emotion/styled";
 import React, { Children, useEffect, useMemo, useRef, useState } from "react";
 import TinderCard from 'react-tinder-card';
 import Spacing from "../../../../components/Spacing";
-import { ItemCardType } from "../Explore/components/ItemCard";
+import { ItemCardType, sampleData } from "../Explore/components/ItemCard";
+import AlreadyRead from "./components/AlreadyRead";
 import ChooseButton from "./components/ChooseButton";
 import HomeFragTopBar from "./components/HomeFragTopBar";
 import ItemCardBig from "./components/ItemCardBig";
 import usePick from "./hooks/usePick";
 import MatchModal from "./modals/MatchModal";
+import MyPage from "./modals/MyPageModal/MyPage";
 import { API, Direction } from "./types";
 
 interface ItemListResponse {
@@ -24,6 +27,9 @@ const HomeFragment: React.FC = () => {
 
     const [isOffline, setIsOffline] = useState(false);
 
+    /** MyPage Modal */
+    const [myPage, setMyPage] = useState(false);
+
     const dispatch = useAppDispatch();
     const [itemList, setItemList] = useState<ItemCardType[]>([]);
     const [matched, setMatched] = useState(false);
@@ -33,6 +39,11 @@ const HomeFragment: React.FC = () => {
     const currentIndexRef = useRef(currentIndex);
 
     const debouncedDirection = useDebounce({ value: direction, delay: 300 });
+
+    const canSwipe = currentIndex >= 0;
+
+    const userUid = useAppSelector(state => state.user.data?.uid);
+
 
     useEffect(() => {
         fetchItemList();
@@ -52,6 +63,7 @@ const HomeFragment: React.FC = () => {
         [itemList]
     );
 
+
     const swiped = (direction: Direction, index: number) => {
         console.log(direction, index)
         const uid = itemList[index].uid;
@@ -59,7 +71,6 @@ const HomeFragment: React.FC = () => {
         updateCurrentIndex(index - 1);
         usePick(uid, direction).then(({ data }) => {
             if (data.match) {
-                console.log('match!');
                 const item = itemList[index];
                 ChatRoomAction.createNewChatRoom(
                     data.chatUid,
@@ -80,6 +91,7 @@ const HomeFragment: React.FC = () => {
     const fetchItemList = async () => {
         const { data } = await api.main.get<ItemListResponse>("/matching/");
         setItemList(data.members);
+        // setItemList(sampleData);
     };
 
     const handleClickNegativeButton = () => { swipe("left") };
@@ -88,8 +100,6 @@ const HomeFragment: React.FC = () => {
     const handleClickInfo = (uid: string) => {
         dispatch(showMemberDetailAction(uid));
     };
-
-    const canSwipe = currentIndex >= 0;
 
     const swipe = async (dir: Direction) => {
         if (canSwipe && currentIndex < itemList.length) {
@@ -107,50 +117,64 @@ const HomeFragment: React.FC = () => {
         }
     }, [debouncedDirection]);
 
+    useEffect(() => {
+        if (currentIndex === -1) {
+            setItemList([]);
+        }
+    }, [currentIndex]);
+
     return (
         <Screen>
-            <HomeFragTopBar />
+            <HomeFragTopBar handleClickRedCut={() => setMyPage(true)} />
             <Spacing.Vertical height={24} />
 
             {
                 isOffline ?
                     <span>Offline mode...</span>
                     :
-                    <Container>
-                        <CardContainer>
-                            {
-                                itemList.map((item, index) =>
-                                    <TinderCard
-                                        key={item.uid}
-                                        className="slide"
-                                        ref={childRefs[index]}
-                                        onSwipeRequirementFulfilled={handleBeforeSwipe}
-                                        onSwipe={(dir) => swiped(dir, index)}>
-                                        <ItemCardBig
-                                            onClickInfo={handleClickInfo}
-                                            uid={item.uid}
-                                            nickname={item.nickname}
-                                            name={item.nickname}
-                                            madeIn={item.genCountry}
-                                            brand={item.brand}
-                                            genYear={item.genYear}
-                                            genMonth={item.genMonth}
-                                            thumbnail_src={item.image.src}
-                                            thubmnail_srcSet={item.image.srcSet}
-                                            isCursor={currentIndex === index}
-                                            currentDirection={debouncedDirection}
-                                        />
-                                    </TinderCard>
-                                )
-                            }
-                        </CardContainer>
-                        <Spacing.Vertical height={24} />
-                        <ChooseButtonWrapper>
-                            <ChooseButton.Negative onClick={handleClickNegativeButton} />
-                            <Spacing.Horizontal width={65} />
-                            <ChooseButton.Positive onClick={handleClickPositiveButton} />
-                        </ChooseButtonWrapper>
-                    </Container>
+                    <>
+                        {currentIndex > -1
+                            ?
+                            <Container>
+                                <CardContainer>
+                                    {
+                                        itemList.map((item, index) =>
+                                            <TinderCard
+                                                key={item.uid}
+                                                className="slide"
+                                                ref={childRefs[index]}
+                                                onSwipeRequirementFulfilled={handleBeforeSwipe}
+                                                onSwipe={(dir) => swiped(dir, index)}>
+                                                <ItemCardBig
+                                                    onClickInfo={handleClickInfo}
+                                                    uid={item.uid}
+                                                    nickname={item.nickname}
+                                                    name={item.nickname}
+                                                    madeIn={item.genCountry}
+                                                    brand={item.brand}
+                                                    genYear={item.genYear}
+                                                    genMonth={item.genMonth}
+                                                    thumbnail_src={item.image?.src}
+                                                    thubmnail_srcSet={item.image?.srcSet}
+                                                    isCursor={currentIndex === index}
+                                                    currentDirection={debouncedDirection}
+                                                />
+                                            </TinderCard>
+                                        )
+                                    }
+                                </CardContainer>
+                                <Spacing.Vertical height={24} />
+                                <ChooseButtonWrapper>
+                                    <ChooseButton.Negative onClick={handleClickNegativeButton} />
+                                    <Spacing.Horizontal width={65} />
+                                    <ChooseButton.Positive onClick={handleClickPositiveButton} />
+                                </ChooseButtonWrapper>
+                            </Container>
+                            :
+                            <AlreadyRead onClickRefetch={fetchItemList} />
+                        }
+                    </>
+
             }
 
             <ItemDetailModal />
@@ -159,6 +183,7 @@ const HomeFragment: React.FC = () => {
                 itemList[currentIndex] &&
                 <MatchModal
                     open={matched}
+                    handleClickClose={() => setMatched(false)}
                     uid={itemList[currentIndex].uid}
                     nickname={itemList[currentIndex].nickname}
                     name={itemList[currentIndex].nickname}
@@ -166,25 +191,30 @@ const HomeFragment: React.FC = () => {
                     brand={itemList[currentIndex].brand}
                     genYear={itemList[currentIndex].genYear}
                     genMonth={itemList[currentIndex].genMonth}
-                    thumbnail_src={itemList[currentIndex].image.src}
-                    thubmnail_srcSet={itemList[currentIndex].image.srcSet}
+                    thumbnail_src={itemList[currentIndex]?.image?.src ?? ""}
+                    thubmnail_srcSet={itemList[currentIndex]?.image?.srcSet ?? ""}
                 />
             }
+
+            <MyPage
+                uid={userUid ?? ""}
+                open={myPage}
+                setOpen={setMyPage} />
         </Screen>
     );
 };
 
-const Screen = styled.div`
+export const Screen = styled.div`
     overflow-x: hidden;
     overflow-y: scroll;
 `;
 
-const Container = styled.div`
+export const Container = styled.div`
     display: flex;
     flex-direction: column;
 `;
 
-const CardContainer = styled.div`
+export const CardContainer = styled.div`
     /* position: absolute; */
     /* height: 700px; */
     padding: 0 12px;

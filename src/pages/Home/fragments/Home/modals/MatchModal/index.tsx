@@ -21,7 +21,9 @@ interface Props {
 
     thumbnail_src: string;
     thubmnail_srcSet: string;
-}
+
+    handleClickClose: () => void;
+ }
 
 const MatchModal: React.FC<Props> = ({
     open,
@@ -33,13 +35,12 @@ const MatchModal: React.FC<Props> = ({
     genYear,
     genMonth,
     thumbnail_src,
-    thubmnail_srcSet
+    thubmnail_srcSet,
+    handleClickClose
 }) => {
 
     const [text, setText] = useState("");
-
-    const handleClickClose = () => { };
-
+    
     const handleClickSend = () => {
 
     };
@@ -87,7 +88,7 @@ const styles = {
 
 const Container = styled.div`
     background-color: #FF5100;
-    height: 100%;
+    height: 100vh;
     box-sizing: border-box;
     padding: 0 18px;
 `;

@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { changeRegisterProperty, resetRegisterStateAction } from "@/store/register/register.reducer";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useTimer } from "react-timer-hook";
 import { toast } from "react-toastify";
@@ -50,6 +51,8 @@ const Register: React.FC = () => {
         autoStart: false
     });
 
+    const { t } = useTranslation();
+
     // 인증 번호 전송 종료 여부
     const [end, setEnd] = useState(false);
 
@@ -76,7 +79,7 @@ const Register: React.FC = () => {
             const { data } = await api.main.post<PinCheckResponse>("/auth/pin/check", { phone, pin: code });
             setCodeError("");
             dispatch(changeRegisterProperty({ pinToken: data.token }));
-            toast("인증되었습니다!");
+            toast(t("prer.confirm_toast"));
             pause();
         } catch (e) {
             setCodeError(CODE_CONFIRM_ERROR);
@@ -98,7 +101,7 @@ const Register: React.FC = () => {
             <ActionBar onClickBackButton={handleClickBackButton} />
             <Spacing.Vertical height={16} />
             <Body>
-                <Typography.Header1>회원가입</Typography.Header1>
+                <Typography.Header1>{t("register.title")}</Typography.Header1>
 
                 <Spacing.Vertical height={36} />
 
@@ -121,7 +124,7 @@ const Register: React.FC = () => {
                     error={codeError}
                     onClickAction={isRunning ? <Timer minute={minutes} seconds={seconds} end={end} /> : <></>} />
                 {
-                    isRunning && <ConfirmCodeButton onClick={handleClickCodeConfirm}>인증코드 확인</ConfirmCodeButton>
+                    isRunning && <ConfirmCodeButton onClick={handleClickCodeConfirm}>{t("prer.confirm_btn")}</ConfirmCodeButton>
                 }
                 <Spacing.Vertical height={26} />
 
@@ -133,7 +136,7 @@ const Register: React.FC = () => {
                 <PasswordConfirmInput />
                 <Spacing.Vertical height={32} />
 
-                <Button disable={!(password === passwordConfirm && isCodeConfirmed)} onClick={handleClickContinue} text="계속" />
+                <Button disable={!(password === passwordConfirm && isCodeConfirmed)} onClick={handleClickContinue} text={t("prer.continue")} />
                 <Spacing.Vertical height={24} />
             </Body>
         </Container>

@@ -4,8 +4,10 @@ import Typography from "@/components/Typography";
 import { isMobile } from "@/utils/native";
 import styled from "@emotion/styled";
 import dayjs from "dayjs";
+import { t } from "i18next";
 import React, { forwardRef, useRef } from "react";
 import DatePicker from "react-datepicker";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     /** ex) 2022-02 */
@@ -17,6 +19,7 @@ interface Props {
 
 const InputMadeAt: React.FC<Props> = ({ value, onChange }) => {
 
+    const { t } = useTranslation();
     /** Mobile DatePicker Ref */
     const mobileDPRef = useRef<HTMLInputElement>(null);
     const handleClickMobileDP = () => mobileDPRef?.current?.focus();
@@ -38,7 +41,7 @@ const InputMadeAt: React.FC<Props> = ({ value, onChange }) => {
 
     return (
         <>
-            <Typography.Body2 style={{ color: "rgba(0, 0, 0, 0.75)" }}>물건의 제조년도를 알려주세요.</Typography.Body2>
+            <Typography.Body2 style={{ color: "rgba(0, 0, 0, 0.75)" }}>{t("register.made_at_label")}</Typography.Body2>
             <Spacing.Vertical height={11} />
 
             {

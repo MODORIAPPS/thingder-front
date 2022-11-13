@@ -5,11 +5,12 @@ import styled from "@emotion/styled";
 import VisibleToggle from "./VisibleToggle";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { changeRegisterProperty } from "@/store/register/register.reducer";
+import { useTranslation } from "react-i18next";
 
-const PASSWORD_CONFIRM_ERROR = "비밀번호가 일치하지 않습니다";
 
 const PasswordConfirmInput: React.FC = () => {
 
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
 
     // Password visibility
@@ -20,6 +21,8 @@ const PasswordConfirmInput: React.FC = () => {
     const passwordConfirm = useAppSelector(state => state.register.passwordConfirm);
 
     const handleChange = (pwdConfirm: string) => {
+        const PASSWORD_CONFIRM_ERROR = t("prer.pwd_c_error")
+
         if (password !== pwdConfirm) {
             setError(PASSWORD_CONFIRM_ERROR);
         } else {
@@ -32,8 +35,8 @@ const PasswordConfirmInput: React.FC = () => {
     return (
         <TextInput
             leadingIcon={<Icon src={ImgKey} />}
-            label="비밀번호 확인"
-            placeholder="비밀번호를 다시 입력해주세요"
+            label={t("prer.pwd_c_label")}
+            placeholder={t("prer.pwd_c_placeholder")}
             onChange={handleChange}
             value={passwordConfirm}
             error={error}

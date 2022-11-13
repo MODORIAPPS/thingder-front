@@ -4,6 +4,7 @@ import editMyPageReducer from "./edit-mypage/edit-mypage.reducer";
 import registerReducer from "./register/register.reducer";
 import uiReducer from "./ui/ui.reducer";
 import userReducer from "./user/user.reducer";
+import logger from 'redux-logger';
 
 export const store = configureStore({
     reducer: {
@@ -12,7 +13,14 @@ export const store = configureStore({
         ui: uiReducer,
         myPage: editMyPageReducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk)
+    middleware: (getDefaultMiddlewares) => {
+        if (process.env.NODE_ENV !== 'production') {
+            return getDefaultMiddlewares().concat(thunk).concat(logger);
+        }
+        else {
+            return getDefaultMiddlewares().concat(thunk)
+        }
+    }
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -3,6 +3,7 @@ import React from "react";
 import ImgKey from "@/assets/icon/key_alt_fill.png";
 import styled from "@emotion/styled";
 import { InputCommonType } from "@/pages/Login/components/input.type";
+import { t } from "i18next";
 
 interface Props extends InputCommonType {
 
@@ -12,8 +13,8 @@ const PasswordInput: React.FC<Props> = (props) => {
     return (
         <TextInput
             leadingIcon={<PasswordIcon src={ImgKey} />}
-            label="비밀번호"
-            placeholder="비밀번호를 입력해 주세요"
+            label={t("login.pwd")}
+            placeholder={t("login.pwd_placeholder")}
             onChange={props.onChange}
             value={props.value}
             error={props.error}

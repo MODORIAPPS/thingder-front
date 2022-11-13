@@ -23,7 +23,7 @@ const ChatFragment: React.FC = () => {
 
     /** 채팅 신고 모달 */
     const [chatRoomUid, setChatRoomUid] = useState("");
-    const [chatModal, setChatModal] = useState(true);
+    const [chatModal, setChatModal] = useState(false);
 
     /** 처리 완료 유무 */
     const [complete, setComplete] = useState(false);
@@ -40,7 +40,6 @@ const ChatFragment: React.FC = () => {
     const handleClickChatRoom = (chatRoomUid: string) => {
         setChatRoomUid(chatRoomUid);
         setChatModal(true);
-
     };
 
     useEffect(() => {
@@ -74,6 +73,7 @@ const ChatFragment: React.FC = () => {
                 chatRoomUid={chatRoomUid}
                 open={chatModal}
                 setOpen={setChatModal}
+                description={list.filter(chat => chat.uid === chatRoomUid)[0].message}
             />
         </>
     );

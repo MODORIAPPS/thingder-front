@@ -3,6 +3,7 @@ import React from "react";
 import Spacing from "../../../components/Spacing";
 import { Checkbox } from 'react-input-checkbox';
 import Typography from "../../../components/Typography";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     checked: boolean;
@@ -10,6 +11,9 @@ interface Props {
 }
 
 const RememberCheckbox: React.FC<Props> = ({ checked, onChanged }) => {
+
+    const { t } = useTranslation();
+
     return (
         <Container onClick={() => onChanged(!checked)}>
             <Checkbox
@@ -18,7 +22,9 @@ const RememberCheckbox: React.FC<Props> = ({ checked, onChanged }) => {
                 onChange={(e) => onChanged(!checked)}>
             </Checkbox>
             <Spacing.Horizontal width={8} />
-            <Typography.Subtitle4 style={{ fontWeight: "normal" }}>이메일 기억하기</Typography.Subtitle4>
+            <Typography.Subtitle4 style={{ fontWeight: "normal" }}>
+                {t("login.remember")}
+            </Typography.Subtitle4>
         </Container>
     );
 };

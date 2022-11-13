@@ -3,17 +3,21 @@ import React from "react";
 import LockFill from "@/assets/icon/lock_fill.svg";
 import styled from "@emotion/styled";
 import { InputCommonType } from "@/pages/Login/components/input.type";
+import { useTranslation } from "react-i18next";
 
 interface Props extends InputCommonType {
     onClickAction: React.ReactElement;
 }
 
 const PhoneCodeInput: React.FC<Props> = (props) => {
+
+    const { t } = useTranslation();
+
     return (
         <TextInput
             leadingIcon={<EmailIcon src={LockFill} />}
-            label="인증 코드"
-            placeholder="인증 코드 6자리를 입력해주세요"
+            label={t("prer.code_label")}
+            placeholder={t("prer.code_placeholder")}
             onChange={props.onChange}
             value={props.value}
             error={props.error}

@@ -23,7 +23,7 @@ const ChatInput: React.FC<Props> = (
                 value={text}
                 onChange={e => onChangeText(e.target.value)}
             />
-            <Button>
+            <Button onClick={onClickSend}>
                 <SendFill src={SendFillImg} />
             </Button>
         </Container>

@@ -5,11 +5,12 @@ import VisibleToggle from "@/pages/Register/components/VisibleToggle";
 import { changeRegisterProperty } from "@/store/register/register.reducer";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-const PASSWORD_INPUT_ERROR = "영문, 숫자, 특수문자를 조합한 6자리 이상의 비밀번호를 입력해 주세요";
 
 const PasswordInput: React.FC = () => {
 
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
 
     // Password visibility
@@ -22,6 +23,7 @@ const PasswordInput: React.FC = () => {
         if (isPasswordValid(password)) {
             setError("");
         } else {
+            const PASSWORD_INPUT_ERROR = t("prer.pwd_error");
             setError(PASSWORD_INPUT_ERROR);
         }
 
@@ -31,8 +33,8 @@ const PasswordInput: React.FC = () => {
     return (
         <TextInput
             leadingIcon={<PasswordIcon src={ImgKey} />}
-            label="비밀번호"
-            placeholder="비밀번호를 입력해주세요"
+            label={t("prer.pwd_label")}
+            placeholder={t("prer.pwd_placeholder")}
             onChange={handleChange}
             value={password}
             error={error}

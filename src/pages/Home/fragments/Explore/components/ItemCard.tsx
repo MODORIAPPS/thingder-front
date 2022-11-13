@@ -19,7 +19,7 @@ const ItemCard: React.FC<Props> = (props) => {
         <Container onClick={() => props.onClick(props.uid)}>
             <ItemImage
                 src={props.thumbnail_src}
-                // srcSet={props.thumbnail_srcSet}
+            // srcSet={props.thumbnail_srcSet}
             />
             <PropertyWrapper>
                 <Nickname>{props.nickname}</Nickname>
@@ -91,12 +91,35 @@ export interface ItemCardType {
     }
 }
 
-// export const sampleData: ItemCardType[] = [
-//     {
-//         uid: "123122",
-//         nickname: "몰랑이",
-
-//     }
-// ]
+export const sampleData: ItemCardType[] = [
+    {
+        uid: "123122",
+        nickname: "몰랑이",
+        type: "인형",
+        genYear: 2002,
+        genMonth: 5,
+        genCountry: "중국",
+        brand: '구찌',
+        image: {
+            uid: "ㅂㅈㄷ",
+            src: "https://img.danawa.com/prod_img/500000/450/204/img/14204450_1.jpg?shrink=330:330&_v=20210517144137",
+            srcSet: "https://img.danawa.com/prod_img/500000/450/204/img/14204450_1.jpg?shrink=330:330&_v=20210517144137"
+        }
+    },
+    {
+        uid: "123122",
+        nickname: "몰랑이",
+        type: "인형",
+        genYear: 2002,
+        genMonth: 5,
+        genCountry: "중국",
+        brand: '구찌',
+        image: {
+            uid: "ㅂㅈㄷ",
+            src: "https://img.danawa.com/prod_img/500000/450/204/img/14204450_1.jpg?shrink=330:330&_v=20210517144137",
+            srcSet: "https://img.danawa.com/prod_img/500000/450/204/img/14204450_1.jpg?shrink=330:330&_v=20210517144137"
+        }
+    }
+]
 
 export default React.memo(ItemCard);

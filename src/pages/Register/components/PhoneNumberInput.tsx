@@ -3,6 +3,7 @@ import TextInput from "@/components/TextInput";
 import { InputCommonType } from "@/pages/Login/components/input.type";
 import styled from "@emotion/styled";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface Props extends InputCommonType {
     onClickAction: React.ReactElement;
@@ -10,11 +11,13 @@ interface Props extends InputCommonType {
 
 const PhoneNumberInput: React.FC<Props> = (props) => {
 
+    const { t } = useTranslation();
+
     return (
         <TextInput
             leadingIcon={<EmailIcon src={PhoneFill} />}
-            label="휴대폰 번호"
-            placeholder="휴대폰 번호를 입력해 주세요"
+            label={t("prer.phone_label")}
+            placeholder={t("prer.phone_placeholder")}
             onChange={props.onChange}
             value={props.value}
             error={props.error}

@@ -17,26 +17,36 @@ export const RELATION = {
     LIKE: "LIKE"
 }
 
+interface Props {
+    open: boolean;
+    close: () => void;
+    memberUid: string;
+    description: string;
+}
+
 /**
  * Admin Member Detail
  */
-const AdminItemDetailModal: React.FC = () => {
-
-    const dispatch = useAppDispatch();
-    const uid = useAppSelector(state => state.ui.memberDetailUid);
-    const open = useAppSelector(state => state.ui.memberDetailModalVisible);
+const AdminItemDetailModal: React.FC<Props> = (
+    {
+        open,
+        close,
+        memberUid,
+        description
+    }
+) => {
 
     const [data, setData] = useState<MemberDetail>();
 
     const fetchData = async () => {
-        const { data } = await api.main.get<MemberDetail>("/member/" + uid);
+        const { data } = await api.main.get<MemberDetail>("/member/" + memberUid);
         setData(data);
     };
 
-    const handleClickBackButton = () => dispatch(closeMemberDetailAction());
+    const handleClickBackButton = () => close();
 
     const handleClickNegativeButton = async () => {
-        await api.main.post(`/admin/report/profile/${uid}`, {
+        await api.main.post(`/admin/report/profile/${memberUid}`, {
             status: "BAN"
         });
         alert("밴 처리되었습니다.")
@@ -45,10 +55,10 @@ const AdminItemDetailModal: React.FC = () => {
     const handleClickPositiveButton = () => handleClickBackButton();
 
     useEffect(() => {
-        if (uid) {
+        if (memberUid) {
             fetchData();
         }
-    }, [uid]);
+    }, [memberUid]);
 
     if (!data) return <span></span>
 
@@ -56,23 +66,29 @@ const AdminItemDetailModal: React.FC = () => {
         <Modal isOpen={open} style={styles}>
             <ActionBar onClickBackButton={handleClickBackButton} />
 
-            <ReportReasonView>
-                유저가 기입한 신고 이유 여기에 스크롤 가능하게 해서 띄워주세요!
-            </ReportReasonView>
+            {
+                description &&
+                <ReportReasonView>
+                    {description}
+                </ReportReasonView>
+            }
 
             {/* 슬라이드 가능하게 */}
             <PresentImageWrapper>
-                <ButtonWrapper>
-                    <Button
-                        onClick={handleClickNegativeButton}
-                        backgroundColor="#FF5100"
-                        textColor="white">BAN!</Button>
-                    <Spacing.Horizontal width={24} />
-                    <Button
-                        onClick={handleClickPositiveButton}
-                        backgroundColor="#26C485"
-                        textColor="black">DISMISS!</Button>
-                </ButtonWrapper>
+                {
+                    description &&
+                    <ButtonWrapper>
+                        <Button
+                            onClick={handleClickNegativeButton}
+                            backgroundColor="#FF5100"
+                            textColor="white">BAN!</Button>
+                        <Spacing.Horizontal width={24} />
+                        <Button
+                            onClick={handleClickPositiveButton}
+                            backgroundColor="#26C485"
+                            textColor="black">DISMISS!</Button>
+                    </ButtonWrapper>
+                }
                 <PresentImage src={data.images[0].src} />
             </PresentImageWrapper>
 

@@ -4,10 +4,12 @@ import ImgEmail from "@/assets/icon/message_alt_fill.png";
 import styled from "@emotion/styled";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { changeRegisterProperty } from "@/store/register/register.reducer";
+import { useTranslation } from "react-i18next";
 
-const EMAIL_INPUT_ERROR = "유효하지 않은 이메일 주소입니다";
 
 const EmailInput: React.FC = () => {
+
+    const { t } = useTranslation();
 
     const email = useAppSelector(state => state.register.email);
     const dispatch = useAppDispatch();
@@ -15,6 +17,7 @@ const EmailInput: React.FC = () => {
 
     const handleChange = (email: string) => {
         if (!isEmailValid(email)) {
+            const EMAIL_INPUT_ERROR = t("prer.email_error");
             setError(EMAIL_INPUT_ERROR);
         } else {
             setError("");
@@ -26,8 +29,8 @@ const EmailInput: React.FC = () => {
     return (
         <TextInput
             leadingIcon={<EmailIcon src={ImgEmail} />}
-            label="이메일"
-            placeholder="이메일 주소를 입력해주세요"
+            label={t("prer.email_label")}
+            placeholder={t("prer.email_placeholder")}
             onChange={handleChange}
             value={email}
             error={error}

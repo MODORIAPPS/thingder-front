@@ -14,7 +14,7 @@ const USER_INFO_UPDATE = "USER_INFO_UPDATE" as const;
 const USER_SIGN_OUT = "USER_SIGN_OUT" as const;
 
 const userSignInAction = () => ({ type: USER_SIGN_IN });
-const userSignInSuccessAction = (userType: UserType) => ({ type: USER_SIGN_IN_SUCCESS, userType });
+const userSignInSuccessAction = (userType: UserType, uid: string) => ({ type: USER_SIGN_IN_SUCCESS, userType, uid });
 const userSignInErrorAction = (error: string) => ({ type: USER_SIGN_IN_ERROR, error });
 const userSignOutAction = () => ({ type: USER_SIGN_OUT });
 const userInfoUpdateAction = (data: User) => ({ type: USER_INFO_UPDATE, data });
@@ -38,6 +38,11 @@ const initState: UserState = {
     error: null,
 }
 
+interface MyResponse {
+    roles: ("ADMIN" | "USER")[];
+    uid: string;
+}
+
 export const signInUser = (token?: string): ThunkAction<void, RootState, unknown, AnyAction> => {
     return async (dispatch) => {
         try {
@@ -52,8 +57,8 @@ export const signInUser = (token?: string): ThunkAction<void, RootState, unknown
 
             localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
 
-            const { data: my } = await api.main.get<("ADMIN" | "USER")[]>("/auth/my");
-            dispatch({ type: USER_SIGN_IN_SUCCESS, userType: my[0] });
+            const { data: my } = await api.main.get<MyResponse>("/auth/my");
+            dispatch({ type: USER_SIGN_IN_SUCCESS, userType: my.roles[0], uid: my.uid });
 
             console.log("user/reducer token", accessToken);
         } catch (e) {
@@ -94,7 +99,8 @@ const userReducer = (
                 error: null,
                 data: {
                     type: action.userType,
-                    isLogin: true
+                    isLogin: true,
+                    uid: action.uid
                 }
             }
         case USER_SIGN_IN_ERROR:

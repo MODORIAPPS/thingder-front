@@ -14,7 +14,7 @@ interface Props {
     itemNickname: string;
     lastChat: string;
 
-    onClick: (chatroomUid: string) => void;
+    onClick: (chatroomUid: string, nickname: string, image: { src: string, srcSet: string }) => void;
 }
 
 const ChatRoomItem: React.FC<Props> = (props) => {
@@ -22,7 +22,7 @@ const ChatRoomItem: React.FC<Props> = (props) => {
     if (!props.uid) return <></>
 
     return (
-    <Container onClick={() => props.onClick(props.uid)}>
+        <Container onClick={() => props.onClick(props.uid, props.itemNickname, { src: props.thumbnail_src, srcSet: props.thumbnail_srcSet })}>
             <ImageWrapper>
                 <Image src={props.thumbnail_src} srcSet={props.thumbnail_srcSet} />
                 {

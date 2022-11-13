@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Enabled Icons
@@ -14,10 +14,13 @@ import ImgNavChatDisabled from "@/assets/icon/nav/nav_chat_disabled.svg";
 import ImgNavExploreDisabled from "@/assets/icon/nav/nav_explore_disabled.svg";
 import ImgNavHomeDisabled from "@/assets/icon/nav/nav_home_disabled.svg";
 
+import { useTranslation } from "react-i18next";
+
 type TabType = "home" | "explore" | "chat" | "about";
 
 const BottomNavigationBar: React.FC = () => {
 
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [tab, setTab] = useState<TabType>("home");
 
@@ -31,25 +34,25 @@ const BottomNavigationBar: React.FC = () => {
             <TabWrapper onClick={() => setTab("home")}>
                 <TabItem>
                     <Icon src={tab === "home" ? ImgNavHomeEnabled : ImgNavHomeDisabled} />
-                    <Text selected={tab === "home"}>홈</Text>
+                    <Text selected={tab === "home"}>{t("nav.home")}</Text>
                 </TabItem>
             </TabWrapper>
             <TabWrapper onClick={() => setTab("explore")}>
                 <TabItem>
                     <Icon src={tab === "explore" ? ImgNavExploreEnabled : ImgNavExploreDisabled} />
-                    <Text selected={tab === "explore"}>탐험</Text>
+                    <Text selected={tab === "explore"}>{t("nav.explore")}</Text>
                 </TabItem>
             </TabWrapper>
             <TabWrapper onClick={() => setTab("chat")}>
                 <TabItem>
                     <Icon src={tab === "chat" ? ImgNavChatEnabled : ImgNavChatDisabled} />
-                    <Text selected={tab === "chat"}>메시지</Text>
+                    <Text selected={tab === "chat"}>{t("nav.chat")}</Text>
                 </TabItem>
             </TabWrapper>
             <TabWrapper onClick={() => setTab("about")}>
                 <TabItem>
                     <Icon src={tab === "about" ? ImgNavAboutEnabled : ImgNavAboutDisabled} />
-                    <Text selected={tab === "about"} style={{ color: (tab === "about") ? 'red' : "#858585" }}>커틀러리</Text>
+                    <Text selected={tab === "about"} style={{ color: (tab === "about") ? 'red' : "#858585" }}>{t("nav.cut")}</Text>
                 </TabItem>
             </TabWrapper>
         </TabLayout>

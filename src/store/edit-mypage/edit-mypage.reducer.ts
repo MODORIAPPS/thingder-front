@@ -1,16 +1,16 @@
-import { EditMyPageState } from "./edit-mypage.type";
-import dayjs from "dayjs";
-import { ThunkAction } from "redux-thunk";
-import { AnyAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
 import api from "@/api";
 import { MemberDetail } from "@/pageModal/ItemDetail/ItemDetailModal";
+import { AnyAction } from "@reduxjs/toolkit";
+import dayjs from "dayjs";
+import { ThunkAction } from "redux-thunk";
+import { RootState } from "../store";
+import { EditMyPageState } from "./edit-mypage.type";
 
 const GET_MY_PAGE = "GET_MY_PAGE" as const;
 const UPDATE_MY_PAGE = "UPDATE_MY_PAGE" as const;
 
 const getMyPageAction = (data: EditMyPageState) => ({ type: GET_MY_PAGE, data });
-const updateMyPageAction = (object: Partial<EditMyPageState>) => ({ type: UPDATE_MY_PAGE, object });
+const updateMyPageAction = (data: Partial<EditMyPageState>) => ({ type: UPDATE_MY_PAGE, data });
 
 type EditMyPageAction =
     | ReturnType<typeof getMyPageAction>
@@ -29,9 +29,10 @@ export const fetchMyPage = (uid: string): ThunkAction<void, RootState, unknown, 
     }
 };
 
-export const updageMyPageAction = (object: Partial<MemberDetail>): ThunkAction<void, RootState, unknown, AnyAction> => {
-    return (dispatch) => {
-        dispatch({ type: UPDATE_MY_PAGE, object });
+export const updageMyPage = (data: Partial<EditMyPageState>): ThunkAction<void, RootState, unknown, AnyAction> => {
+    return async (dispatch) => {
+        console.log('change', data);
+        dispatch({ type: UPDATE_MY_PAGE, data });
     }
 };
 
@@ -42,19 +43,36 @@ const initState: EditMyPageState = {
     madeAt: dayjs(new Date()).format("YYYY-MM"),
     images: [],
     nickname: "",
-    story: "",
     tag: "",
-    type: ""
+    type: "",
+    story: ""
 };
 
-const editMyPageReducer = (state = initState, action: EditMyPageAction): EditMyPageState => {
+const sampleData: EditMyPageState = {
+    brand: "구찌",
+    description: "안녕하세요",
+    genCountry: "대한민국",
+    madeAt: "2022-04",
+    images: [
+        {
+            src: "https://img.danawa.com/prod_img/500000/450/204/img/14204450_1.jpg?shrink=330:330&_v=20210517144137",
+            srcSet: "https://img.danawa.com/prod_img/500000/450/204/img/14204450_1.jpg?shrink=330:330&_v=20210517144137"
+        }
+    ],
+    nickname: "큐티기석공주",
+    tag: "아름다움",
+    type: "인형",
+    story: "😁"
+};
+
+const editMyPageReducer = (state = initState, action: AnyAction): EditMyPageState => {
     switch (action.type) {
         case GET_MY_PAGE:
             return action.data;
         case UPDATE_MY_PAGE:
             return {
                 ...state,
-                ...action.object
+                ...action.data
             }
         default: {
             return state;

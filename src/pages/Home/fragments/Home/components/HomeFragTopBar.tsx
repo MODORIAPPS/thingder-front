@@ -4,11 +4,15 @@ import { useNavigate } from "react-router-dom";
 import ImgThingderLogo from "../../../../../assets/logo/thingder_logo_actionbar.png"
 import ImgRedCutLogo from "../../../../../assets/logo/redcut_logo.png";
 
-const HomeFragTopBar: React.FC = () => {
+interface Props {
+    handleClickRedCut: () => void;
+}
+
+const HomeFragTopBar: React.FC<Props> = ({ handleClickRedCut }) => {
 
     const navigate = useNavigate();
 
-    const onClickRedCut = () => { };
+    const onClickRedCut = () => handleClickRedCut();
 
     return (
         <Container>

@@ -14,12 +14,14 @@ interface Props {
     chatRoomUid: string;
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    description: string;
 }
 
 const AdminChatModal: React.FC<Props> = ({
     chatRoomUid,
     open,
-    setOpen
+    setOpen,
+    description,
 }) => {
 
     const handleClickClose = () => setOpen(false);
@@ -38,9 +40,12 @@ const AdminChatModal: React.FC<Props> = ({
         <Modal isOpen={open} style={styles}>
             <TopBar onClickBack={handleClickClose} title={"미야오옹"} />
 
-            <ReportReasonView>
-                유저가 기입한 신고 이유 여기에 스크롤 가능하게 해서 띄워주세요!
-            </ReportReasonView>
+            {
+                description &&
+                <ReportReasonView>
+                    {description}
+                </ReportReasonView>
+            }
 
             <ChatBody>
                 <CounterpartChat

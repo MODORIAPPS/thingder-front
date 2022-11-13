@@ -2,24 +2,28 @@ import Spacing from "@/components/Spacing";
 import styled from "@emotion/styled";
 import React from "react";
 import ImgRedCutPhoto from "@/assets/logo/redcut_logo.png";
+import { useTranslation } from "react-i18next";
 
 const MemberList: React.FC = () => {
+
+    const { t } = useTranslation();
+
     return (
         <List>
             <MemberItem>
                 <MemberPhoto src={ImgRedCutPhoto} />
                 <Spacing.Vertical height={12} />
-                <MemberName>융융</MemberName>
+                <MemberName>{t("about.name1")}</MemberName>
             </MemberItem>
             <MemberItem>
                 <MemberPhoto src={ImgRedCutPhoto} />
                 <Spacing.Vertical height={12} />
-                <MemberName>약모</MemberName>
+                <MemberName>{t("about.name2")}</MemberName>
             </MemberItem>
             <MemberItem>
                 <MemberPhoto src={ImgRedCutPhoto} />
                 <Spacing.Vertical height={12} />
-                <MemberName>큐컴</MemberName>
+                <MemberName>{t("about.name3")}</MemberName>
             </MemberItem>
         </List>
     );

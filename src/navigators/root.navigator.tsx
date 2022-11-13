@@ -1,15 +1,14 @@
-import { useEffect, lazy, Suspense, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { signInUser } from "@/store/user/user.reducer";
+import { lazy, Suspense, useEffect, useState } from "react";
 
+import PolicyErrorDialog from "@/components/PolicyErrorDialog";
+import DetailFragment from "@/pages/RegisterItem/fragments/DetailFragment";
+import { getMessaging, getToken } from "firebase/messaging";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Welcome from "../pages/Welcome";
-import { getMessaging, getToken } from "firebase/messaging";
-import DetailFragment from "@/pages/RegisterItem/fragments/DetailFragment";
-import MatchModal from "@/pages/Home/fragments/Home/modals/MatchModal";
-import CancelMatchModal from "@/pages/Home/fragments/Chat/modals/ReportMatchModal";
-import Chat from "@/pages/Chat";
-import PolicyErrorDialog from "@/components/PolicyErrorDialog";
+import Share from "@/pages/Share/Share";
+import MyPage from "@/pages/MyPage/MyPage";
 
 const AdminNavigator = lazy(() => import("./admin.navigator"));
 const AuthNavigator = lazy(() => import("./auth.navigator"));
@@ -58,6 +57,9 @@ const RootNavigator = () => {
                     {/* 앱 시작점 */}
                     <Route index element={<Welcome />} />
 
+                    {/* 마이페이지 */}
+                    <Route path="mypage" element={<MyPage />} />
+
                     {/* 로그인, 회원가입, 비밀번호 찾기 */}
                     <Route path="auth/*" element={<AuthNavigator />} />
 
@@ -66,6 +68,9 @@ const RootNavigator = () => {
 
                     {/* 어드민 화면 */}
                     <Route path="admin/*" element={<AdminNavigator />} />
+
+                    {/* 공유 화면 */}
+                    <Route path="share/:id" element={<Share />} />
 
                     {/* 테스트 라우팅 */}
                     <Route path="test/*" element={<DetailFragment onClickBackButton={() => { }} />} />

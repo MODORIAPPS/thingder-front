@@ -59,7 +59,7 @@ const MatchedItemCard: React.FC<Props> = (
 const Container = styled.div`
  position: relative;
  width: 100%;
- height: 520px;
+ height: 340px;
  border-radius: 20px;
 
  overflow: hidden;
@@ -68,14 +68,6 @@ const Container = styled.div`
  color: white;
 
  filter: drop-shadow(0px 13px 19px rgba(0, 0, 0, 0.0701213));
-
- @media (min-height: 500px) {
-     height: 300px;
- }
-
- @media (min-height: 600px) {
-     height: 400px;
- }
 `;
 
 const ItemImage = styled.img`

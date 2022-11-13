@@ -1,15 +1,19 @@
 import Typography from "@/components/Typography";
 import styled from "@emotion/styled";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     onClick: () => void;
 }
 
 const SendCodeButton: React.FC<Props> = ({ onClick }) => {
+
+    const { t } = useTranslation();
+
     return (
         <Container onClick={onClick}>
-            <Typography.Caution2 style={{ fontWeight: 'normal' }}>인증 코드 보내기</Typography.Caution2>
+            <Typography.Caution2 style={{ fontWeight: 'normal' }}>{t("send_code")}</Typography.Caution2>
         </Container>
     );
 };

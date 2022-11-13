@@ -2,15 +2,14 @@ import ActionBar from "@/components/ActionBar";
 import Container from "@/components/Container";
 import Spacing from "@/components/Spacing";
 import AdminItem from "@/pages/Admin/components/AdminItem";
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 /** Images */
+import AlarmFill from "@/assets/icon/alarm_fill.png";
 import CloseRoundFill from "@/assets/icon/close_round_fill.png";
 import ViewHideFill from "@/assets/icon/view_hide_fill.png";
-import AlarmFill from "@/assets/icon/alarm_fill.png";
 import styled from "@emotion/styled";
-import CancelMatchModal from "@/pages/Home/fragments/Chat/modals/ReportMatchModal";
 
 interface Props {
     setPage: (type: "CANCEL" | "BLOCK") => void;

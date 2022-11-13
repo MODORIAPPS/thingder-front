@@ -11,8 +11,8 @@ const ChatFragment: React.FC = () => {
 
     const navigate = useNavigate();
 
-    const handleClickChatRoom = (chatRoomUid: string) => {
-        navigate(chatRoomUid)
+    const handleClickChatRoom = (chatRoomUid: string, nickname: string, image: { src: string, srcSet: string }) => {
+        navigate(chatRoomUid + "?nickname=" + nickname)
     };
 
     useEffect(() => {

@@ -11,6 +11,7 @@ import Stack from "@/components/Stack";
 import Typography from "@/components/Typography";
 import { ChooseButtonWrapper } from "@/pages/Home/fragments/Home/HomeFragment";
 import ChooseButton from "@/pages/Home/fragments/Home/components/ChooseButton";
+import { useTranslation } from "react-i18next";
 
 export const RELATION = {
     BLOCK: "BLOCK",
@@ -23,6 +24,7 @@ export const RELATION = {
  */
 const ItemDetailModal: React.FC = () => {
 
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const uid = useAppSelector(state => state.ui.memberDetailUid);
     const open = useAppSelector(state => state.ui.memberDetailModalVisible);
@@ -36,7 +38,12 @@ const ItemDetailModal: React.FC = () => {
 
     const handleClickBackButton = () => dispatch(closeMemberDetailAction());
 
-    const handleClickShare = () => alert("어떤 내용을 공유할까요?");
+    const handleClickShare = () => {
+        window.navigator.share({
+            url: "https://thingder.app/share/" + uid,
+            title: data?.nickname
+        });
+    }
 
     const handleClickNegativeButton = async () => {
         const { data } = await api.main.post<MatchingPickResponse>("/matching/pick", {
@@ -84,14 +91,14 @@ const ItemDetailModal: React.FC = () => {
             <Container>
                 <Stack.Horizontal style={{ alignItems: "flex-end" }}>
                     <Typography.Header1>{data.nickname}</Typography.Header1>
-                    <Typography.Caution1>{data.genYear}년 {data.genMonth}월 제조</Typography.Caution1>
+                    <Typography.Caution1>{data.genYear}{t("detail.year")} {data.genMonth}{t("detail.month")} {t("detail.gen")}</Typography.Caution1>
                 </Stack.Horizontal>
                 <Stack.Vertical style={{ alignItems: "flex-end" }}>
                     <Content>{data.brand}</Content>
                     <BottomWrapper>
-                        <BottomProperty>제조국: {data.genCountry}</BottomProperty>
+                        <BottomProperty>{t("detail.country")}: {data.genCountry}</BottomProperty>
                         <BottomPropertyDivider />
-                        <BottomProperty>브랜드: {data.brand}</BottomProperty>
+                        <BottomProperty>{t("detail.brand")}: {data.brand}</BottomProperty>
                     </BottomWrapper>
                 </Stack.Vertical>
 
@@ -101,7 +108,7 @@ const ItemDetailModal: React.FC = () => {
                 <Divider />
 
                 {/* 이모지로 말해요 */}
-                <SubTitle>이모지로 말해요</SubTitle>
+                <SubTitle>{t("detail.talk_with_emoji")}</SubTitle>
                 <Spacing.Vertical height={8} />
                 <Content>
                     {data.description}
@@ -110,7 +117,7 @@ const ItemDetailModal: React.FC = () => {
                 <Divider />
 
                 {/* 저에 대한 이야기 */}
-                <SubTitle>저에 대한 이야기</SubTitle>
+                <SubTitle>{t("detail.about_me")}</SubTitle>
                 <Spacing.Vertical height={8} />
                 <Content>
                     {data.story}

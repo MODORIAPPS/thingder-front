@@ -6,7 +6,6 @@ import Typography from "@/components/Typography";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { TextArea } from "../../About/modal/AskToTalkModal";
-import { Red } from "../modals/ReportMatchModal";
 
 const ChatReport: React.FC = () => {
 
@@ -47,5 +46,10 @@ const Body = styled.div`
 const ButtonWrapper = styled.div`
     padding: 0 26px;
 `;
+
+const Red = styled(Typography.Body2)`
+color: red;
+`;
+
 
 export default ChatReport;

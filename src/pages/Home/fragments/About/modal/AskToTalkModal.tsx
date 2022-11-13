@@ -3,6 +3,7 @@ import Container from "@/components/Container";
 import Spacing from "@/components/Spacing";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Modal from 'react-modal';
 
 interface Props {
@@ -12,10 +13,11 @@ interface Props {
 
 const AskToTalkModal: React.FC<Props> = ({ open, onClickBackButton }) => {
 
+    const { t } = useTranslation();
     const [value, setValue] = useState("");
 
     const handleClickSend = async () => {
-        alert("곧 완성됩니다.");
+        
     };
 
     return (
@@ -26,11 +28,11 @@ const AskToTalkModal: React.FC<Props> = ({ open, onClickBackButton }) => {
                 <ActionBar onClickBackButton={onClickBackButton} />
                 <Spacing.Vertical height={12} />
                 <Body>
-                    <Description>레드커틀러리들에게 하고 싶은 말을 적어 보아요</Description>
+                    <Description>{t("about.placeholder")}</Description>
                     <TextArea value={value} onChange={e => setValue(e.target.value)} />
                     <Spacing.Vertical height={36} />
                     <Button onClick={handleClickSend}>
-                        보내기
+                        {t("about.send")}
                     </Button>
                 </Body>
             </Container>

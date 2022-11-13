@@ -25,7 +25,9 @@ const Its = styled.img`
 `;
 
 const Matched = styled.img`
-    height: 87px;
+    width: 95%;
+    height: 140px;
+    object-fit: contain;
 `;
 
 export default MatchedEffect;

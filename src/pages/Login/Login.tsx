@@ -3,6 +3,7 @@ import { useAppDispatch } from "@/hooks/redux";
 import { signInUser } from "@/store/user/user.reducer";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import ActionBar from "../../components/ActionBar";
 import Button from "../../components/Button";
@@ -20,6 +21,8 @@ interface LoginResponse {
 }
 
 const Login: React.FC = () => {
+
+    const { t } = useTranslation();
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -43,8 +46,8 @@ const Login: React.FC = () => {
             localStorage.setItem(ACCESS_TOKEN_KEY, data.token);
             dispatch(signInUser(data.token));
         } catch (e) {
-            setEmailError("유효하지 않은 이메일 주소입니다.");
-            setPwdError("비밀번호가 일치하지 않습니다.")
+            setEmailError(t("login.email_error"));
+            setPwdError(t("login.pwd_error"))
         }
     };
 
@@ -74,7 +77,7 @@ const Login: React.FC = () => {
             <ActionBar />
             <Container>
                 <Spacing.Vertical height={16} />
-                <Typography.Header1>로그인</Typography.Header1>
+                <Typography.Header1>{t("login.title")}</Typography.Header1>
                 <Spacing.Vertical height={35} />
 
                 <EmailInput value={email} onChange={handleChangeEmail} error={emailError} />
@@ -88,13 +91,13 @@ const Login: React.FC = () => {
                     <Typography.Subtitle4
                         onClick={handleClickFindPassword}
                         style={{ color: "#4D4D4D", paddingLeft: 35, fontWeight: "normal" }}>
-                        비밀번호 찾기
+                        {t("login.pwd_find")}
                     </Typography.Subtitle4>
                 </Stack.Horizontal>
 
                 {/* 로그인 버튼 */}
                 <Spacing.Vertical height={50} />
-                <Button onClick={handleClickLogin} text="로그인" />
+                <Button onClick={handleClickLogin} text={t("login.login_button")} />
                 <Spacing.Vertical height={15} />
 
                 {/* 회원가입 버튼 */}
@@ -102,8 +105,8 @@ const Login: React.FC = () => {
                     onClick={handleClickRegister}
                     style={{ display: "flex", flexDirection: "row-reverse" }}>
                     <span>
-                        아직 계정이 없다면,
-                        <b style={{ fontWeight: "bold", color: "#FF5100" }}> 회원가입</b>
+                        {t("login.if_you_dont")}
+                        <b style={{ fontWeight: "bold", color: "#FF5100" }}> {t("login.register")}</b>
                     </span>
                 </div>
             </Container>

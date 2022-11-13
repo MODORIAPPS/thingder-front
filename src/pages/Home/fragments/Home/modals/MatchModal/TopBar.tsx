@@ -14,7 +14,7 @@ const TopBar: React.FC<Props> = ({ onClickClose }) => {
         <Container>
             <Icon style={{opacity: 0}} src={CloseIcon} />
             <ThingderLogo src={ThingderLogoImg} />
-            <Icon src={CloseIcon} />
+            <Icon onClick={onClickClose} src={CloseIcon} />
         </Container>
     );
 };

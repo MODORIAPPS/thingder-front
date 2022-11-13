@@ -15,6 +15,7 @@ import InputMadeAt from "./components/InputMadeAt";
 import { PhotoBox } from "./PhotoFragment";
 import emojiRegex from "emoji-regex";
 import Container from "@/components/Container";
+import { useTranslation } from "react-i18next";
 
 const regex = emojiRegex();
 
@@ -39,6 +40,8 @@ const DetailFragment: React.FC<Props> = (props) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const state = useAppSelector(state => state.register);
+
+    const { t } = useTranslation();
 
     const [photo, setPhoto] = useState<ImageResponse>();
     const inputRef = useRef<HTMLInputElement>(null);
@@ -128,10 +131,10 @@ const DetailFragment: React.FC<Props> = (props) => {
 
             <Body>
                 {/* 앱 소개 */}
-                <HighLight>띵더</HighLight>는 <RedCut>레드커틀러리</RedCut>
-                가 만든 예술실험적 데이팅 앱입니다.
+                <HighLight>{t("register.thingder")}</HighLight>{t("register.is")} <RedCut>{t("register.redcut")}</RedCut>
+                {t("register.desc1")}
                 <Spacing.Vertical height={12} />
-                <Description>띵더에서는 물건이 당신을 대변해요! </Description>
+                <Description>{t("register.desc2")}</Description>
 
                 <Spacing.Vertical height={25} />
                 {/* 사진 입력 */}
@@ -145,7 +148,7 @@ const DetailFragment: React.FC<Props> = (props) => {
                     <>
                         <Spacing.Vertical height={4} />
                         <PhotoDescription>
-                            사진은 나중에 더 추가할 수 있어요.
+                            {t("register.photo_add")}
                         </PhotoDescription>
                     </>
                 )}
@@ -153,20 +156,20 @@ const DetailFragment: React.FC<Props> = (props) => {
                 {/* 별명 입력 */}
                 <Spacing.Vertical height={24} />
                 <PlainTextInput
-                    label={"당신을 이렇게 불러드릴게요."}
-                    placeholder="별명을 입력해주세요."
+                    label={t("register.nickname_label")}
+                    placeholder={t("register.nickname_placeholder")}
                     value={state.nickname}
                     handleChange={(nickname) => dispatch(changeRegisterProperty({ nickname }))} />
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
-                    label={"당신은 어떤 물건인가요?"}
-                    placeholder="물건의 종류를 입력해주세요"
+                    label={t("register.kind_label")}
+                    placeholder={t("register.kind_placeholder")}
                     value={state.type}
                     handleChange={(type) => dispatch(changeRegisterProperty({ type }))} />
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
-                    label={"물건의 제조국을 알려드릴게요."}
-                    placeholder="제조국가를 입력해주세요."
+                    label={t("register.made_country_label")}
+                    placeholder={t("register.made_country_placeholder")}
                     value={state.genCountry}
                     handleChange={(genCountry) => dispatch(changeRegisterProperty({ genCountry }))} />
                 <Spacing.Vertical height={36} />
@@ -178,30 +181,30 @@ const DetailFragment: React.FC<Props> = (props) => {
                 <Spacing.Vertical height={36} />
 
                 <PlainTextInput
-                    label={"물건의 브랜드를 알려주세요."}
-                    placeholder="브랜드명을 입력해주세요."
+                    label={t("register.brand_label")}
+                    placeholder={t("register.brand_placeholder")}
                     value={state.brand}
                     handleChange={(brand) => dispatch(changeRegisterProperty({ brand }))} />
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
-                    label={"물건을 대표하는 물질성 5가지를 적어주세요."}
-                    placeholder="#흐름  #차가움  #깨지기쉬움  #방수  #재활용"
+                    label={t("register.type_label")}
+                    placeholder={t("register.type_placeholder")}
                     value={state.tag}
                     handleChange={(tag) => dispatch(changeRegisterProperty({ tag }))} />
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
-                    label={"물건을 이모지로만 설명해주세요."}
+                    label={t("register.emoji_label")}
                     placeholder="😎 🌽 🎑 🥝 🍑 🌽 🎑 🥝"
                     value={state.description}
                     handleChange={handleChangeEmoji} />
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
-                    label={"물건에 대해 짧게 이야기해주세요."}
-                    placeholder="자유롭게 소개 부탁해요."
+                    label={t("register.desc_label")}
+                    placeholder={t("register.desc_placeholder")}
                     value={state.story}
                     handleChange={(story) => dispatch(changeRegisterProperty({ story }))} />
                 <Spacing.Vertical height={60} />
-                <Button onClick={handleClickCompleteRegister} text="회원가입 완료!" />
+                <Button onClick={handleClickCompleteRegister} text={t("register.register_button")} />
                 <Spacing.Vertical height={40} />
             </Body>
             <input style={{ visibility: "hidden" }} type="file" accept="image/*" ref={inputRef} onChange={onUploadImage} />

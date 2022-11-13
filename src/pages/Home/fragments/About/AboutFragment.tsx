@@ -4,6 +4,7 @@ import { useAppDispatch } from "@/hooks/redux";
 import { signOutUser } from "@/store/user/user.reducer";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import AskToTalk from "./components/AskToTalkButton";
 import Introduction from "./components/Introduction";
@@ -13,6 +14,7 @@ import AskToTalkModal from "./modal/AskToTalkModal";
 
 const AboutFragment: React.FC = () => {
 
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -56,7 +58,7 @@ const AboutFragment: React.FC = () => {
 
                 <Spacing.Vertical height={40} />
 
-                <Button text="로그아웃" onClick={handleClickSignOut} />
+                <Button text={t("about.logout")} onClick={handleClickSignOut} />
 
                 <Spacing.Vertical height={24} />
             </Container>

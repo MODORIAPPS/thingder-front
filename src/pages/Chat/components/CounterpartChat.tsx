@@ -39,6 +39,7 @@ const Thumbnail = styled.img`
     object-fit: cover;
 
     border-radius: 28px;
+    background-color: gray;
 `;
 
 const Chat = styled.div`

@@ -1,13 +1,12 @@
+import Button from "@/components/Button";
+import Container from "@/components/Container";
+import Typography from "@/components/Typography";
+import Introduction from "@/pages/Home/fragments/About/components/Introduction";
 import styled from "@emotion/styled";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import ImgShareIcon from "../../../assets/icon/share.png";
-import PlainTextInput from "../../../components/PlainTextInput";
 import Spacing from "../../../components/Spacing";
-import { useTranslation, Trans } from "react-i18next";
-import Introduction from "@/pages/Home/fragments/About/components/Introduction";
-import Button from "@/components/Button";
-import Typography from "@/components/Typography";
-import Container from "@/components/Container";
 
 interface Props {
     handleClickStartService: () => void;
@@ -15,6 +14,8 @@ interface Props {
 }
 
 const DescFragment: React.FC<Props> = ({ handleClickStartService, handleClickShare }) => {
+
+    const {t} = useTranslation();
 
     return (
         <Container>
@@ -25,7 +26,7 @@ const DescFragment: React.FC<Props> = ({ handleClickStartService, handleClickSha
             <Spacing.Vertical height={24} />
 
             <Body>
-                <Typography.Header2>어서오세요 ❣️</Typography.Header2>
+                <Typography.Header2>{t("desc.welcome")}</Typography.Header2>
                 <Spacing.Vertical height={32} />
                 <Introduction />
                 <Spacing.Vertical height={100} />

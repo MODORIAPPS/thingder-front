@@ -45,8 +45,8 @@ const ExploreFragment: React.FC = () => {
                                 uid={item.uid}
                                 nickname={item.nickname}
                                 name={item.nickname}
-                                thumbnail_src={item.image.src}
-                                thumbnail_srcSet={item.image.srcSet}
+                                thumbnail_src={item.image?.src ?? ""}
+                                thumbnail_srcSet={item.image?.srcSet ?? ""}
                             />
                         )
                     }
