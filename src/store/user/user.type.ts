@@ -1,5 +1,7 @@
+import { MemberDTO } from "@/@types/Member";
+
 export interface User {
-    isLogin: boolean;
     type: "USER" | "ADMIN";
     uid: string;
+    member: MemberDTO;
 }

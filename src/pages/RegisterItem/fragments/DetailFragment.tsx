@@ -9,13 +9,14 @@ import { signInUser } from "@/store/user/user.reducer";
 import styled from "@emotion/styled";
 import React, { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import Spacing from "../../../components/Spacing";
 import InputMadeAt from "./components/InputMadeAt";
 import { PhotoBox } from "./PhotoFragment";
 import emojiRegex from "emoji-regex";
 import Container from "@/components/Container";
 import { useTranslation } from "react-i18next";
+import InputTags from "./components/InputTags";
+import i18n from "@/utils/i18n";
 
 const regex = emojiRegex();
 
@@ -46,6 +47,7 @@ const DetailFragment: React.FC<Props> = (props) => {
     const [photo, setPhoto] = useState<ImageResponse>();
     const inputRef = useRef<HTMLInputElement>(null);
 
+    const [tags, setTags] = useState<string[]>([]);
     const onUploadImage = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) {
             return;
@@ -109,19 +111,40 @@ const DetailFragment: React.FC<Props> = (props) => {
                 localStorage.setItem(ACCESS_TOKEN_KEY, data.token);
                 dispatch(signInUser(data.token));
                 navigate("/home");
-                toast("회원가입이 완료되었습니다!")
             }
         } catch (e) {
-            // 유효하지 않은 pin 토큰입니다.
-            toast.error("전화번호 인증시간이 만료되었습니다. 다시 시도해주세요.");
+            alert("회원가입 인증시간이 만료되었습니다. 다시 시도해주세요.")
             navigate("/");
         }
     };
 
     const handleChangeEmoji = (value: string) => {
-        const description = value.match(regex)?.join("");
-        if (!description) return;
-        dispatch(changeRegisterProperty({ description }))
+        if (value === "") {
+            dispatch(changeRegisterProperty({ story: "" }))
+            return
+        }
+        const story = value.match(regex)?.join("");
+        if (!story) return;
+        dispatch(changeRegisterProperty({ story }))
+    };
+    
+    const isKorean = i18n.language === "kr";
+
+    const renderTitle = () => {
+        if (isKorean) {
+            return (
+                <>
+                    <HighLight>띵더</HighLight>는 <RedCut>레드커틀러리</RedCut>
+                    가 만든 예술실험적 데이팅 앱입니다.
+                </>
+            );
+        }
+
+        return (
+            <>
+                <HighLight>Thingder</HighLight> is an art experimental dating app created by <RedCut>RedCutlery</RedCut>.
+            </>
+        );
     };
 
     return (
@@ -131,8 +154,7 @@ const DetailFragment: React.FC<Props> = (props) => {
 
             <Body>
                 {/* 앱 소개 */}
-                <HighLight>{t("register.thingder")}</HighLight>{t("register.is")} <RedCut>{t("register.redcut")}</RedCut>
-                {t("register.desc1")}
+                {renderTitle()}
                 <Spacing.Vertical height={12} />
                 <Description>{t("register.desc2")}</Description>
 
@@ -166,6 +188,7 @@ const DetailFragment: React.FC<Props> = (props) => {
                     placeholder={t("register.kind_placeholder")}
                     value={state.type}
                     handleChange={(type) => dispatch(changeRegisterProperty({ type }))} />
+
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
                     label={t("register.made_country_label")}
@@ -186,23 +209,27 @@ const DetailFragment: React.FC<Props> = (props) => {
                     value={state.brand}
                     handleChange={(brand) => dispatch(changeRegisterProperty({ brand }))} />
                 <Spacing.Vertical height={36} />
-                <PlainTextInput
+                {/* <PlainTextInput
                     label={t("register.type_label")}
                     placeholder={t("register.type_placeholder")}
-                    value={state.tag}
-                    handleChange={(tag) => dispatch(changeRegisterProperty({ tag }))} />
+                    value={renderTagList(state.tag)}
+                    handleChange={(tag) => handleChangeTag(tag)} /> */}
+                <InputTags
+                    tags={state.tag.split(",").filter(Boolean)}
+                    setTags={(tags) => dispatch(changeRegisterProperty({ tag: tags.toString() }))}
+                />
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
                     label={t("register.emoji_label")}
-                    placeholder="😎 🌽 🎑 🥝 🍑 🌽 🎑 🥝"
-                    value={state.description}
+                    placeholder="🦃 ❤️ ✋"
+                    value={state.story}
                     handleChange={handleChangeEmoji} />
                 <Spacing.Vertical height={36} />
                 <PlainTextInput
                     label={t("register.desc_label")}
                     placeholder={t("register.desc_placeholder")}
-                    value={state.story}
-                    handleChange={(story) => dispatch(changeRegisterProperty({ story }))} />
+                    value={state.description}
+                    handleChange={(description) => dispatch(changeRegisterProperty({ description }))} />
                 <Spacing.Vertical height={60} />
                 <Button onClick={handleClickCompleteRegister} text={t("register.register_button")} />
                 <Spacing.Vertical height={40} />

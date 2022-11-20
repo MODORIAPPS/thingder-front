@@ -1,0 +1,27 @@
+.tinder--card {
+    display: inline-block;
+    width: 90vw;
+    max-width: 400px;
+    height: 70vh;
+    background: #FFFFFF;
+    padding-bottom: 40px;
+    border: none;
+    overflow: hidden;
+    position: absolute;
+    will-change: transform;
+    transition: all 0.3s ease-in-out;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    cursor: grab;
+  }
+
+  .tinder--card:active {
+    border: none;
+  }
+
+  .moving.tinder--card {
+    transition: none;
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+    cursor: grabbing;
+  }

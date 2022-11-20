@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import BottomNavigationBar from "./components/BottomNavigationBar";
 import Modal from 'react-modal';
+import Container from "@/components/Container";
 
 export const BOTTOM_NAV_HEIGHT_PIXEL = 70;
 
@@ -24,10 +25,6 @@ const Home: React.FC = () => {
         </Container>
     );
 };
-
-export const Container = styled.div`
-    width: 100%;
-`;
 
 export const Body = styled.div`
     height: calc(100vh - ${BOTTOM_NAV_HEIGHT_PIXEL}px);

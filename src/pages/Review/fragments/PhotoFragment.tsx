@@ -1,3 +1,4 @@
+import { AdminMemberDTO, MemberDTO } from "@/@types/Member";
 import api from "@/api";
 import Spacing from "@/components/Spacing";
 import { useAppDispatch } from "@/hooks/redux";
@@ -24,7 +25,7 @@ const PhotoFragment: React.FC = () => {
     const handleClickBack = () => navigate("/admin");
 
     const dispatch = useAppDispatch();
-    const [itemList, setItemList] = useState<ItemCardType[]>([]);
+    const [itemList, setItemList] = useState<AdminMemberDTO[]>([]);
     const [matched, setMatched] = useState(false);
 
     const [currentIndex, setCurrentIndex] = useState(itemList.length - 1);
@@ -73,9 +74,9 @@ const PhotoFragment: React.FC = () => {
     }
 
     const fetchItemList = async () => {
-        // const { data } = await api.main.get<ItemListResponse>("/matching/");
-        //setItemList(data.members);
-        setItemList(sampleData);
+        const { data } = await api.main.get<{ members: AdminMemberDTO[] }>("/admin/members");
+        setItemList(data.members);
+        // setItemList(sampleData);
     };
 
     const handleClickNegativeButton = () => { swipe("left") };
@@ -110,7 +111,7 @@ const PhotoFragment: React.FC = () => {
     return (
         <Container1>
             <AdminActionBar onClickBackButton={handleClickBack} />
-            <RemainedReviewCount>남은 리뷰 건수: {itemList.length}개</RemainedReviewCount>
+            <RemainedReviewCount>남은 리뷰 건수: {itemList.length - currentIndex}개</RemainedReviewCount>
             <Spacing.Vertical height={24} />
 
             <>

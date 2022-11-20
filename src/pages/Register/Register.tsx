@@ -3,6 +3,7 @@ import Button from "@/components/Button";
 import Container from "@/components/Container";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { changeRegisterProperty, resetRegisterStateAction } from "@/store/register/register.reducer";
+import { formatPhoneNumberHypen } from "@/utils/formatter";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -63,7 +64,7 @@ const Register: React.FC = () => {
         }
 
         try {
-            const { data } = await api.main.post("/auth/pin/send?phone=" + phone);
+            await api.main.post("/auth/pin/send?phone=" + phone.replace(/-/g, ""));
             setPhoneError("");
             const CODE_EXPIRY_TIME = new Date(new Date().setMinutes(new Date().getMinutes() + 3));
             restart(CODE_EXPIRY_TIME, true);
@@ -76,10 +77,13 @@ const Register: React.FC = () => {
 
     const handleClickCodeConfirm = async () => {
         try {
-            const { data } = await api.main.post<PinCheckResponse>("/auth/pin/check", { phone, pin: code });
+            const { data } = await api.main.post<PinCheckResponse>("/auth/pin/check", {
+                phone: phone.replace(/-/g, ""),
+                pin: code
+            });
             setCodeError("");
             dispatch(changeRegisterProperty({ pinToken: data.token }));
-            toast(t("prer.confirm_toast"));
+            alert(t("prer.confirm_toast"))
             pause();
         } catch (e) {
             setCodeError(CODE_CONFIRM_ERROR);
@@ -93,8 +97,15 @@ const Register: React.FC = () => {
     const handleClickBackButton = () => {
         dispatch(resetRegisterStateAction());
         navigate(-1);
-    }
+    };
 
+    const handleChangePhone = (value: string) => {
+        if (value.length > 13) return;
+        const data = value
+            .replace(/[^0-9]/g, '')
+            .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
+        setPhone(data);
+    };
 
     return (
         <Container>
@@ -112,7 +123,7 @@ const Register: React.FC = () => {
                 {/* 휴대폰 번호 */}
                 <PhoneNumberInput
                     value={phone}
-                    onChange={phone => setPhone(phone)}
+                    onChange={handleChangePhone}
                     error={phoneError}
                     onClickAction={<SendCodeButton onClick={handleClickSendCode} />} />
                 <Spacing.Vertical height={16} />

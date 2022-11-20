@@ -12,16 +12,15 @@ interface Props extends InputCommonType {
 const PhoneNumberInput: React.FC<Props> = (props) => {
 
     const { t } = useTranslation();
-
+    // t("prer.phone_placeholder")
     return (
         <TextInput
             leadingIcon={<EmailIcon src={PhoneFill} />}
             label={t("prer.phone_label")}
-            placeholder={t("prer.phone_placeholder")}
+            placeholder={"ex) 01012345678"}
             onChange={props.onChange}
             value={props.value}
             error={props.error}
-            type="number"
             action={props.onClickAction}
         />
     );

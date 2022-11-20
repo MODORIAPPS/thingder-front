@@ -1,6 +1,8 @@
+import { MemberDTO } from "@/@types/Member";
 import api from "@/api";
 import ActionBar from "@/components/ActionBar";
 import Container from "@/components/Container";
+import ManufacturedDateView from "@/components/ManufacturedDateView";
 import Spacing from "@/components/Spacing";
 import Stack from "@/components/Stack";
 import Typography from "@/components/Typography";
@@ -18,22 +20,23 @@ const Share: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams();
 
-    useEffect(() => {
-        if (!id) navigate("/");
-
-        fetchData();
-    }, []);
-
-    const [data, setData] = useState<MemberDetail>();
+    const [data, setData] = useState<MemberDTO>();
 
     const fetchData = async () => {
-        const { data } = await api.main.get<MemberDetail>("/member/" + id);
+        const { data } = await api.main.get<MemberDTO>("/member/" + id);
+        console.log('yay', data);
         setData(data);
     };
 
     const handleClickButton = () => {
         navigate("/");
     };
+
+    useEffect(() => {
+        if (!id) navigate("/");
+
+        fetchData();
+    }, []);
 
     if (!data) return <></>
 
@@ -43,7 +46,7 @@ const Share: React.FC = () => {
 
             {/* 슬라이드 가능하게 */}
             <PrsentImageWrapper>
-                <PresentImage src={data.images[0].src} />
+                <PresentImage src={data?.images[0]?.src} />
 
                 {/* 선택 버튼 */}
                 <ChooseButtonWrapper style={{ position: "absolute", bottom: 32, left: 0, right: 0 }}>
@@ -57,7 +60,7 @@ const Share: React.FC = () => {
             <Container>
                 <Stack.Horizontal style={{ alignItems: "flex-end" }}>
                     <Typography.Header1>{data.nickname}</Typography.Header1>
-                    <Typography.Caution1>{data.genYear}{t("detail.year")} {data.genMonth}{t("detail.month")} {t("detail.gen")}</Typography.Caution1>
+                    <ManufacturedDateView genYear={data.genYear} genMonth={data.genMonth} />
                 </Stack.Horizontal>
                 <Stack.Vertical style={{ alignItems: "flex-end" }}>
                     <Content>{data.brand}</Content>

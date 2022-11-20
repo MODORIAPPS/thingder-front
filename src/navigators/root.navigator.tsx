@@ -39,9 +39,10 @@ const RootNavigator = () => {
 
     useEffect(() => {
         if (data) {
-            data.type === "ADMIN" ? navigate("admin") : navigate("home")
-        } else {
-            navigate("/");
+            const pathname = window.location.pathname;
+            if(pathname === "/auth"){
+                data.type === "ADMIN" ? navigate("admin") : navigate("home")
+            }
         }
     }, [data]);
 
@@ -55,7 +56,7 @@ const RootNavigator = () => {
                 <Routes>
 
                     {/* 앱 시작점 */}
-                    <Route index element={<Welcome />} />
+                    <Route path="/" element={<Welcome />} />
 
                     {/* 마이페이지 */}
                     <Route path="mypage" element={<MyPage />} />

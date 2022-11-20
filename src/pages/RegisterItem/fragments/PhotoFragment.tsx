@@ -1,14 +1,13 @@
-import styled from "@emotion/styled";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import Spacing from "../../../components/Spacing";
-import ImgAddRound from "../../../assets/icon/add_round.svg";
-import Button from "../../../components/Button";
-import ActionBar from "@/components/ActionBar";
-import { toast } from "react-toastify";
-import { useAppDispatch } from "@/hooks/redux";
-import { changeRegisterProperty } from "@/store/register/register.reducer";
 import api from "@/api";
 import AddRoundBtn from "@/assets/button/add_round.png";
+import ActionBar from "@/components/ActionBar";
+import { useAppDispatch } from "@/hooks/redux";
+import { changeRegisterProperty } from "@/store/register/register.reducer";
+import styled from "@emotion/styled";
+import React, { useCallback, useRef, useState } from "react";
+import ImgAddRound from "../../../assets/icon/add_round.svg";
+import Button from "../../../components/Button";
+import Spacing from "../../../components/Spacing";
 
 interface ImageResponse {
     src: string;
@@ -60,7 +59,7 @@ const PhotoFragment: React.FC<Props> = ({ onClickContinueButton }) => {
 
     const handleClickContinue = () => {
         if (photo.length < 1) {
-            toast("적어도 하나의 이미지가 필요합니다.", { type: "error" });
+            alert("적어도 하나의 이미지가 필요합니다.")
             return;
         }
 
@@ -155,7 +154,7 @@ interface PhotoBoxProps {
 
 export const PhotoBox: React.FC<PhotoBoxProps> = (props) => {
     if (props.src || props.srcSet) {
-        return <PhotoWrapper>
+        return <PhotoWrapper big={props.big}>
             <Photo
                 onClick={() => props.onClick(props.index)}
                 big={props.big}
@@ -178,8 +177,8 @@ export const PhotoBox: React.FC<PhotoBoxProps> = (props) => {
     );
 };
 
-const PhotoWrapper = styled.div`
-    width: 333px;
+const PhotoWrapper = styled.div<{ big?: boolean }>`
+    width: ${({ big }) => big ? '100%' : '103px'};
     height: 333px;
     position: relative;
 
@@ -195,8 +194,8 @@ const Photo = styled.img<{ big?: boolean }>`
 
     margin: 0 auto;
 
-    width: ${({ big }) => big ? 333 : 103}px;
-    height: ${({ big }) => big ? 333 : 103}px;
+    width: ${({ big }) => big ? '100%' : '103px'};
+    height: ${({ big }) => big ? '333px' : '103px'};
 
     &:hover {
         background-color: #121212;
@@ -227,8 +226,8 @@ const PhotoAddWrapper = styled.div<{ big?: boolean }>`
 
     margin: 0 auto;
 
-    width: ${({ big }) => big ? 333 : 103}px;
-    height: ${({ big }) => big ? 333 : 103}px;
+    width: ${({ big }) => big ? '100%' : '103px'};
+    height: ${({ big }) => big ? '333px' : '103px'};
 
     &:hover {
         background-color: #d5d5d5;

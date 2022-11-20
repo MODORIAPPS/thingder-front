@@ -45,7 +45,7 @@ const ChatFragment: React.FC = () => {
     useEffect(() => {
         fetchItemList();
     }, []);
-
+    
     return (
         <>
             <Container>
@@ -53,7 +53,7 @@ const ChatFragment: React.FC = () => {
                     onClickBackButton={handleClickBack}
                     isComplete={complete}
                 />
-                <RemainedReviewCount>남은 리뷰 건수: {5}개</RemainedReviewCount>
+                {/* <RemainedReviewCount>남은 리뷰 건수: {list.length}개</RemainedReviewCount> */}
                 <List>
                     {
                         list.map(room =>
@@ -69,12 +69,17 @@ const ChatFragment: React.FC = () => {
                 </List>
             </Container>
 
-            <AdminChatModal
-                chatRoomUid={chatRoomUid}
-                open={chatModal}
-                setOpen={setChatModal}
-                description={list.filter(chat => chat.uid === chatRoomUid)[0].message}
-            />
+            {
+                list.length > 0 &&
+                <AdminChatModal
+                    reportUid={list.filter(chat => chat.chatRoomUid === chatRoomUid)[0]?.uid}
+                    chatRoomUid={chatRoomUid}
+                    subjectUid={list.filter(chat => chat.chatRoomUid === chatRoomUid)[0]?.subjectUid}
+                    open={chatModal}
+                    setOpen={setChatModal}
+                    description={list.filter(chat => chat.chatRoomUid === chatRoomUid)[0]?.message}
+                />
+            }
         </>
     );
 };

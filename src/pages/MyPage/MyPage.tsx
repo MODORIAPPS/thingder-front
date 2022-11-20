@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useAppDispatch } from "@/hooks/redux";
+import { fetchMyPage } from "@/store/edit-mypage/edit-mypage.reducer";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DetailFragment from "./fragments/DetailFragment";
 import PhotoEditFragment from "./fragments/PhotoEditFragment";
@@ -9,8 +11,14 @@ const MyPage: React.FC = () => {
 
     const navigate = useNavigate();
     const [page, setPage] = useState<PageType>("EDIT");
+    const dispatch = useAppDispatch();
 
     const handleChange = (type: PageType) => setPage(type);
+
+    useEffect(() => {
+        dispatch(fetchMyPage())
+    }, []);
+
     return (
         page === "EDIT"
             ?

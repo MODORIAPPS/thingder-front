@@ -3,6 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./utils/i18n";
+import 'react-tagsinput/react-tagsinput.css'
 import "./index.css";
 import RootNavigator from "./navigators/root.navigator";
 import { initializeApp } from "firebase/app";
@@ -17,6 +18,7 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import firebaseConfig from "./firebase";
 import { ModalProvider } from 'react-hooks-async-modal'
+
 
 const queryClient = new QueryClient();
 

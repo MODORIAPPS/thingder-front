@@ -10,7 +10,7 @@ interface Props {
     onChanged: (value: boolean) => void;
 }
 
-const RememberCheckbox: React.FC<Props> = ({ checked, onChanged }) => {
+const RememberCheckbox: React.FC<Props> = ({ checked = true, onChanged }) => {
 
     const { t } = useTranslation();
 
@@ -20,6 +20,7 @@ const RememberCheckbox: React.FC<Props> = ({ checked, onChanged }) => {
                 theme="fancy-checkbox"
                 value={checked}
                 onChange={(e) => onChanged(!checked)}>
+                <></>
             </Checkbox>
             <Spacing.Horizontal width={8} />
             <Typography.Subtitle4 style={{ fontWeight: "normal" }}>

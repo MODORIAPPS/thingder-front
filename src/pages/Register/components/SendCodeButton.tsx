@@ -13,7 +13,7 @@ const SendCodeButton: React.FC<Props> = ({ onClick }) => {
 
     return (
         <Container onClick={onClick}>
-            <Typography.Caution2 style={{ fontWeight: 'normal' }}>{t("send_code")}</Typography.Caution2>
+            <Typography.Caution2 style={{ fontWeight: 'normal' }}>{t("prer.send_code")}</Typography.Caution2>
         </Container>
     );
 };

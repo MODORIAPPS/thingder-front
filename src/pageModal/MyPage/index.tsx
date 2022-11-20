@@ -28,7 +28,7 @@ const MyPageModal: React.FC<Props> = ({
 
     useEffect(() => {
         if (uid) {
-            dispatch(fetchMyPage(uid));
+            dispatch(fetchMyPage());
         }
     }, [uid]);
 

@@ -16,9 +16,9 @@ type EditMyPageAction =
     | ReturnType<typeof getMyPageAction>
     | ReturnType<typeof updateMyPageAction>;
 
-export const fetchMyPage = (uid: string): ThunkAction<void, RootState, unknown, AnyAction> => {
-    return async (dispatch) => {
-        const { data } = await api.main.get<MemberDetail>(`/member/${uid}`);
+export const fetchMyPage = (): ThunkAction<void, RootState, unknown, AnyAction> => {
+    return async (dispatch, getState) => {
+        const data = getState().user.data?.member!!;
         const madeAt = data.genYear + "-" + data.genMonth;
         const state: EditMyPageState = {
             ...data,
@@ -46,23 +46,6 @@ const initState: EditMyPageState = {
     tag: "",
     type: "",
     story: ""
-};
-
-const sampleData: EditMyPageState = {
-    brand: "구찌",
-    description: "안녕하세요",
-    genCountry: "대한민국",
-    madeAt: "2022-04",
-    images: [
-        {
-            src: "https://img.danawa.com/prod_img/500000/450/204/img/14204450_1.jpg?shrink=330:330&_v=20210517144137",
-            srcSet: "https://img.danawa.com/prod_img/500000/450/204/img/14204450_1.jpg?shrink=330:330&_v=20210517144137"
-        }
-    ],
-    nickname: "큐티기석공주",
-    tag: "아름다움",
-    type: "인형",
-    story: "😁"
 };
 
 const editMyPageReducer = (state = initState, action: AnyAction): EditMyPageState => {

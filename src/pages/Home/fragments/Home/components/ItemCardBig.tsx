@@ -10,6 +10,7 @@ import { Direction } from "../types";
 // image
 import LikeImg from "@/assets/like_text.png";
 import DislikeImg from "@/assets/dislike_text.png";
+import ManufacturedDateView from "@/components/ManufacturedDateView";
 
 interface Props {
     onClickInfo: (uid: string) => void;
@@ -35,7 +36,6 @@ interface Props {
 const ItemCardBig: React.FC<Props> = (props) => {
 
     const renderLikeImageView = () => {
-        console.log(props.currentDirection)
         if (props.currentDirection !== "right" && props.currentDirection !== "left") return;
         const isLike = props.currentDirection === "right";
         const image = isLike ? LikeImg : DislikeImg;
@@ -49,15 +49,16 @@ const ItemCardBig: React.FC<Props> = (props) => {
     return (
         <Container>
             <ItemImage
-                src={props.thumbnail_src}
-                // srcSet={props.thubmnail_srcSet}
+                src={props.thumbnail_src ?? ""}
+            // srcSet={props.thubmnail_srcSet}
             />
             {renderLikeImageView()}
             <BlackGradient>
                 <Stack.Horizontal>
                     <Typography.Header1>{props.nickname}</Typography.Header1>
                     <div>
-                        <Property>{props.genYear}년 {props.genMonth}월 제조</Property>
+                        <ManufacturedDateView genYear={props.genYear} genMonth={props.genMonth} />
+                        {/* <Property>{props.genYear}년 {props.genMonth}월 제조</Property> */}
                         <Property>{props.name}</Property>
                     </div>
                 </Stack.Horizontal>
@@ -69,7 +70,7 @@ const ItemCardBig: React.FC<Props> = (props) => {
                         <BottomProperty>브랜드: {props.brand}</BottomProperty>
                     </BottomWrapper>
 
-                    <InfoButton src={ImgInfo} onClick={() => props.onClickInfo(props.uid)} />
+                    <InfoButton src={ImgInfo} onTouchStart={() => props.onClickInfo(props.uid)} />
                 </Stack.Horizontal>
             </BlackGradient>
         </Container>
@@ -136,7 +137,7 @@ const InfoButton = styled.img`
     height: 18px;
     margin-left: 20px;
     margin-top: 20px;
-    cursor: pointer;
+    /* cursor: pointer; */
 `;
 
 const BlackGradient = styled.div`

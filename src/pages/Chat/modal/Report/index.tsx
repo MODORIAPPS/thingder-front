@@ -12,15 +12,23 @@ import ViewHideFill from "@/assets/icon/view_hide_fill.png";
 import styled from "@emotion/styled";
 
 interface Props {
+    subjectUid: string;
     setPage: (type: "CANCEL" | "BLOCK") => void;
 }
 
-const Report: React.FC<Props> = ({ setPage }) => {
+const Report: React.FC<Props> = ({ subjectUid, setPage }) => {
 
     const navigate = useNavigate();
-    const handleClickCancel = () => setPage("CANCEL");
-    const handleClickBlock = () => setPage("BLOCK")
-    const handleClickReport = () => navigate("report");
+
+    const handleClickButton = (type: "CANCEL" | "BLOCK") => {
+        const text = type === "CANCEL" ? "매칭 취소" : "차단";
+        const confirm = window.confirm(`정말 이 사용자를 ${text}할까요?`);
+        if (confirm) {
+            setPage(type);
+        }
+    }
+
+    const handleClickReport = () => navigate("report" + "?subjectUid=" + subjectUid);
 
     return (
         <>
@@ -34,14 +42,14 @@ const Report: React.FC<Props> = ({ setPage }) => {
                     iconColor={"#DDF45B"}
                     title={"매치 취소"}
                     subTitle={"상대방에게 알리지 않고 매치를 취소합니다."}
-                    onClick={handleClickCancel} />
+                    onClick={() => handleClickButton("CANCEL")} />
                 <Spacing.Vertical height={10} />
                 <AdminItem
                     icon={<Icon src={ViewHideFill} />}
                     iconColor={"#DDF45B"}
-                    title={"매치 취소"}
+                    title={"차단"}
                     subTitle={"상대방에게 알리지 않고 상대를 차단합니다."}
-                    onClick={handleClickBlock} />
+                    onClick={() => handleClickButton("BLOCK")} />
                 <Spacing.Vertical height={10} />
                 <AdminItem
                     icon={<Icon src={AlarmFill} />}

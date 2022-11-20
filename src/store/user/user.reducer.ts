@@ -3,6 +3,7 @@ import { AnyAction } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";
 import api, { ACCESS_TOKEN_KEY } from "@/api";
 import { RootState } from "../store";
+import { MemberDTO } from "@/@types/Member";
 
 type UserType = "ADMIN" | "USER";
 
@@ -14,10 +15,10 @@ const USER_INFO_UPDATE = "USER_INFO_UPDATE" as const;
 const USER_SIGN_OUT = "USER_SIGN_OUT" as const;
 
 const userSignInAction = () => ({ type: USER_SIGN_IN });
-const userSignInSuccessAction = (userType: UserType, uid: string) => ({ type: USER_SIGN_IN_SUCCESS, userType, uid });
+const userSignInSuccessAction = (userType: UserType, uid: string, member: MemberDTO) => ({ type: USER_SIGN_IN_SUCCESS, userType, uid, member });
 const userSignInErrorAction = (error: string) => ({ type: USER_SIGN_IN_ERROR, error });
 const userSignOutAction = () => ({ type: USER_SIGN_OUT });
-const userInfoUpdateAction = (data: User) => ({ type: USER_INFO_UPDATE, data });
+const userInfoUpdateAction = (member: MemberDTO) => ({ type: USER_INFO_UPDATE, member });
 
 type actions =
     | ReturnType<typeof userSignInAction>
@@ -57,8 +58,12 @@ export const signInUser = (token?: string): ThunkAction<void, RootState, unknown
 
             localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
 
+            /** 1. 내 정보 불러오기 */
             const { data: my } = await api.main.get<MyResponse>("/auth/my");
-            dispatch({ type: USER_SIGN_IN_SUCCESS, userType: my.roles[0], uid: my.uid });
+
+            /** 2. 내 프로필 불러오기 */
+            const { data: member } = await api.main.get<MemberDTO>(`/member/${my.uid}`);
+            dispatch({ type: USER_SIGN_IN_SUCCESS, userType: my.roles[0], uid: my.uid, member });
 
             console.log("user/reducer token", accessToken);
         } catch (e) {
@@ -75,6 +80,22 @@ export const signOutUser = (): ThunkAction<void, RootState, unknown, AnyAction> 
             localStorage.removeItem(ACCESS_TOKEN_KEY);
             api.main.defaults.headers.common['Authorization'] = "";
             dispatch({ type: USER_SIGN_OUT });
+        } catch (e) {
+            localStorage.removeItem(ACCESS_TOKEN_KEY);
+            dispatch({ type: USER_SIGN_IN_ERROR, error: "error" });
+        }
+    }
+};
+
+export const updateMyInfo = (): ThunkAction<void, RootState, unknown, AnyAction> => {
+    return async (dispatch, getState) => {
+        try {
+            const uid = getState().user.data?.uid;
+            if (!uid) return;
+
+            /** 내 프로필 불러오기 */
+            const { data: member } = await api.main.get<MemberDTO>(`/member/${uid}`);
+            dispatch({ type: USER_INFO_UPDATE, member });
         } catch (e) {
             localStorage.removeItem(ACCESS_TOKEN_KEY);
             dispatch({ type: USER_SIGN_IN_ERROR, error: "error" });
@@ -99,8 +120,8 @@ const userReducer = (
                 error: null,
                 data: {
                     type: action.userType,
-                    isLogin: true,
-                    uid: action.uid
+                    uid: action.uid,
+                    member: action.member
                 }
             }
         case USER_SIGN_IN_ERROR:
@@ -119,8 +140,8 @@ const userReducer = (
             return {
                 ...state,
                 data: {
-                    ...state.data,
-                    ...action.data
+                    ...state.data!!,
+                    member: action.member
                 }
             }
         default:

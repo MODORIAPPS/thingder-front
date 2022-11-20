@@ -24,7 +24,7 @@ const SendMessageInput: React.FC<Props> = (
                 onChange={e => onChangeText(e.target.value)}
                 placeholder="이모지로만 대화해 보세요!"
             />
-            <Button>
+            <Button onClick={onClickSend}>
                 <SendFill src={SendFillImg} />
             </Button>
         </Container>

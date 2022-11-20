@@ -12,10 +12,6 @@ import Home from "../pages/Home/Home";
 
 const HomeNavigator: React.FC = () => {
 
-    const { loading, data } = useAppSelector(state => state.user);
-
-    // if (loading || !data?.isLogin) return <></>
-
     return (
         <Routes>
             <Route element={<Home />} >
@@ -29,6 +25,7 @@ const HomeNavigator: React.FC = () => {
                 <Route path="chat" element={<ChatFragment />} />
                 <Route path="chat/:id" element={<Chat />} />
                 <Route path="chat/:id/report" element={<ChatReport />} />
+                
 
                 {/* 커틀러리(About) 프래그먼트 */}
                 <Route path="about" element={<AboutFragment />} />

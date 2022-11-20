@@ -1,20 +1,35 @@
+import api from "@/api";
 import ActionBar from "@/components/ActionBar";
 import Button from "@/components/Button";
 import Container from "@/components/Container";
 import Spacing from "@/components/Spacing";
 import Typography from "@/components/Typography";
+import ChatRoomAction from "@/utils/db";
 import styled from "@emotion/styled";
 import React, { useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { TextArea } from "../../About/modal/AskToTalkModal";
 
 const ChatReport: React.FC = () => {
 
+    const navigate = useNavigate();
+
+    const { id } = useParams();
+    const [searchParams, setSearchParams] = useSearchParams();
+    console.log(searchParams.get("subjectUid"))
     const [text, setText] = useState("");
 
     const handleClickReport = async () => {
-        if (!text) return;
+        const subjectUid = searchParams.get("subjectUid");
+        if (!text || !subjectUid || !id) return;
         try {
+            await api.main.post("/chat/" + id, {
+                message: text,
+                subjectUid
+            })
             alert("신고가 접수되었습니다.");
+            navigate(-2);
+            ChatRoomAction.removeChatRoom(id);
         } catch (e) {
             alert("죄송합니다. 문제가 발생했습니다.")
         }

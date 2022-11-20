@@ -1,9 +1,8 @@
 import api from "@/api";
-import ActionBar from "@/components/ActionBar";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { closeMemberDetailAction } from "@/store/ui/ui.reducer";
 import styled from "@emotion/styled";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from 'react-modal';
 import ImgShare from "@/assets/icon/share_white.svg";
 import Spacing from "@/components/Spacing";
@@ -12,6 +11,10 @@ import Typography from "@/components/Typography";
 import { ChooseButtonWrapper } from "@/pages/Home/fragments/Home/HomeFragment";
 import ChooseButton from "@/pages/Home/fragments/Home/components/ChooseButton";
 import { useTranslation } from "react-i18next";
+import ManufacturedDateView from "@/components/ManufacturedDateView";
+import "./card.css"
+import ActionBar from "./components/ActionBar";
+import SimpleImageSlider from "react-simple-image-slider";
 
 export const RELATION = {
     BLOCK: "BLOCK",
@@ -28,6 +31,8 @@ const ItemDetailModal: React.FC = () => {
     const dispatch = useAppDispatch();
     const uid = useAppSelector(state => state.ui.memberDetailUid);
     const open = useAppSelector(state => state.ui.memberDetailModalVisible);
+
+    const ref = useRef<HTMLDivElement>(null);
 
     const [data, setData] = useState<MemberDetail>();
 
@@ -50,6 +55,20 @@ const ItemDetailModal: React.FC = () => {
             relation: RELATION.DISLIKE,
             uid,
         });
+
+        const cards = document.querySelectorAll(".tinder--card:not(.removed)");
+        const moveOutWidth = document.body.clientWidth * 1.5;
+
+        console.log(cards.length);
+        if (!cards.length) return false;
+
+        const card = cards[0];
+
+        card.classList.add("removed");
+        (card as any).style.transform = 'translate(-' + moveOutWidth + 'px, -100px) rotate(30deg)';
+        setTimeout(() => {
+            handleClickBackButton();
+        }, 300);
     };
 
     const handleClickPositiveButton = async () => {
@@ -57,24 +76,46 @@ const ItemDetailModal: React.FC = () => {
             relation: RELATION.LIKE,
             uid,
         });
-    };
 
+        const cards = document.querySelectorAll(".tinder--card:not(.removed)");
+        const moveOutWidth = document.body.clientWidth * 1.5;
+
+        console.log(cards.length);
+        if (!cards.length) return false;
+
+        const card = cards[0];
+
+        card.classList.add("removed");
+        (card as any).style.transform = 'translate(' + moveOutWidth + 'px, -100px) rotate(-30deg)';
+        setTimeout(() => {
+            handleClickBackButton();
+        }, 300);
+    };
 
     useEffect(() => {
         if (uid) {
             fetchData();
+
+            const tinderCard = window.document.getElementsByClassName("tinder-card")[0];
+            console.log(tinderCard);
+            tinderCard
+                ?.removeEventListener("touchmove", () => { console.log("removed!") });
         }
     }, [uid]);
 
-    if (!data) return <span></span>
-
     return (
-        <Modal isOpen={open} style={styles}>
-            <ActionBar onClickBackButton={handleClickBackButton} />
+        <Modal className={"tinder--card"} isOpen={open} style={styles}>
+            <ActionBar
+                handleClickGuard={() => { }}
+                handleClickClose={handleClickBackButton} />
 
             {/* 슬라이드 가능하게 */}
             <PrsentImageWrapper>
-                <PresentImage src={data.images[0].src} />
+                <SimpleImageSlider
+                    width={'100%'}
+                    height={375}
+                    images={data?.images.map(image => { return { url: image.src }; }) ?? []}
+                    showBullets={true} showNavs={false} />
 
                 {/* 공유 버튼 */}
                 <ShareIcon onClick={handleClickShare} src={ImgShare} />
@@ -90,28 +131,28 @@ const ItemDetailModal: React.FC = () => {
             <Spacing.Vertical height={16} />
             <Container>
                 <Stack.Horizontal style={{ alignItems: "flex-end" }}>
-                    <Typography.Header1>{data.nickname}</Typography.Header1>
-                    <Typography.Caution1>{data.genYear}{t("detail.year")} {data.genMonth}{t("detail.month")} {t("detail.gen")}</Typography.Caution1>
+                    <Typography.Header1>{data?.nickname}</Typography.Header1>
+                    <ManufacturedDateView genYear={data?.genYear ?? 0} genMonth={data?.genMonth ?? 0} />
                 </Stack.Horizontal>
                 <Stack.Vertical style={{ alignItems: "flex-end" }}>
-                    <Content>{data.brand}</Content>
+                    <Content>{data?.brand}</Content>
                     <BottomWrapper>
-                        <BottomProperty>{t("detail.country")}: {data.genCountry}</BottomProperty>
+                        <BottomProperty>{t("detail.country")}: {data?.genCountry}</BottomProperty>
                         <BottomPropertyDivider />
-                        <BottomProperty>{t("detail.brand")}: {data.brand}</BottomProperty>
+                        <BottomProperty>{t("detail.brand")}: {data?.brand}</BottomProperty>
                     </BottomWrapper>
                 </Stack.Vertical>
 
                 {/* 다섯개 태그 */}
                 <Divider />
-                <Content>{data.tag}</Content>
+                <Content>{data?.tag}</Content>
                 <Divider />
 
                 {/* 이모지로 말해요 */}
                 <SubTitle>{t("detail.talk_with_emoji")}</SubTitle>
                 <Spacing.Vertical height={8} />
                 <Content>
-                    {data.description}
+                    {data?.description}
                 </Content>
 
                 <Divider />
@@ -120,10 +161,10 @@ const ItemDetailModal: React.FC = () => {
                 <SubTitle>{t("detail.about_me")}</SubTitle>
                 <Spacing.Vertical height={8} />
                 <Content>
-                    {data.story}
+                    {data?.story}
                 </Content>
             </Container>
-        </Modal>
+        </Modal >
     );
 };
 
@@ -136,7 +177,7 @@ const styles = {
         margin: 0,
         inset: 0,
         width: '100%',
-        height: 'calc(100%-70px)',
+        height: '100%',
     }
 }
 

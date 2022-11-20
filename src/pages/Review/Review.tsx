@@ -3,8 +3,9 @@ import React from "react";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Modal from 'react-modal';
-import { Body, Container, NavWrapper } from "../Home/Home";
+import { Body, NavWrapper } from "../Home/Home";
 import BottomNavigationBar from "./components/BottomNavigationBar";
+import Container from "@/components/Container";
 
 const Review: React.FC = () => {
     useEffect(() => {

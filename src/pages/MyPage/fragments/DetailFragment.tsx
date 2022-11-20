@@ -1,24 +1,23 @@
-import api, { ACCESS_TOKEN_KEY } from "@/api";
+import api from "@/api";
+import ImgEditImage from "@/assets/icon/img_load_box.png";
 import ActionBar from "@/components/ActionBar";
 import Button from "@/components/Button";
+import Container from "@/components/Container";
 import PlainTextInput from "@/components/PlainTextInput";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { HighLight, RedCut } from "@/pages/Home/fragments/About/components/Introduction";
-import { signInUser } from "@/store/user/user.reducer";
-import styled from "@emotion/styled";
-import React, { useCallback, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import Spacing from "../../../components/Spacing";
-import emojiRegex from "emoji-regex";
-import Container from "@/components/Container";
-import InputMadeAt from "./components/InputMadeAt";
-import { PhotoBox } from "@/pages/RegisterItem/fragments/PhotoFragment";
-import { updageMyPage } from "@/store/edit-mypage/edit-mypage.reducer";
 import { PresentImage, PrsentImageWrapper, ShareIcon } from "@/pageModal/ItemDetail/ItemDetailModal";
-import ImgEditImage from "@/assets/icon/img_load_box.png";
-import { PageType } from "../MyPage";
+import InputTags from "@/pages/RegisterItem/fragments/components/InputTags";
+import { updageMyPage } from "@/store/edit-mypage/edit-mypage.reducer";
+import { changeRegisterProperty } from "@/store/register/register.reducer";
+import { updateMyInfo } from "@/store/user/user.reducer";
+import styled from "@emotion/styled";
+import emojiRegex from "emoji-regex";
+import React, { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import Spacing from "../../../components/Spacing";
+import { PageType } from "../MyPage";
+import InputMadeAt from "./components/InputMadeAt";
 
 const regex = emojiRegex();
 
@@ -84,6 +83,7 @@ const DetailFragment: React.FC<Props> = ({
             genMonth
         });
         alert("저장되었습니다!");
+        dispatch(updateMyInfo())
     };
 
     const handleClickEdit = () => {
@@ -91,9 +91,13 @@ const DetailFragment: React.FC<Props> = ({
     };
 
     const handleChangeEmoji = (value: string) => {
-        const description = value.match(regex)?.join("");
-        if (!description) return;
-        dispatch(updageMyPage({ description }))
+        if (value === "") {
+            dispatch(updageMyPage({ story: "" }));
+            return;
+        }
+        const story = value.match(regex)?.join("");
+        if (!story) return;
+        dispatch(updageMyPage({ story }))
     };
 
     return (
@@ -145,23 +149,22 @@ const DetailFragment: React.FC<Props> = ({
                         value={state.brand}
                         handleChange={(brand) => dispatch(updageMyPage({ brand }))} />
                     <Spacing.Vertical height={36} />
-                    <PlainTextInput
-                        label={t("register.type_label")}
-                        placeholder={t("register.type_placeholder")}
-                        value={state.tag}
-                        handleChange={(tag) => dispatch(updageMyPage({ tag }))} />
+                    <InputTags
+                        tags={state.tag.split(",").filter(Boolean)}
+                        setTags={(tags) => dispatch(updageMyPage({ tag: tags.toString() }))}
+                    />
                     <Spacing.Vertical height={36} />
                     <PlainTextInput
                         label={t("register.emoji_label")}
                         placeholder="😎 🌽 🎑 🥝 🍑 🌽 🎑 🥝"
-                        value={state.description}
+                        value={state.story}
                         handleChange={handleChangeEmoji} />
                     <Spacing.Vertical height={36} />
                     <PlainTextInput
                         label={t("register.desc_label")}
                         placeholder={t("register.desc_placeholder")}
-                        value={state.story}
-                        handleChange={(story) => dispatch(updageMyPage({ story }))} />
+                        value={state.description}
+                        handleChange={(description) => dispatch(updageMyPage({ description }))} />
                     <Spacing.Vertical height={24} />
                     <Button onClick={handleClickCompleteRegister} text={t("register.save")} />
                     <Spacing.Vertical height={40} />

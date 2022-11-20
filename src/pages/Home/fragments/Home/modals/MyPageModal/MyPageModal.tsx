@@ -1,15 +1,16 @@
 import ImgShare from "@/assets/icon/share_white.svg";
+import ManufacturedDateView from "@/components/ManufacturedDateView";
 import Spacing from "@/components/Spacing";
 import Stack from "@/components/Stack";
 import Typography from "@/components/Typography";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { useAppSelector } from "@/hooks/redux";
 import { BottomProperty, BottomPropertyDivider, BottomWrapper, Container, Content, Divider, PresentImage, PrsentImageWrapper, ShareIcon, SubTitle } from "@/pageModal/ItemDetail/ItemDetailModal";
-import { fetchMyPage } from "@/store/edit-mypage/edit-mypage.reducer";
-import React, { useEffect } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import Modal from 'react-modal';
 import { useNavigate } from "react-router-dom";
 import ActionBar from "./components/ActionBar";
+import SimpleImageSlider from "react-simple-image-slider";
 
 interface Props {
     uid: string;
@@ -25,28 +26,19 @@ const MyPage: React.FC<Props> = ({
 
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
-    const data = useAppSelector(state => state.myPage);
-
-    useEffect(() => {
-        if (uid) {
-            dispatch(fetchMyPage(uid));
-        }
-    }, [uid]);
+    const data = useAppSelector(state => state.user.data?.member);
 
     const handleClickClose = () => setOpen(false);
     const handleClickEdit = () => navigate("/mypage");
     const handleClickShare = () => {
+        console.log(uid);
         window.navigator.share({
             url: "https://thingder.app/share/" + uid,
             title: data?.nickname
         });
-    }
+    };
 
-    const genYear = data.madeAt.split("-")[0];
-    const genMonth = data.madeAt.split("-")[1];
-
-    if (!data) return <span></span>
+    if (!data) return <></>
 
     return (
         <Modal isOpen={open} style={styles}>
@@ -54,7 +46,12 @@ const MyPage: React.FC<Props> = ({
 
             {/* 슬라이드 가능하게 */}
             <PrsentImageWrapper>
-                <PresentImage src={data.images[0]?.src ?? ""} />
+                {/* <PresentImage src={data.images[0]?.src ?? ""} /> */}
+                <SimpleImageSlider
+                    width={'100%'}
+                    height={375}
+                    images={data.images.map(image => { return { url: image.src }; })}
+                    showBullets={true} showNavs={false} />
 
                 {/* 공유 버튼 */}
                 <ShareIcon onClick={handleClickShare} src={ImgShare} />
@@ -64,7 +61,7 @@ const MyPage: React.FC<Props> = ({
             <Container>
                 <Stack.Horizontal style={{ alignItems: "flex-end" }}>
                     <Typography.Header1>{data.nickname}</Typography.Header1>
-                    <Typography.Caution1>{genYear}{t("detail.year")} {genMonth}{t("detail.month")} {t("detail.gen")}</Typography.Caution1>
+                    <ManufacturedDateView genYear={data.genYear} genMonth={data.genMonth} />
                 </Stack.Horizontal>
                 <Stack.Vertical style={{ alignItems: "flex-end" }}>
                     <Content>{data.brand}</Content>

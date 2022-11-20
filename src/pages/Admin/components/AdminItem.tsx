@@ -22,12 +22,13 @@ const AdminItem: React.FC<Props> = (props) => {
                         {props.icon}
                     </IconWrapper>
                 </IconBg>
-                <Spacing.Horizontal width={20} />
+                <Spacing.Horizontal width={20} style={{ flexShrink: 0 }} />
                 <div>
                     <Title>{props.title}</Title>
                     <Spacing.Vertical height={6} />
                     <SubTitle>{props.subTitle}</SubTitle>
                 </div>
+                <Spacing.Horizontal width={16} style={{ flexShrink: 0 }} />
             </Wrapper>
             <ArrowIcon src={ImgArrow} />
         </Container>
@@ -61,7 +62,6 @@ const Container = styled.div`
 const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
 `;
 
@@ -70,12 +70,18 @@ const IconWrapper = styled.div`
     left: 50%;;
     top: 50%;
     transform: translate(-50%, -50%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 const IconBg = styled.div`
     width: 56px;
     height: 56px;
     border-radius: 28px;
+
+    min-width: 56px;
 
     position: relative;
 `;

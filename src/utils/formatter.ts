@@ -8,7 +8,6 @@ export const formatPhoneNumberHypen = (text?: string) => {
         .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
 };
 
-
 /**
  * srcSet 상대경로를 절대경로로 바꿔줌
  * @param srcSet 원본 srcSet
@@ -22,5 +21,5 @@ export const formatRelativeToAbsoluteURL = (srcSet: string) => {
         newArray.push(" " + URL + item);
     });
 
-   return newArray.toString();
+    return newArray.toString();
 };

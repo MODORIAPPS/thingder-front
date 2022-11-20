@@ -11,6 +11,7 @@ import { modalStyles } from "@/pages/Home/fragments/About/modal/AskToTalkModal";
 
 export interface ChatReportProps {
     chatRoomUid: string;
+    subjectUid: string;
     open: boolean;
     close: () => void;
 }
@@ -18,6 +19,7 @@ export interface ChatReportProps {
 const ReportChatModal: React.FC<ChatReportProps> = (
     {
         chatRoomUid,
+        subjectUid,
         open,
         close,
     }
@@ -26,8 +28,8 @@ const ReportChatModal: React.FC<ChatReportProps> = (
     const [page, setPage] = useState<"MENU" | "REPORT">("MENU");
     const [type, setType] = useState<"CANCEL" | "BLOCK">("CANCEL");
     const navigate = useNavigate();
-
-    const handleClickReport = () => navigate("report");
+    console.log(subjectUid);
+    const handleClickReport = () => navigate("report/" + chatRoomUid + "?subjectUid=" + subjectUid);
 
     const handleClickReturn = () => {
         close();
@@ -37,10 +39,12 @@ const ReportChatModal: React.FC<ChatReportProps> = (
         <Modal isOpen={open} style={modalStyles}>
             {
                 page === "MENU" ?
-                    <Report setPage={(type) => {
-                        setPage("REPORT")
-                        setType(type)
-                    }} />
+                    <Report
+                        subjectUid={subjectUid}
+                        setPage={(type) => {
+                            setPage("REPORT")
+                            setType(type)
+                        }} />
                     :
 
                     <ChatModalContainer>

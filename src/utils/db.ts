@@ -21,6 +21,7 @@ const createNewChatRoom = (
     const storageData = window.localStorage.getItem(CHATROOM_KEY);
     if (storageData !== "" && storageData !== null) {
         list = JSON.parse(storageData);
+        console.log(list);
         
         if(list.findIndex(item => item.chatRoomUid === chatRoomUid) > -1){
             return;
@@ -36,7 +37,7 @@ const createNewChatRoom = (
         isRead: true
     };
 
-    window.localStorage.setItem(CHATROOM_KEY, JSON.stringify([list, room]));
+    window.localStorage.setItem(CHATROOM_KEY, JSON.stringify([...list, room]));
 };
 
 const removeChatRoom = (chatRoomUid: string) => {

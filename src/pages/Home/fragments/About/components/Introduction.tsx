@@ -3,15 +3,33 @@ import styled from "@emotion/styled";
 import React from "react";
 import ImgAboutUsBottom from "@/assets/aboutus_bottom.png";
 import { useTranslation } from "react-i18next";
+import i18n from "@/utils/i18n";
 
 const Introduction: React.FC = () => {
 
     const { t } = useTranslation();
+    const isKorean = i18n.language === "kr";
+
+    const renderTitle = () => {
+        if (isKorean) {
+            return (
+                <>
+                    <HighLight>띵더</HighLight>는 <RedCut>레드커틀러리</RedCut>
+                    가 만든 예술실험적 데이팅 앱입니다.
+                </>
+            );
+        }
+
+        return (
+            <>
+                <HighLight>Thingder</HighLight> is an art experimental dating app created by <RedCut>RedCutlery</RedCut>.
+            </>
+        );
+    };
 
     return (
         <Wrapper>
-            <HighLight>띵더</HighLight>는 <RedCut>레드커틀러리</RedCut>
-            가 만든 예술실험적 데이팅 앱입니다.
+            {renderTitle()}
             <Spacing.Vertical height={32} />
             <Bold>{t("about.subject")}</Bold>
             <Spacing.Vertical height={32} />

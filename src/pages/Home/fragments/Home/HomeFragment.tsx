@@ -16,7 +16,7 @@ import HomeFragTopBar from "./components/HomeFragTopBar";
 import ItemCardBig from "./components/ItemCardBig";
 import usePick from "./hooks/usePick";
 import MatchModal from "./modals/MatchModal";
-import MyPage from "./modals/MyPageModal/MyPage";
+import MyPage from "./modals/MyPageModal/MyPageModal";
 import { API, Direction } from "./types";
 
 interface ItemListResponse {
@@ -38,11 +38,13 @@ const HomeFragment: React.FC = () => {
     const [direction, setDirection] = useState<Direction>();
     const currentIndexRef = useRef(currentIndex);
 
-    const debouncedDirection = useDebounce({ value: direction, delay: 300 });
+    const debouncedDirection = useDebounce({ value: direction, delay: 0 });
 
     const canSwipe = currentIndex >= 0;
 
     const userUid = useAppSelector(state => state.user.data?.uid);
+
+    const [chatRoomUid, setChatRoomUid] = useState("");
 
 
     useEffect(() => {
@@ -66,8 +68,8 @@ const HomeFragment: React.FC = () => {
 
     const swiped = (direction: Direction, index: number) => {
         console.log(direction, index)
+        setDirection(undefined);
         const uid = itemList[index].uid;
-        setDirection(direction);
         updateCurrentIndex(index - 1);
         usePick(uid, direction).then(({ data }) => {
             if (data.match) {
@@ -75,10 +77,11 @@ const HomeFragment: React.FC = () => {
                 ChatRoomAction.createNewChatRoom(
                     data.chatUid,
                     item.nickname,
-                    item.image.src,
-                    item.image.srcSet
+                    item.image?.src ?? "",
+                    item.image?.srcSet ?? ""
                 );
                 setMatched(true);
+                setChatRoomUid(data.chatUid);
             }
         });
     }
@@ -180,23 +183,23 @@ const HomeFragment: React.FC = () => {
             <ItemDetailModal />
 
             {
-                itemList[currentIndex] &&
+                itemList[currentIndex+1] &&
                 <MatchModal
                     open={matched}
                     handleClickClose={() => setMatched(false)}
-                    uid={itemList[currentIndex].uid}
-                    nickname={itemList[currentIndex].nickname}
-                    name={itemList[currentIndex].nickname}
-                    madeIn={itemList[currentIndex].genCountry}
-                    brand={itemList[currentIndex].brand}
-                    genYear={itemList[currentIndex].genYear}
-                    genMonth={itemList[currentIndex].genMonth}
-                    thumbnail_src={itemList[currentIndex]?.image?.src ?? ""}
-                    thubmnail_srcSet={itemList[currentIndex]?.image?.srcSet ?? ""}
+                    chatRoomUid={chatRoomUid}
+                    nickname={itemList[currentIndex+1].nickname}
+                    name={itemList[currentIndex+1].nickname}
+                    madeIn={itemList[currentIndex+1].genCountry}
+                    brand={itemList[currentIndex+1].brand}
+                    genYear={itemList[currentIndex+1].genYear}
+                    genMonth={itemList[currentIndex+1].genMonth}
+                    thumbnail_src={itemList[currentIndex+1]?.image?.src ?? ""}
+                    thubmnail_srcSet={itemList[currentIndex+1]?.image?.srcSet ?? ""}
                 />
             }
 
-            <MyPage
+            <MyPage 
                 uid={userUid ?? ""}
                 open={myPage}
                 setOpen={setMyPage} />

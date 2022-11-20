@@ -16,13 +16,13 @@ import ImgNavHomeDisabled from "@/assets/icon/nav/nav_home_disabled.svg";
 
 import { useTranslation } from "react-i18next";
 
-type TabType = "home" | "explore" | "chat" | "about";
+type TabType = "home" | "/home/explore" | "/home/chat" | "/home/about";
 
 const BottomNavigationBar: React.FC = () => {
 
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const [tab, setTab] = useState<TabType>("home");
+    const [tab, setTab] = useState<TabType>(window.location.pathname as TabType);
 
     useEffect(() => {
         const target = tab === "home" ? "" : tab;
@@ -37,22 +37,22 @@ const BottomNavigationBar: React.FC = () => {
                     <Text selected={tab === "home"}>{t("nav.home")}</Text>
                 </TabItem>
             </TabWrapper>
-            <TabWrapper onClick={() => setTab("explore")}>
+            <TabWrapper onClick={() => setTab("/home/explore")}>
                 <TabItem>
-                    <Icon src={tab === "explore" ? ImgNavExploreEnabled : ImgNavExploreDisabled} />
-                    <Text selected={tab === "explore"}>{t("nav.explore")}</Text>
+                    <Icon src={tab === "/home/explore" ? ImgNavExploreEnabled : ImgNavExploreDisabled} />
+                    <Text selected={tab === "/home/explore"}>{t("nav.explore")}</Text>
                 </TabItem>
             </TabWrapper>
-            <TabWrapper onClick={() => setTab("chat")}>
+            <TabWrapper onClick={() => setTab("/home/chat")}>
                 <TabItem>
-                    <Icon src={tab === "chat" ? ImgNavChatEnabled : ImgNavChatDisabled} />
-                    <Text selected={tab === "chat"}>{t("nav.chat")}</Text>
+                    <Icon src={tab === "/home/chat" ? ImgNavChatEnabled : ImgNavChatDisabled} />
+                    <Text selected={tab === "/home/chat"}>{t("nav.chat")}</Text>
                 </TabItem>
             </TabWrapper>
-            <TabWrapper onClick={() => setTab("about")}>
+            <TabWrapper onClick={() => setTab("/home/about")}>
                 <TabItem>
-                    <Icon src={tab === "about" ? ImgNavAboutEnabled : ImgNavAboutDisabled} />
-                    <Text selected={tab === "about"} style={{ color: (tab === "about") ? 'red' : "#858585" }}>{t("nav.cut")}</Text>
+                    <Icon src={tab === "/home/about" ? ImgNavAboutEnabled : ImgNavAboutDisabled} />
+                    <Text selected={tab === "/home/about"} style={{ color: (tab === "/home/about") ? 'red' : "#858585" }}>{t("nav.cut")}</Text>
                 </TabItem>
             </TabWrapper>
         </TabLayout>

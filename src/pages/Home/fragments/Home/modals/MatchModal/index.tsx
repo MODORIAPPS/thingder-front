@@ -1,15 +1,21 @@
 import Spacing from "@/components/Spacing";
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MatchedEffect from "./MatchedEffect";
 import MatchedItemCard from "./MatchedItemCard";
 import SendMessageInput from "./SendMessageInput";
 import TopBar from "./TopBar";
 import Modal from 'react-modal';
+import { Client, CompatClient, IFrame, Message, Stomp } from '@stomp/stompjs';
+import SockJS from "sockjs-client/dist/sockjs"
+import { useAppSelector } from "@/hooks/redux";
+import { ChatItem } from "@/pages/Chat";
+import { useNavigate } from "react-router-dom";
+import emojiRegex from "emoji-regex";
 
 interface Props {
     open: boolean;
-    uid: string;
+    chatRoomUid: string;
 
     nickname: string;
     name: string;
@@ -23,11 +29,13 @@ interface Props {
     thubmnail_srcSet: string;
 
     handleClickClose: () => void;
- }
+}
+
+const regex = emojiRegex();
 
 const MatchModal: React.FC<Props> = ({
     open,
-    uid,
+    chatRoomUid,
     nickname,
     name,
     madeIn,
@@ -39,11 +47,50 @@ const MatchModal: React.FC<Props> = ({
     handleClickClose
 }) => {
 
+    const navigate = useNavigate();
+    const chatClient = useRef<CompatClient>();
     const [text, setText] = useState("");
-    
-    const handleClickSend = () => {
 
+    const uid = useAppSelector(state => state.user.data?.uid);
+
+    const handleClickSend = () => {
+        if (!text || text.replace(/^\s+|\s+$/g, "") === "") return;
+        const chat = {
+            roomUid: chatRoomUid,
+            userUid: uid,
+            message: text
+        }
+        chatClient?.current?.send("/app/message", {}, JSON.stringify(chat));
+        navigate("chat/" + chatRoomUid + "?nickname=" + nickname)
     };
+
+    const handleChangeText = (text: string) => {
+        let description = text;
+        description = text.match(regex)?.join("") ?? "";
+        if (!description) return;
+
+        setText(description);
+    };
+
+    useEffect(() => {
+        let client: Client;
+        (async () => {
+            // STOMP
+            const sock = new SockJS("https://api.thingder.app/endpoint",);
+            const stomp_client = Stomp.over(sock);
+
+            stomp_client.connect({
+                roomUid: chatRoomUid,
+            }, (frame: IFrame) => {
+                chatClient.current = stomp_client
+            });
+        })();
+
+        return () => {
+            client?.deactivate();
+        }
+    }, [chatRoomUid]);
+
 
     return (
         <Modal isOpen={open} style={styles}>
@@ -64,7 +111,7 @@ const MatchModal: React.FC<Props> = ({
                 />
                 <Spacing.Vertical height={16} />
                 <SendMessageInput
-                    onChangeText={(text) => setText(text)}
+                    onChangeText={handleChangeText}
                     text={text}
                     onClickSend={handleClickSend}
                 />

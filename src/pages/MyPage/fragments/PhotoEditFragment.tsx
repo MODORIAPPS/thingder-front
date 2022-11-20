@@ -1,15 +1,14 @@
-import styled from "@emotion/styled";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import ImgAddRound from "@/assets/icon/add_round.svg";
-import ActionBar from "@/components/ActionBar";
-import { toast } from "react-toastify";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { changeRegisterProperty } from "@/store/register/register.reducer";
 import api from "@/api";
 import AddRoundBtn from "@/assets/button/add_round.png";
+import ImgAddRound from "@/assets/icon/add_round.svg";
+import ActionBar from "@/components/ActionBar";
 import Button from "@/components/Button";
 import Spacing from "@/components/Spacing";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { updageMyPage } from "@/store/edit-mypage/edit-mypage.reducer";
+import { updateMyInfo } from "@/store/user/user.reducer";
+import styled from "@emotion/styled";
+import React, { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 interface ImageResponse {
@@ -65,7 +64,7 @@ const PhotoEditFragment: React.FC<Props> = ({ onClickBackButton }) => {
 
     const handleClickSave = async () => {
         if (photo.length < 1) {
-            toast("적어도 하나의 이미지가 필요합니다.", { type: "error" });
+            alert("적어도 하나의 이미지가 필요합니다.")
             return;
         }
 
@@ -81,6 +80,7 @@ const PhotoEditFragment: React.FC<Props> = ({ onClickBackButton }) => {
             genMonth
         });
         alert("저장되었습니다!");
+        dispatch(updateMyInfo());
     };
 
     const handleClickPhotoBox = (index: number) => {

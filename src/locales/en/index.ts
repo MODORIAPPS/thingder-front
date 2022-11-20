@@ -82,7 +82,7 @@ export default {
         email_label: "email",
         email_placeholder: "Please enter your email",
         email_error: "Invalid email address.",
-        phone_label: "Phone number",
+        phone_label: "Phone number\n(Only South Korea telephone number type available 0XX-XXX-XXXX)",
         phone_placeholder: "Please enter your phone number",
         code_label: "Check Code",
         code_placeholder: "Please enter the check code",
@@ -95,7 +95,7 @@ export default {
         continue: "Continue",
         confirm_btn: "Verify",
         confirm_toast: "Confirmed!",
-        send_code: "Send authentication code"
+        send_code: "Send code"
     },
     already: {
         text1: "You've seen everything...!!",

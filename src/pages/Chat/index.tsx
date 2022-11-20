@@ -16,7 +16,7 @@ import queryString from 'query-string'
 
 const regex = emojiRegex();
 
-interface ChatItem {
+export interface ChatItem {
     sender: {
         uid: string;
         images: {
@@ -49,10 +49,13 @@ const Chat: React.FC = () => {
     const chatClient = useRef<CompatClient>();
 
     const [chatList, setChatList] = useState<ChatItem[]>([]);
+    const [subjectUid, setSubjectUid] = useState("");
+
+    const mineChat = chatList.filter(chat => chat.sender.uid === uid);
 
     const [text, setText] = useState("");
     const handleClickSend = () => {
-        console.log('uewfawef');
+        if(!text || text.replace(/^\s+|\s+$/g, "") === "") return;
         const chat = {
             roomUid: id,
             userUid: uid,
@@ -72,7 +75,7 @@ const Chat: React.FC = () => {
 
     const [reportModal, setReportModal] = useState(false);
 
-    const onlyEmoji = chatList.length <= 5;
+    const onlyEmoji = mineChat.length <= 5;
 
     const handleClickClose = () => navigate(-1);
     const handleClickGuard = () => {
@@ -86,12 +89,13 @@ const Chat: React.FC = () => {
     };
 
     const handleChangeText = (text: string) => {
+        let description = text;
         if (onlyEmoji) {
-            const description = text.match(regex)?.join("");
+            description = text.match(regex)?.join("") ?? "";
             if (!description) return;
         }
 
-        setText(text);
+        setText(description);
     };
 
     useEffect(() => {
@@ -104,10 +108,8 @@ const Chat: React.FC = () => {
             stomp_client.connect({
                 roomUid: id,
             }, (frame: IFrame) => {
-                console.log('connect');
                 chatClient.current = stomp_client
                 stomp_client.subscribe(id ?? "", message => {
-                    console.log('message', message);
                 });
             });
         })();
@@ -123,9 +125,8 @@ const Chat: React.FC = () => {
 
     useEffect(() => {
         if (chatClient.current) {
-            console.log('subs')
             chatClient.current.subscribe("/chat/room/" + id, (message) => {
-                console.log(message);
+
                 const body = JSON.parse(message.body);
                 const item: ChatItem = {
                     sender: {
@@ -145,11 +146,11 @@ const Chat: React.FC = () => {
     useEffect(() => {
         if (chatList.length > 0) {
             const image = chatList[0].sender.images;
-            console.log('image', image);
             setThumbnail({
-                src: image[0].src,
-                srcSet: image[0].srcSet
-            })
+                src: image[0]?.src ?? "",
+                srcSet: image[0]?.srcSet ?? ""
+            });
+            setSubjectUid(chatList[0].sender.uid)
         }
     }, [chatList]);
 
@@ -159,6 +160,7 @@ const Chat: React.FC = () => {
                 <TopBar onClickBack={handleClickClose} onClickGuard={handleClickGuard} title={nickname as string ?? ""} />
 
                 <ChatBody>
+                    <Limit5TextView>첫 5개의 메시지는 이모지만 쓸 수 있어요.</Limit5TextView>
                     {
                         chatList.map(chat => {
                             if (chat.sender.uid === uid) {
@@ -188,11 +190,22 @@ const Chat: React.FC = () => {
             {/* 신고 모달 */}
             <ReportChatModal
                 chatRoomUid={id ?? ""}
+                subjectUid={subjectUid}
                 open={reportModal}
                 close={() => setReportModal(false)} />
         </>
     );
 };
+
+const Limit5TextView = styled.p`
+    position: fixed;
+    left: 0;
+    right: 0;
+    color: rgba(66, 66, 66, 0.5);
+    text-align: center;
+    font-size: 13px;
+    line-height: 17px;
+`;
 
 export const Container = styled.div`
     position: relative;
@@ -208,6 +221,8 @@ export const ChatBody = styled.div`
     padding: 20px 18px 80px 18px;
 
     overflow-y: scroll;
+
+    position: relative;
 `;
 
 export const BottomChat = styled.div`

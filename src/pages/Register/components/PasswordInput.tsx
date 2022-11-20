@@ -8,6 +8,9 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 
+// 영문, 숫자, 특수 문자를 조합한 6자리 이상의 비밀번호 체크 
+const passwordRegex = new RegExp("^((?=.*[a-z])(?=.*[!@#$%^&*])(?=.*[0-9])(?=.{6,}))");
+
 const PasswordInput: React.FC = () => {
 
     const { t } = useTranslation();
@@ -45,7 +48,7 @@ const PasswordInput: React.FC = () => {
 };
 
 const isPasswordValid = (pwd: string): boolean => {
-    return true;
+    return passwordRegex.test(pwd);
 }
 
 const PasswordIcon = styled.img`
