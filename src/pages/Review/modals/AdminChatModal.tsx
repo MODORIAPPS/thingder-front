@@ -1,6 +1,6 @@
 import api from "@/api";
 import Spacing from "@/components/Spacing";
-import { BottomChat, ChatBody, ChatItem, WhiteGradient } from "@/pages/Chat";
+import { BottomChat, ChatBody, ChatItem, sortDate1, WhiteGradient } from "@/pages/Chat";
 import CounterpartChat from "@/pages/Chat/components/CounterpartChat";
 import MinepartChat from "@/pages/Chat/components/MinepartChat";
 import TopBar from "@/pages/Chat/components/TopBar";
@@ -81,7 +81,7 @@ const AdminChatModal: React.FC<Props> = ({
 
             <ChatBody>
                 {
-                    chatList.map(chat => {
+                    sortDate1(chatList).map(chat => {
                         if (chat.sender.uid === subjectUid) {
                             return <CounterpartChat
                                 thumbnail_src={thumbnail?.src ?? ""}

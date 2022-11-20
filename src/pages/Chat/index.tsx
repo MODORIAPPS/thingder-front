@@ -19,12 +19,14 @@ const regex = emojiRegex();
 export interface ChatItem {
     sender: {
         uid: string;
+        
         images: {
             src: string;
             srcSet: string;
         }[]
     }
     message: string;
+    sendAt: string;
 }
 
 interface Photo {
@@ -55,7 +57,7 @@ const Chat: React.FC = () => {
 
     const [text, setText] = useState("");
     const handleClickSend = () => {
-        if(!text || text.replace(/^\s+|\s+$/g, "") === "") return;
+        if (!text || text.replace(/^\s+|\s+$/g, "") === "") return;
         const chat = {
             roomUid: id,
             userUid: uid,
@@ -63,13 +65,15 @@ const Chat: React.FC = () => {
         }
         chatClient?.current?.send("/app/message", {}, JSON.stringify(chat));
         const item: ChatItem = {
+            sendAt: "",
             sender: {
                 uid: uid ?? "",
                 images: []
             },
             message: text
         };
-        setChatList([...chatList, item]);
+        console.log('commit');
+        setChatList(prevState => [...prevState, item]);
         setText("");
     };
 
@@ -85,7 +89,7 @@ const Chat: React.FC = () => {
 
     const fetchChatHistory = async () => {
         const { data } = await api.main.get<{ messages: ChatItem[] }>("/chat/" + id);
-        setChatList(data.messages);
+        setChatList(sortDate1(data.messages));
     };
 
     const handleChangeText = (text: string) => {
@@ -110,6 +114,7 @@ const Chat: React.FC = () => {
             }, (frame: IFrame) => {
                 chatClient.current = stomp_client
                 stomp_client.subscribe(id ?? "", message => {
+                    console.log(message);
                 });
             });
         })();
@@ -117,7 +122,7 @@ const Chat: React.FC = () => {
         return () => {
             client?.deactivate();
         }
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         fetchChatHistory();
@@ -126,20 +131,19 @@ const Chat: React.FC = () => {
     useEffect(() => {
         if (chatClient.current) {
             chatClient.current.subscribe("/chat/room/" + id, (message) => {
-
+                console.log('hello')
                 const body = JSON.parse(message.body);
-                const item: ChatItem = {
+                const item = {
+                    sendAt: "",
                     sender: {
                         uid: body.userUid,
-                        images: []
+                        images: [],
                     },
                     message: body.message
                 }
-                setChatList([...chatList, item]);
+                setChatList((prevState) => [...prevState, item]);
             })
         }
-
-        // return () => chatClient.current?.unsubscribe();
     }, [chatClient]);
 
 
@@ -162,12 +166,13 @@ const Chat: React.FC = () => {
                 <ChatBody>
                     <Limit5TextView>첫 5개의 메시지는 이모지만 쓸 수 있어요.</Limit5TextView>
                     {
-                        chatList.map(chat => {
+                        chatList.map((chat, i) => {
                             if (chat.sender.uid === uid) {
-                                return <MinepartChat text={chat.message} />
+                                return <MinepartChat key={i} text={chat.message} />
                             }
 
                             return <CounterpartChat
+                                key={i}
                                 thumbnail_src={thumbnail?.src ?? ""}
                                 thumbnail_srcSet={thumbnail?.srcSet ?? ""}
                                 text={chat.message} />
@@ -196,7 +201,12 @@ const Chat: React.FC = () => {
         </>
     );
 };
-
+export function sortDate1(list: ChatItem[]) {
+    const sorted_list = list.sort(function (a, b) {
+        return new Date(a.sendAt).getTime() - new Date(b.sendAt).getTime();
+    });
+    return sorted_list;
+}
 const Limit5TextView = styled.p`
     position: fixed;
     left: 0;

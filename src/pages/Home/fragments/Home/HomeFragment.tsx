@@ -1,15 +1,14 @@
 import api from "@/api";
-import Typography from "@/components/Typography";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import useDebounce from "@/hooks/useDebounce";
 import ItemDetailModal from "@/pageModal/ItemDetail/ItemDetailModal";
 import { showMemberDetailAction } from "@/store/ui/ui.reducer";
 import ChatRoomAction from "@/utils/db";
 import styled from "@emotion/styled";
-import React, { Children, useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import TinderCard from 'react-tinder-card';
 import Spacing from "../../../../components/Spacing";
-import { ItemCardType, sampleData } from "../Explore/components/ItemCard";
+import { ItemCardType } from "../Explore/components/ItemCard";
 import AlreadyRead from "./components/AlreadyRead";
 import ChooseButton from "./components/ChooseButton";
 import HomeFragTopBar from "./components/HomeFragTopBar";
@@ -183,19 +182,19 @@ const HomeFragment: React.FC = () => {
             <ItemDetailModal />
 
             {
-                itemList[currentIndex+1] &&
+                itemList[currentIndex-1] &&
                 <MatchModal
                     open={matched}
                     handleClickClose={() => setMatched(false)}
                     chatRoomUid={chatRoomUid}
-                    nickname={itemList[currentIndex+1].nickname}
-                    name={itemList[currentIndex+1].nickname}
-                    madeIn={itemList[currentIndex+1].genCountry}
-                    brand={itemList[currentIndex+1].brand}
-                    genYear={itemList[currentIndex+1].genYear}
-                    genMonth={itemList[currentIndex+1].genMonth}
-                    thumbnail_src={itemList[currentIndex+1]?.image?.src ?? ""}
-                    thubmnail_srcSet={itemList[currentIndex+1]?.image?.srcSet ?? ""}
+                    nickname={itemList[currentIndex-1].nickname}
+                    name={itemList[currentIndex-1].nickname}
+                    madeIn={itemList[currentIndex-1].genCountry}
+                    brand={itemList[currentIndex-1].brand}
+                    genYear={itemList[currentIndex-1].genYear}
+                    genMonth={itemList[currentIndex-1].genMonth}
+                    thumbnail_src={itemList[currentIndex-1]?.image?.src ?? ""}
+                    thubmnail_srcSet={itemList[currentIndex-1]?.image?.srcSet ?? ""}
                 />
             }
 
