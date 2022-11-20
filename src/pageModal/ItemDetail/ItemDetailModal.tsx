@@ -152,7 +152,7 @@ const ItemDetailModal: React.FC = () => {
                 <SubTitle>{t("detail.talk_with_emoji")}</SubTitle>
                 <Spacing.Vertical height={8} />
                 <Content>
-                    {data?.description}
+                    {data?.story}
                 </Content>
 
                 <Divider />
@@ -161,7 +161,7 @@ const ItemDetailModal: React.FC = () => {
                 <SubTitle>{t("detail.about_me")}</SubTitle>
                 <Spacing.Vertical height={8} />
                 <Content>
-                    {data?.story}
+                    {data?.description}
                 </Content>
             </Container>
         </Modal >

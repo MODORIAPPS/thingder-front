@@ -91,6 +91,7 @@ const HomeFragment: React.FC = () => {
     }
 
     const fetchItemList = async () => {
+        setItemList([]);
         const { data } = await api.main.get<ItemListResponse>("/matching/");
         setItemList(data.members);
         // setItemList(sampleData);
@@ -121,9 +122,11 @@ const HomeFragment: React.FC = () => {
 
     useEffect(() => {
         if (currentIndex === -1) {
-            setItemList([]);
+            // setItemList([]);
         }
     }, [currentIndex]);
+
+    console.log(itemList[currentIndex+1])
 
     return (
         <Screen>
@@ -182,23 +185,23 @@ const HomeFragment: React.FC = () => {
             <ItemDetailModal />
 
             {
-                itemList[currentIndex-1] &&
+                itemList[currentIndex+1] &&
                 <MatchModal
                     open={matched}
                     handleClickClose={() => setMatched(false)}
                     chatRoomUid={chatRoomUid}
-                    nickname={itemList[currentIndex-1].nickname}
-                    name={itemList[currentIndex-1].nickname}
-                    madeIn={itemList[currentIndex-1].genCountry}
-                    brand={itemList[currentIndex-1].brand}
-                    genYear={itemList[currentIndex-1].genYear}
-                    genMonth={itemList[currentIndex-1].genMonth}
-                    thumbnail_src={itemList[currentIndex-1]?.image?.src ?? ""}
-                    thubmnail_srcSet={itemList[currentIndex-1]?.image?.srcSet ?? ""}
+                    nickname={itemList[currentIndex+1].nickname}
+                    name={itemList[currentIndex+1].nickname}
+                    madeIn={itemList[currentIndex+1].genCountry}
+                    brand={itemList[currentIndex+1].brand}
+                    genYear={itemList[currentIndex+1].genYear}
+                    genMonth={itemList[currentIndex+1].genMonth}
+                    thumbnail_src={itemList[currentIndex+1]?.image?.src ?? ""}
+                    thubmnail_srcSet={itemList[currentIndex+1]?.image?.srcSet ?? ""}
                 />
             }
 
-            <MyPage 
+            <MyPage
                 uid={userUid ?? ""}
                 open={myPage}
                 setOpen={setMyPage} />
