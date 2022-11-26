@@ -13,7 +13,14 @@ interface ChatReport {
     uid: string;
     chatRoomUid: string;
     message: string;
-    subjectUid: string;
+    subject: {
+        uid: string;
+        nickname: string;
+        image: {
+            src: string;
+            srcSet: string;
+        }
+    }
 }
 
 const ChatFragment: React.FC = () => {
@@ -61,10 +68,10 @@ const ChatFragment: React.FC = () => {
                                 onClick={handleClickChatRoom}
                                 uid={room.chatRoomUid}
                                 isRead={false}
-                                thumbnail_src={""}
-                                thumbnail_srcSet={""}
-                                itemNickname={room.message}
-                                lastChat={""} />)
+                                thumbnail_src={room.subject.image.src}
+                                thumbnail_srcSet={room.subject.image.srcSet}
+                                itemNickname={room.subject.nickname}
+                                lastChat={room.message} />)
                     }
                 </List>
             </Container>
@@ -74,7 +81,7 @@ const ChatFragment: React.FC = () => {
                 <AdminChatModal
                     reportUid={list.filter(chat => chat.chatRoomUid === chatRoomUid)[0]?.uid}
                     chatRoomUid={chatRoomUid}
-                    subjectUid={list.filter(chat => chat.chatRoomUid === chatRoomUid)[0]?.subjectUid}
+                    subjectUid={list.filter(chat => chat.chatRoomUid === chatRoomUid)[0]?.subject.uid}
                     open={chatModal}
                     setOpen={setChatModal}
                     description={list.filter(chat => chat.chatRoomUid === chatRoomUid)[0]?.message}

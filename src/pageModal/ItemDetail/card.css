@@ -4,7 +4,7 @@
     background: #FFFFFF;
     padding-bottom: 40px;
     border: none;
-    overflow: hidden;
+    overflow: scroll;
     position: absolute;
     will-change: transform;
     transition: all 0.3s ease-in-out;

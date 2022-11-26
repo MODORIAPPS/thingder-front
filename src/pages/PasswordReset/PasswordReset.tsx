@@ -15,6 +15,7 @@ import { useTimer } from "react-timer-hook";
 import { CODE_CONFIRM_ERROR, CODE_EXPIRY_TIME } from "../Register/Register";
 import api from "@/api";
 import Timer from "../Register/components/Timer";
+import SendCodeButton from "../Register/components/SendCodeButton";
 
 const PasswordReset: React.FC = () => {
 
@@ -63,15 +64,17 @@ const PasswordReset: React.FC = () => {
 
 
     const handleClickCodeConfirm = async () => {
-        // try {
-        //     const { data } = await api.main.post<PinCheckResponse>("/auth/pin/check", { phone, pin: code });
-        //     setCodeError("");
-        //     setToken(data.)
-        //     toast(t("prer.confirm_toast"));
-        //     pause();
-        // } catch (e) {
-        //     setCodeError(CODE_CONFIRM_ERROR);
-        // }
+        try {
+            const { data } = await api.main.post<{token: string}>("/auth/pin/check", {
+                email,
+                pin: code
+            });
+            setCodeError("");
+            setToken(data.token)
+            pause();
+        } catch (e) {
+            setCodeError(CODE_CONFIRM_ERROR);
+        }
     };
 
     const handleClickContinue = () => {
@@ -95,6 +98,7 @@ const PasswordReset: React.FC = () => {
                     value={email}
                     error={emailError}
                     type="email"
+                    action={<SendCodeButton onClick={handleClickSendCode} />}
                 />
                 <Spacing.Vertical height={16} />
                 {/* 인증 코드 */}

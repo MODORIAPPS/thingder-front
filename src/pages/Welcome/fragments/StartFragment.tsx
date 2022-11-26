@@ -21,7 +21,7 @@ const StartFragment: React.FC<Props> = ({ handleClickHello }) => {
 
     const { t } = useTranslation();
 
-    const [lang, setLang] = useState<LangType>("en");
+    const [lang, setLang] = useState<LangType>((window.localStorage.getItem("lang") || "en") as LangType);
     const [isKorean, setIsKorean] = useState(false);
 
     useEffect(() => {
@@ -32,6 +32,7 @@ const StartFragment: React.FC<Props> = ({ handleClickHello }) => {
     const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value as LangType;
         setLang(value);
+        window.localStorage.setItem("lang", value);
         if (value === "en") {
             i18n.changeLanguage("en");
         } else {

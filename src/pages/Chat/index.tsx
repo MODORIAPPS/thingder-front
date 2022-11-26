@@ -19,7 +19,7 @@ const regex = emojiRegex();
 export interface ChatItem {
     sender: {
         uid: string;
-        
+
         images: {
             src: string;
             srcSet: string;
@@ -164,7 +164,9 @@ const Chat: React.FC = () => {
                 <TopBar onClickBack={handleClickClose} onClickGuard={handleClickGuard} title={nickname as string ?? ""} />
 
                 <ChatBody>
-                    <Limit5TextView>첫 5개의 메시지는 이모지만 쓸 수 있어요.</Limit5TextView>
+                    {
+                        onlyEmoji && <Limit5TextView>첫 5개의 메시지는 이모지만 쓸 수 있어요.</Limit5TextView>
+                    }
                     {
                         chatList.map((chat, i) => {
                             if (chat.sender.uid === uid) {

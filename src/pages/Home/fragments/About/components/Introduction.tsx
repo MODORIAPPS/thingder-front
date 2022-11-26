@@ -22,7 +22,7 @@ const Introduction: React.FC = () => {
 
         return (
             <>
-                <HighLight>Thingder</HighLight> is an art experimental dating app created by <RedCut>RedCutlery</RedCut>.
+                <HighLight>Thingder</HighLight> is an art experimental dating app created by <RedCut>redcutlery</RedCut>.
             </>
         );
     };

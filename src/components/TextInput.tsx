@@ -36,7 +36,6 @@ const TextInput: React.FC<Props> = ({ label, leadingIcon, value, placeholder, on
             </InputWrapper>
             <Spacing.Vertical height={4} />
             <Divider />
-
             {
                 error &&
                 <>

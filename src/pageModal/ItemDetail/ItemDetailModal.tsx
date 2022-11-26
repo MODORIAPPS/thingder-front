@@ -2,7 +2,7 @@ import api from "@/api";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { closeMemberDetailAction } from "@/store/ui/ui.reducer";
 import styled from "@emotion/styled";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Modal from 'react-modal';
 import ImgShare from "@/assets/icon/share_white.svg";
 import Spacing from "@/components/Spacing";
@@ -14,6 +14,8 @@ import { useTranslation } from "react-i18next";
 import ManufacturedDateView from "@/components/ManufacturedDateView";
 import "./card.css"
 import ActionBar from "./components/ActionBar";
+import 'react-awesome-slider/dist/styles.css';
+import AwesomeSlider from "react-awesome-slider";
 import SimpleImageSlider from "react-simple-image-slider";
 
 export const RELATION = {
@@ -94,28 +96,48 @@ const ItemDetailModal: React.FC = () => {
 
     useEffect(() => {
         if (uid) {
+            console.log('god changed!')
             fetchData();
 
             const tinderCard = window.document.getElementsByClassName("tinder-card")[0];
-            console.log(tinderCard);
             tinderCard
                 ?.removeEventListener("touchmove", () => { console.log("removed!") });
+        }else{
+            setData(undefined)
         }
     }, [uid]);
 
+    const itemImages = useMemo(() => {
+        let images = [];
+        images = data?.images
+            ? data?.images.map(image => ({
+                url: image.src,
+            }))
+            : [];
+
+        return images;
+    }, [data?.images, uid]);
+    
+    console.log(uid);
+
     return (
         <Modal className={"tinder--card"} isOpen={open} style={styles}>
+
             <ActionBar
                 handleClickGuard={() => { }}
                 handleClickClose={handleClickBackButton} />
 
             {/* 슬라이드 가능하게 */}
             <PrsentImageWrapper>
-                <SimpleImageSlider
-                    width={'100%'}
-                    height={375}
-                    images={data?.images.map(image => { return { url: image.src }; }) ?? []}
-                    showBullets={true} showNavs={false} />
+                {
+                    itemImages.length > 0 &&
+                    <SimpleImageSlider
+                        key={uid}
+                        width={'100%'}
+                        height={375}
+                        images={itemImages}
+                        showBullets={true} showNavs={false} />
+                }
 
                 {/* 공유 버튼 */}
                 <ShareIcon onClick={handleClickShare} src={ImgShare} />
@@ -130,22 +152,28 @@ const ItemDetailModal: React.FC = () => {
 
             <Spacing.Vertical height={16} />
             <Container>
-                <Stack.Horizontal style={{ alignItems: "flex-end" }}>
+                <div className="flex flex-row flex-wrap justify-between items-end">
                     <Typography.Header1>{data?.nickname}</Typography.Header1>
                     <ManufacturedDateView genYear={data?.genYear ?? 0} genMonth={data?.genMonth ?? 0} />
-                </Stack.Horizontal>
-                <Stack.Vertical style={{ alignItems: "flex-end" }}>
-                    <Content>{data?.brand}</Content>
-                    <BottomWrapper>
-                        <BottomProperty>{t("detail.country")}: {data?.genCountry}</BottomProperty>
+                </div>
+                <div className="flex flex-col flex-wrap justify-between items-end mt-1">
+                    <p className="self-end text-sm text-slate-500">{data?.type}</p>
+                    <div className="flex flex-row items-center text-end flex-wrap">
+                        <p className="flex flex-row flex-wrap text-sm text-slate-500 text-end">
+                            <p className="self-end">{t("detail.country")} : </p>
+                            &nbsp;<p className="self-end">{data?.genCountry}</p>
+                        </p>
                         <BottomPropertyDivider />
-                        <BottomProperty>{t("detail.brand")}: {data?.brand}</BottomProperty>
-                    </BottomWrapper>
-                </Stack.Vertical>
+                        <p className="flex flex-row flex-wrap text-sm text-slate-500 text-end">
+                            <p>{t("detail.brand")} : </p>
+                            &nbsp;<p className="self-end">{data?.brand}</p>
+                        </p>
+                    </div>
+                </div>
 
                 {/* 다섯개 태그 */}
                 <Divider />
-                <Content>{data?.tag}</Content>
+                <Content>{data?.tag.split(",").map(t => `#${t} `)}</Content>
                 <Divider />
 
                 {/* 이모지로 말해요 */}
@@ -163,8 +191,10 @@ const ItemDetailModal: React.FC = () => {
                 <Content>
                     {data?.description}
                 </Content>
+
+                <Spacing.Vertical height={42} />
             </Container>
-        </Modal >
+        </Modal>
     );
 };
 
@@ -175,9 +205,8 @@ const styles = {
     content: {
         padding: 0,
         margin: 0,
-        inset: 0,
         width: '100%',
-        height: '100%',
+        height: "100%",
     }
 }
 

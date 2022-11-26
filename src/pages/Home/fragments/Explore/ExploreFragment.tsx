@@ -37,6 +37,7 @@ const ExploreFragment: React.FC = () => {
             <TopBar />
             <PullToRefresh onRefresh={() => fetchItemList()}>
                 <ListView>
+                    {/* 어드민 계정 안보이게 하기 위해 처리 .filter(item => item.nickname) */}
                     {
                         list?.map(item =>
                             <ItemCard

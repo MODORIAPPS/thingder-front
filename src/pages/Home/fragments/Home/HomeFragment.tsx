@@ -143,7 +143,7 @@ const HomeFragment: React.FC = () => {
                             <Container>
                                 <CardContainer>
                                     {
-                                        itemList.map((item, index) =>
+                                        itemList.filter(item => item.nickname).map((item, index) =>
                                             <TinderCard
                                                 key={item.uid}
                                                 className="slide"

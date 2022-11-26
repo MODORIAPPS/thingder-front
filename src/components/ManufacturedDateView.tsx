@@ -22,10 +22,10 @@ const ManufacturedDateView: React.FC<Props> = (
     const isKorean = i18n.language === "kr";
 
     if (isKorean) {
-        return <Typography.Caution1>{genYear}{t("detail.year")} {genMonth}{t("detail.month")} {t("detail.gen")}</Typography.Caution1>
+        return <Typography.Caution1 className="mt-1">{genYear}{t("detail.year")} {genMonth}{t("detail.month")} {t("detail.gen")}</Typography.Caution1>
     }
 
-    return <Typography.Caution1>Manufactured in {monthNames[genMonth - 1]}, {genYear}</Typography.Caution1>
+    return <Typography.Caution1 className="mt-1">Made in {monthNames[genMonth - 1]}, {genYear}</Typography.Caution1>
 };
 
 export default ManufacturedDateView;
