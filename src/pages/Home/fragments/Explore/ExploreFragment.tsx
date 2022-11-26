@@ -39,7 +39,7 @@ const ExploreFragment: React.FC = () => {
                 <ListView>
                     {/* 어드민 계정 안보이게 하기 위해 처리 .filter(item => item.nickname) */}
                     {
-                        list?.map(item =>
+                        list?.filter(item => item.nickname).map(item =>
                             <ItemCard
                                 onClick={handleClickItem}
                                 key={item.uid}
