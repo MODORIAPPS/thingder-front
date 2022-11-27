@@ -10,11 +10,15 @@ const Introduction: React.FC = () => {
     const { t } = useTranslation();
     const isKorean = i18n.language === "kr";
 
+    const openRedCutlerySite = () => {
+        window.open("http://www.redcutlery.com")
+    }
+
     const renderTitle = () => {
         if (isKorean) {
             return (
                 <>
-                    <HighLight>띵더</HighLight>는 <RedCut>레드커틀러리</RedCut>
+                    <HighLight>띵더</HighLight>는 <RedCut onClick={openRedCutlerySite}>레드커틀러리</RedCut>
                     가 만든 예술실험적 데이팅 앱입니다.
                 </>
             );
@@ -22,7 +26,7 @@ const Introduction: React.FC = () => {
 
         return (
             <>
-                <HighLight>Thingder</HighLight> is an art experimental dating app created by <RedCut>redcutlery</RedCut>.
+                <HighLight>Thingder</HighLight> is an art experimental dating app created by <RedCut onClick={openRedCutlerySite}>redcutlery</RedCut>.
             </>
         );
     };
@@ -61,6 +65,7 @@ export const RedCut = styled.span`
     font-weight: bold;
     text-decoration: underline;
     color: #FF0000;
+    cursor: pointer;
 `;
 
 const Bold = styled.span`

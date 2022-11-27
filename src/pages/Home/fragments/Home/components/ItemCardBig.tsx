@@ -100,8 +100,8 @@ const Container = styled.div`
 
     background-color: #273a49;
     color: white;
-
-    filter: drop-shadow(0px 13px 19px rgba(0, 0, 0, 0.0701213));
+    
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
     @media (min-height: 500px) {
         height: 300px;

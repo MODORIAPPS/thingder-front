@@ -2,6 +2,8 @@
 const CHATROOM_KEY = "CHATROOM_KEY";
 
 interface ChatRoomDB {
+    userUid?: string;
+
     thumbnail_src: string;
     thumbnail_srcSet: string;
 
@@ -12,6 +14,7 @@ interface ChatRoomDB {
 }
 
 const createNewChatRoom = (
+    userUid: string,
     chatRoomUid: string,
     nickname: string,
     thumbnail_src: string,
@@ -29,6 +32,7 @@ const createNewChatRoom = (
     }
 
     const room: ChatRoomDB = {
+        userUid,
         thumbnail_src,
         thumbnail_srcSet,
         chatRoomUid,
@@ -46,10 +50,16 @@ const removeChatRoom = (chatRoomUid: string) => {
     window.localStorage.setItem(CHATROOM_KEY, JSON.stringify(list.filter(item => item.chatRoomUid !== chatRoomUid)));
 };
 
-const getChatRoomList = (): ChatRoomDB[] => {
+const getChatRoomList = (userUid?: string): ChatRoomDB[] => {
     const storageData = window.localStorage.getItem(CHATROOM_KEY) ?? "";
     if (storageData === "") return [];
     const list: ChatRoomDB[] = JSON.parse(storageData);
+
+    if(userUid){
+        console.log(list)
+        return list.filter(item => item.userUid === userUid);
+    }
+
     return list;
 };
 

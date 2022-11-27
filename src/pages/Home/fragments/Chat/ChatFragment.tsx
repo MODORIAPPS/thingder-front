@@ -1,4 +1,5 @@
 import Spacing from "@/components/Spacing";
+import { useAppSelector } from "@/hooks/redux";
 import ChatRoomAction from "@/utils/db";
 import styled from "@emotion/styled";
 import React, { useEffect } from "react";
@@ -10,6 +11,8 @@ import TopBar from "./components/TopBar";
 const ChatFragment: React.FC = () => {
 
     const navigate = useNavigate();
+
+    const userUid = useAppSelector(state => state.user.data?.uid);
 
     const handleClickChatRoom = (chatRoomUid: string, nickname: string, image: { src: string, srcSet: string }) => {
         navigate(chatRoomUid + "?nickname=" + nickname)
@@ -28,7 +31,7 @@ const ChatFragment: React.FC = () => {
             <TopBar />
             <List>
                 {
-                    ChatRoomAction.getChatRoomList().map((room) =>
+                    ChatRoomAction.getChatRoomList(userUid).map((room) =>
                         <ChatRoomItem
                             onClick={handleClickChatRoom}
                             uid={room.chatRoomUid}

@@ -5,6 +5,7 @@ import ItemDetailModal from "@/pageModal/ItemDetail/ItemDetailModal";
 import { showMemberDetailAction } from "@/store/ui/ui.reducer";
 import ChatRoomAction from "@/utils/db";
 import styled from "@emotion/styled";
+import { configureStore } from "@reduxjs/toolkit";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import TinderCard from 'react-tinder-card';
 import Spacing from "../../../../components/Spacing";
@@ -72,8 +73,10 @@ const HomeFragment: React.FC = () => {
         updateCurrentIndex(index - 1);
         usePick(uid, direction).then(({ data }) => {
             if (data.match) {
+                console.log('userUid', userUid)
                 const item = itemList[index];
                 ChatRoomAction.createNewChatRoom(
+                    userUid ?? "",
                     data.chatUid,
                     item.nickname,
                     item.image?.src ?? "",
@@ -93,7 +96,7 @@ const HomeFragment: React.FC = () => {
     const fetchItemList = async () => {
         setItemList([]);
         const { data } = await api.main.get<ItemListResponse>("/matching/");
-        setItemList(data.members);
+        setItemList(data.members.filter(item => item.nickname));
         // setItemList(sampleData);
     };
 
@@ -126,8 +129,6 @@ const HomeFragment: React.FC = () => {
         }
     }, [currentIndex]);
 
-    console.log(itemList[currentIndex+1])
-
     return (
         <Screen>
             <HomeFragTopBar handleClickRedCut={() => setMyPage(true)} />
@@ -143,7 +144,7 @@ const HomeFragment: React.FC = () => {
                             <Container>
                                 <CardContainer>
                                     {
-                                        itemList.filter(item => item.nickname).map((item, index) =>
+                                        itemList.map((item, index) =>
                                             <TinderCard
                                                 key={item.uid}
                                                 className="slide"

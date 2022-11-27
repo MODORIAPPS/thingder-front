@@ -46,6 +46,7 @@ const DetailFragment: React.FC<Props> = ({
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+
     const state = useAppSelector(state => state.myPage);
 
     const [photo, setPhoto] = useState<ImageResponse>();
@@ -83,6 +84,7 @@ const DetailFragment: React.FC<Props> = ({
             genMonth
         });
         alert("저장되었습니다!");
+        navigate(-1);
         dispatch(updateMyInfo())
     };
 

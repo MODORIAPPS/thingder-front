@@ -4,7 +4,7 @@ export default {
         name1: "YUNGYUNG",
         name2: "YANGMO",
         name3: "KYUKOM",
-        placeholder: "Let's write something you want to talk to RedCutlery",
+        placeholder: "Let's write something you want to talk to redcutlery",
         send: "Send",
         logout: "LOGOUT",
         subject: "Tinder (Online Dating) - Body = ?",

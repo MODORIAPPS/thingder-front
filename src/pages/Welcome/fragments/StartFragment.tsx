@@ -80,6 +80,7 @@ export const StickToBottom = styled.div`
 `;
 
 const LogoImg = styled.img`
+    object-fit: contain;
     height: 94px;
 `;
 

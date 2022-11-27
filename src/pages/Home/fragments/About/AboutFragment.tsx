@@ -36,6 +36,7 @@ const AboutFragment: React.FC = () => {
         if (confirm) {
             dispatch(signOutUser());
             navigate("/");
+            window.localStorage.removeItem("CHATROOM_KEY")
         }
     };
 

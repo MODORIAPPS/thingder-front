@@ -10,6 +10,7 @@ import { updateMyInfo } from "@/store/user/user.reducer";
 import styled from "@emotion/styled";
 import React, { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 interface ImageResponse {
     src: string;
@@ -24,6 +25,7 @@ const PhotoEditFragment: React.FC<Props> = ({ onClickBackButton }) => {
 
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
+    const navigation = useNavigate();
 
     const state = useAppSelector(state => state.myPage);
     const [photo, setPhoto] = useState<ImageResponse[]>(state.images);
@@ -80,13 +82,13 @@ const PhotoEditFragment: React.FC<Props> = ({ onClickBackButton }) => {
             genMonth
         });
         alert("저장되었습니다!");
+        navigation(-1);
         dispatch(updateMyInfo());
     };
 
     const handleClickPhotoBox = (index: number) => {
         let array = [...photo];
         if (photo[index]) {
-            console.log('asdf');
             array.splice(index, 1);
             setPhoto(array);
         } else {

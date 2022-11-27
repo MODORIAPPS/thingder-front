@@ -27,7 +27,7 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState(window.localStorage.getItem("email") || "");
     const [emailError, setEmailError] = useState("");
 
     const [pwd, setPwd] = useState("");
@@ -37,6 +37,7 @@ const Login: React.FC = () => {
 
     const handleClickLogin = async () => {
         try {
+            remember ? window.localStorage.setItem("email", email) : window.localStorage.removeItem("email");
             api.main.defaults.headers.common['Authorization'] = "";
             const { data } = await api.main.post<LoginResponse>("/auth/login", {
                 email,

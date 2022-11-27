@@ -61,7 +61,6 @@ const ItemDetailModal: React.FC = () => {
         const cards = document.querySelectorAll(".tinder--card:not(.removed)");
         const moveOutWidth = document.body.clientWidth * 1.5;
 
-        console.log(cards.length);
         if (!cards.length) return false;
 
         const card = cards[0];
@@ -82,7 +81,6 @@ const ItemDetailModal: React.FC = () => {
         const cards = document.querySelectorAll(".tinder--card:not(.removed)");
         const moveOutWidth = document.body.clientWidth * 1.5;
 
-        console.log(cards.length);
         if (!cards.length) return false;
 
         const card = cards[0];
@@ -96,7 +94,6 @@ const ItemDetailModal: React.FC = () => {
 
     useEffect(() => {
         if (uid) {
-            console.log('god changed!')
             fetchData();
 
             const tinderCard = window.document.getElementsByClassName("tinder-card")[0];
@@ -118,8 +115,6 @@ const ItemDetailModal: React.FC = () => {
         return images;
     }, [data?.images, uid]);
     
-    console.log(uid);
-
     return (
         <Modal className={"tinder--card"} isOpen={open} style={styles}>
 

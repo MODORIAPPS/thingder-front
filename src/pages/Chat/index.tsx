@@ -93,6 +93,10 @@ const Chat: React.FC = () => {
     };
 
     const handleChangeText = (text: string) => {
+        if(text === "") {
+            setText(text);
+            return;
+        }
         let description = text;
         if (onlyEmoji) {
             description = text.match(regex)?.join("") ?? "";
@@ -210,13 +214,12 @@ export function sortDate1(list: ChatItem[]) {
     return sorted_list;
 }
 const Limit5TextView = styled.p`
-    position: fixed;
-    left: 0;
-    right: 0;
     color: rgba(66, 66, 66, 0.5);
     text-align: center;
     font-size: 13px;
     line-height: 17px;
+    margin-top: 5px;
+    margin-bottom: 8px;
 `;
 
 export const Container = styled.div`
