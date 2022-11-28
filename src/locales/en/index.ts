@@ -44,9 +44,9 @@ export default {
     detail: {
         year: "Y",
         month: "M",
-        gen: "Manufacturing",
+        gen: "Date of Manufacture",
         country: "Country of Manufacture",
-        brand: "Brand",
+        brand: "Produced by",
         talk_with_emoji: "Say it with an emoji",
         about_me: "A story about me"
     },

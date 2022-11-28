@@ -44,7 +44,7 @@ export default {
     detail: {
         year: "년",
         month: "월",
-        gen: "제조",
+        gen: "제조년월",
         country: "제조국",
         brand: "브랜드",
         talk_with_emoji: "이모지로 말해요",

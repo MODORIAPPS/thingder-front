@@ -16,6 +16,10 @@ import { CODE_CONFIRM_ERROR, CODE_EXPIRY_TIME } from "../Register/Register";
 import api from "@/api";
 import Timer from "../Register/components/Timer";
 import SendCodeButton from "../Register/components/SendCodeButton";
+import { useNavigate } from "react-router-dom";
+
+// 영문, 숫자, 특수 문자를 조합한 6자리 이상의 비밀번호 체크 
+const passwordRegex = new RegExp("^((?=.*[a-z])(?=.*[!@#$%^&*])(?=.*[0-9])(?=.{6,}))");
 
 const PasswordReset: React.FC = () => {
 
@@ -31,6 +35,8 @@ const PasswordReset: React.FC = () => {
     const [codeError, setCodeError] = useState("");
     const [pwdError, setPwdError] = useState("");
     const [pwdCError, setPwdCError] = useState("");
+
+    const navigate = useNavigate();
 
     /** Password Visiblity */
     const [visible, setVisible] = useState(false);
@@ -65,7 +71,7 @@ const PasswordReset: React.FC = () => {
 
     const handleClickCodeConfirm = async () => {
         try {
-            const { data } = await api.main.post<{token: string}>("/auth/pin/check", {
+            const { data } = await api.main.post<{ token: string }>("/auth/email/check", {
                 email,
                 pin: code
             });
@@ -77,8 +83,37 @@ const PasswordReset: React.FC = () => {
         }
     };
 
-    const handleClickContinue = () => {
+    const handleClickContinue = async () => {
+        try {
+            await api.main.post("/auth/reset-password", {
+                emailToken: token,
+                password: pwd
+            });
+            navigate("/login")
+        } catch (e) {
+            alert("죄송합니다. 문제가 발생했습니다. 나중에 다시 시도해주세요.")
+        }
+    };
 
+    const handleChangePwd = (password: string) => {
+        if (isPasswordValid(password)) {
+            setPwdError("");
+        } else {
+            const PASSWORD_INPUT_ERROR = t("prer.pwd_error");
+            setPwdError(PASSWORD_INPUT_ERROR);
+        }
+        setPwd(password);
+    };
+
+    const handleChangePwdConfirm = (pwdConfirm: string) => {
+        const PASSWORD_CONFIRM_ERROR = t("prer.pwd_c_error")
+
+        if (pwd !== pwdConfirm) {
+            setPwdError(PASSWORD_CONFIRM_ERROR);
+        } else {
+            setPwdError("");
+        }
+        setPwdC(pwdConfirm)
     };
 
     return (
@@ -115,7 +150,7 @@ const PasswordReset: React.FC = () => {
                     leadingIcon={<Icon src={ImgKey} />}
                     label={t("prer.pwd_label")}
                     placeholder={t("prer.pwd_placeholder")}
-                    onChange={setPwd}
+                    onChange={handleChangePwd}
                     value={pwd}
                     error={pwdError}
                     type={visible ? "text" : "password"}
@@ -127,7 +162,7 @@ const PasswordReset: React.FC = () => {
                     leadingIcon={<Icon src={ImgKey} />}
                     label={t("prer.pwd_c_label")}
                     placeholder={t("prer.pwd_c_placeholder")}
-                    onChange={setPwdC}
+                    onChange={handleChangePwdConfirm}
                     value={pwdC}
                     error={pwdCError}
                     type={visible ? "text" : "password"}
@@ -135,11 +170,15 @@ const PasswordReset: React.FC = () => {
                 />
                 <Spacing.Vertical height={32} />
 
-                <Button text="계속" onClick={handleClickContinue} />
+                <Button disable={!(pwd === pwdC && token)} text="계속" onClick={handleClickContinue} />
             </Container>
         </>
     );
 };
+
+const isPasswordValid = (pwd: string): boolean => {
+    return passwordRegex.test(pwd);
+}
 
 const Icon = styled.img`
     width: 28px;

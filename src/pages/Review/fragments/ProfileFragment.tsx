@@ -41,7 +41,8 @@ const ProfileFragment: React.FC = () => {
 
     const handleClickItem = (uid: string) => {
         setMemberUid(uid);
-        setDescription(list.filter(item => item.memberUid === memberUid)[0].message)
+        setDescription(list.find(item => item.memberUid === uid)?.message ?? "")
+        setOpen(true)
     };
 
     useEffect(() => {
@@ -60,7 +61,7 @@ const ProfileFragment: React.FC = () => {
                             <ItemCard
                                 onClick={handleClickItem}
                                 key={item.uid}
-                                uid={item.uid}
+                                uid={item.memberUid}
                                 nickname={""}
                                 name={""}
                                 thumbnail_src={""}
@@ -78,7 +79,7 @@ const ProfileFragment: React.FC = () => {
                     open={open}
                     close={() => setOpen(false)}
                     memberUid={memberUid}
-                    description={list.filter(item => item.memberUid === memberUid)[0].message}
+                    description={description}
                 />
             }
         </Container>

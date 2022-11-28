@@ -30,6 +30,8 @@ const Container = styled.div`
     min-height: 53px;
     display: flex;
     /* width: 100%; */
+    max-width: 400px;
+    margin: 0 auto;
     justify-content: center;
     align-items: center;
     border-radius: 32px;

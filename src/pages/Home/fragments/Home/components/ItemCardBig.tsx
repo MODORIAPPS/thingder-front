@@ -93,7 +93,7 @@ const LikeImageView = styled.img<{ left: boolean }>`
 const Container = styled.div`
     position: relative;
     width: 100%;
-    height: 520px;
+    height: 50px;
     border-radius: 20px;
 
     overflow: hidden;

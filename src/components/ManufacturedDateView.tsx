@@ -5,6 +5,7 @@ import Typography from "./Typography";
 interface Props {
     genYear: number;
     genMonth: number;
+    slateColor?: boolean;
 }
 
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
@@ -15,6 +16,7 @@ const ManufacturedDateView: React.FC<Props> = (
     {
         genYear,
         genMonth,
+        slateColor
     }
 ) => {
 
@@ -22,10 +24,10 @@ const ManufacturedDateView: React.FC<Props> = (
     const isKorean = i18n.language === "kr";
 
     if (isKorean) {
-        return <Typography.Caution1 className="mt-1">{genYear}{t("detail.year")} {genMonth}{t("detail.month")} {t("detail.gen")}</Typography.Caution1>
+        return <p className={`mt-1 text-sm ${slateColor && 'text-slate-500'} mt-1`}>{t("detail.gen")} : {genYear}{t("detail.year")} {genMonth}{t("detail.month")}</p>
     }
 
-    return <Typography.Caution1 className="mt-1">Made in {monthNames[genMonth - 1]}, {genYear}</Typography.Caution1>
+    return <p className={`mt-1 text-sm ${slateColor && 'text-slate-500'} mt-1`}>Produced by : {monthNames[genMonth - 1]}, {genYear}</p>
 };
 
 export default ManufacturedDateView;

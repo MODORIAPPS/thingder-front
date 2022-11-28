@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Report from "./Report";
 import Modal from 'react-modal';
 import { modalStyles } from "@/pages/Home/fragments/About/modal/AskToTalkModal";
+import ChatRoomAction from "@/utils/db";
 
 export interface ChatReportProps {
     chatRoomUid: string;
@@ -32,6 +33,8 @@ const ReportChatModal: React.FC<ChatReportProps> = (
     const handleClickReport = () => navigate("report/" + chatRoomUid + "?subjectUid=" + subjectUid);
 
     const handleClickReturn = () => {
+        navigate(-2);
+        ChatRoomAction.removeChatRoom(chatRoomUid);
         close();
     };
 

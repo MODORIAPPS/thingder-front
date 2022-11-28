@@ -9,6 +9,7 @@ const AskFragment: React.FC = () => {
     return (
         <>
             <AdminActionBar onClickBackButton={handleClickBack} />
+            
         </>
     );
 };

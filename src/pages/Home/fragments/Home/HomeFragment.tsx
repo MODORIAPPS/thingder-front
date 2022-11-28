@@ -130,75 +130,69 @@ const HomeFragment: React.FC = () => {
     }, [currentIndex]);
 
     return (
-        <Screen>
+        <Screen className="flex flex-col">
             <HomeFragTopBar handleClickRedCut={() => setMyPage(true)} />
             <Spacing.Vertical height={24} />
 
-            {
-                isOffline ?
-                    <span>Offline mode...</span>
+            <div className="flex items-center justify-center grow">
+                {currentIndex > -1
+                    ?
+                    <Container>
+                        <CardContainer>
+                            {
+                                itemList.map((item, index) =>
+                                    <TinderCard
+                                        key={item.uid}
+                                        className="slide"
+                                        ref={childRefs[index]}
+                                        onSwipeRequirementFulfilled={handleBeforeSwipe}
+                                        onSwipe={(dir) => swiped(dir, index)}>
+                                        <ItemCardBig
+                                            onClickInfo={handleClickInfo}
+                                            uid={item.uid}
+                                            nickname={item.nickname}
+                                            name={item.nickname}
+                                            madeIn={item.genCountry}
+                                            brand={item.brand}
+                                            genYear={item.genYear}
+                                            genMonth={item.genMonth}
+                                            thumbnail_src={item.image?.src}
+                                            thubmnail_srcSet={item.image?.srcSet}
+                                            isCursor={currentIndex === index}
+                                            currentDirection={debouncedDirection}
+                                        />
+                                    </TinderCard>
+                                )
+                            }
+                        </CardContainer>
+                        <Spacing.Vertical height={24} />
+                        <ChooseButtonWrapper>
+                            <ChooseButton.Negative onClick={handleClickNegativeButton} />
+                            <Spacing.Horizontal width={65} />
+                            <ChooseButton.Positive onClick={handleClickPositiveButton} />
+                        </ChooseButtonWrapper>
+                    </Container>
                     :
-                    <>
-                        {currentIndex > -1
-                            ?
-                            <Container>
-                                <CardContainer>
-                                    {
-                                        itemList.map((item, index) =>
-                                            <TinderCard
-                                                key={item.uid}
-                                                className="slide"
-                                                ref={childRefs[index]}
-                                                onSwipeRequirementFulfilled={handleBeforeSwipe}
-                                                onSwipe={(dir) => swiped(dir, index)}>
-                                                <ItemCardBig
-                                                    onClickInfo={handleClickInfo}
-                                                    uid={item.uid}
-                                                    nickname={item.nickname}
-                                                    name={item.nickname}
-                                                    madeIn={item.genCountry}
-                                                    brand={item.brand}
-                                                    genYear={item.genYear}
-                                                    genMonth={item.genMonth}
-                                                    thumbnail_src={item.image?.src}
-                                                    thubmnail_srcSet={item.image?.srcSet}
-                                                    isCursor={currentIndex === index}
-                                                    currentDirection={debouncedDirection}
-                                                />
-                                            </TinderCard>
-                                        )
-                                    }
-                                </CardContainer>
-                                <Spacing.Vertical height={24} />
-                                <ChooseButtonWrapper>
-                                    <ChooseButton.Negative onClick={handleClickNegativeButton} />
-                                    <Spacing.Horizontal width={65} />
-                                    <ChooseButton.Positive onClick={handleClickPositiveButton} />
-                                </ChooseButtonWrapper>
-                            </Container>
-                            :
-                            <AlreadyRead onClickRefetch={fetchItemList} />
-                        }
-                    </>
+                    <AlreadyRead onClickRefetch={fetchItemList} />
+                }
+            </div>
 
-            }
-
-            <ItemDetailModal />
+            <ItemDetailModal swipe={swipe} />
 
             {
-                itemList[currentIndex+1] &&
+                itemList[currentIndex + 1] &&
                 <MatchModal
                     open={matched}
                     handleClickClose={() => setMatched(false)}
                     chatRoomUid={chatRoomUid}
-                    nickname={itemList[currentIndex+1].nickname}
-                    name={itemList[currentIndex+1].nickname}
-                    madeIn={itemList[currentIndex+1].genCountry}
-                    brand={itemList[currentIndex+1].brand}
-                    genYear={itemList[currentIndex+1].genYear}
-                    genMonth={itemList[currentIndex+1].genMonth}
-                    thumbnail_src={itemList[currentIndex+1]?.image?.src ?? ""}
-                    thubmnail_srcSet={itemList[currentIndex+1]?.image?.srcSet ?? ""}
+                    nickname={itemList[currentIndex + 1].nickname}
+                    name={itemList[currentIndex + 1].nickname}
+                    madeIn={itemList[currentIndex + 1].genCountry}
+                    brand={itemList[currentIndex + 1].brand}
+                    genYear={itemList[currentIndex + 1].genYear}
+                    genMonth={itemList[currentIndex + 1].genMonth}
+                    thumbnail_src={itemList[currentIndex + 1]?.image?.src ?? ""}
+                    thubmnail_srcSet={itemList[currentIndex + 1]?.image?.srcSet ?? ""}
                 />
             }
 
@@ -213,17 +207,19 @@ const HomeFragment: React.FC = () => {
 export const Screen = styled.div`
     overflow-x: hidden;
     overflow-y: scroll;
+    height: 100%;
 `;
 
 export const Container = styled.div`
     display: flex;
     flex-direction: column;
+    width: 100%;
 `;
 
 export const CardContainer = styled.div`
     /* position: absolute; */
     /* height: 700px; */
-    padding: 0 12px;
+    // padding: 0 12px;
     box-sizing: border-box;
     height: 520px;
     position: relative;

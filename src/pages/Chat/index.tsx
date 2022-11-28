@@ -1,18 +1,17 @@
-import Spacing from "@/components/Spacing";
+import api from "@/api";
+import { useAppSelector } from "@/hooks/redux";
 import styled from "@emotion/styled";
+import { Client, CompatClient, IFrame, Stomp } from '@stomp/stompjs';
+import emojiRegex from "emoji-regex";
+import queryString from 'query-string';
 import React, { useEffect, useRef, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import SockJS from "sockjs-client/dist/sockjs";
 import ChatInput from "./components/ChatInput";
 import CounterpartChat from "./components/CounterpartChat";
 import MinepartChat from "./components/MinepartChat";
 import TopBar from "./components/TopBar";
-import { Client, CompatClient, IFrame, Message, Stomp } from '@stomp/stompjs';
-import SockJS from "sockjs-client/dist/sockjs"
 import ReportChatModal from "./modal/ReportChatModal";
-import { useAppSelector } from "@/hooks/redux";
-import api from "@/api";
-import emojiRegex from "emoji-regex";
-import queryString from 'query-string'
 
 const regex = emojiRegex();
 
@@ -79,7 +78,7 @@ const Chat: React.FC = () => {
 
     const [reportModal, setReportModal] = useState(false);
 
-    const onlyEmoji = mineChat.length <= 5;
+    const onlyEmoji = mineChat.length < 5;
 
     const handleClickClose = () => navigate(-1);
     const handleClickGuard = () => {

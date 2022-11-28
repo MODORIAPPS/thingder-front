@@ -17,6 +17,9 @@ import ActionBar from "./components/ActionBar";
 import 'react-awesome-slider/dist/styles.css';
 import AwesomeSlider from "react-awesome-slider";
 import SimpleImageSlider from "react-simple-image-slider";
+import { Direction } from "@/pages/Home/fragments/Home/types";
+import MatchModal from "@/pages/Home/fragments/Home/modals/MatchModal";
+import { useNavigate } from "react-router-dom";
 
 export const RELATION = {
     BLOCK: "BLOCK",
@@ -24,13 +27,22 @@ export const RELATION = {
     LIKE: "LIKE"
 }
 
+interface Props {
+    swipe?: (dir: Direction) => void;
+}
+
 /**
  * Member Detail
  */
-const ItemDetailModal: React.FC = () => {
+const ItemDetailModal: React.FC<Props> = ({ swipe }) => {
 
     const { t } = useTranslation();
+
+    const [matched, setMatched] = useState(false);
+    const [chatUid, setChatUid] = useState("");
+
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const uid = useAppSelector(state => state.ui.memberDetailUid);
     const open = useAppSelector(state => state.ui.memberDetailModalVisible);
 
@@ -67,6 +79,7 @@ const ItemDetailModal: React.FC = () => {
 
         card.classList.add("removed");
         (card as any).style.transform = 'translate(-' + moveOutWidth + 'px, -100px) rotate(30deg)';
+        swipe && swipe("left")
         setTimeout(() => {
             handleClickBackButton();
         }, 300);
@@ -78,6 +91,12 @@ const ItemDetailModal: React.FC = () => {
             uid,
         });
 
+        if (data.match && !swipe) {
+            setMatched(data.match);
+            setChatUid(data.chatUid);
+            return;
+        }
+
         const cards = document.querySelectorAll(".tinder--card:not(.removed)");
         const moveOutWidth = document.body.clientWidth * 1.5;
 
@@ -87,6 +106,7 @@ const ItemDetailModal: React.FC = () => {
 
         card.classList.add("removed");
         (card as any).style.transform = 'translate(' + moveOutWidth + 'px, -100px) rotate(-30deg)';
+        swipe && swipe("right");
         setTimeout(() => {
             handleClickBackButton();
         }, 300);
@@ -99,7 +119,7 @@ const ItemDetailModal: React.FC = () => {
             const tinderCard = window.document.getElementsByClassName("tinder-card")[0];
             tinderCard
                 ?.removeEventListener("touchmove", () => { console.log("removed!") });
-        }else{
+        } else {
             setData(undefined)
         }
     }, [uid]);
@@ -114,12 +134,15 @@ const ItemDetailModal: React.FC = () => {
 
         return images;
     }, [data?.images, uid]);
-    
+
     return (
         <Modal className={"tinder--card"} isOpen={open} style={styles}>
 
             <ActionBar
-                handleClickGuard={() => { }}
+                handleClickGuard={() => {
+                    console.log(uid);
+                    navigate(uid)
+                }}
                 handleClickClose={handleClickBackButton} />
 
             {/* 슬라이드 가능하게 */}
@@ -145,43 +168,32 @@ const ItemDetailModal: React.FC = () => {
                 </ChooseButtonWrapper>
             </PrsentImageWrapper>
 
-            <Spacing.Vertical height={16} />
+            <Spacing.Vertical height={24} />
             <Container>
-                <div className="flex flex-row flex-wrap justify-between items-end">
-                    <Typography.Header1>{data?.nickname}</Typography.Header1>
-                    <ManufacturedDateView genYear={data?.genYear ?? 0} genMonth={data?.genMonth ?? 0} />
-                </div>
-                <div className="flex flex-col flex-wrap justify-between items-end mt-1">
-                    <p className="self-end text-sm text-slate-500">{data?.type}</p>
-                    <div className="flex flex-row items-center text-end flex-wrap">
-                        <p className="flex flex-row flex-wrap text-sm text-slate-500 text-end">
-                            <p className="self-end">{t("detail.country")} : </p>
-                            &nbsp;<p className="self-end">{data?.genCountry}</p>
-                        </p>
-                        <BottomPropertyDivider />
-                        <p className="flex flex-row flex-wrap text-sm text-slate-500 text-end">
-                            <p>{t("detail.brand")} : </p>
-                            &nbsp;<p className="self-end">{data?.brand}</p>
-                        </p>
-                    </div>
-                </div>
+                <Typography.Header1>{data?.nickname}</Typography.Header1>
+                <p className="self-end text-sm text-end font-bold">{data?.type}</p>
+                <p className="mt-2"></p>
+                {/* 제조년도, 제조국, 브랜드 */}
+                <ManufacturedDateView slateColor={true} genYear={data?.genYear ?? 0} genMonth={data?.genMonth ?? 0} />
+                <p className="text-sm text-slate-500 mt-1 font-normal">{t("detail.country")} : {data?.genCountry}</p>
+                <p className="text-sm text-slate-500 mt-1 font-normal">{t("detail.brand")} : {data?.brand}</p>
+
+                <Divider />
+
+                {/* 이모지로 말해요 */}
+                {/* <SubTitle>{t("detail.talk_with_emoji")}</SubTitle> */}
+                <Spacing.Vertical height={8} />
+                <Content>
+                    {data?.story}
+                </Content>
 
                 {/* 다섯개 태그 */}
                 <Divider />
                 <Content>{data?.tag.split(",").map(t => `#${t} `)}</Content>
                 <Divider />
 
-                {/* 이모지로 말해요 */}
-                <SubTitle>{t("detail.talk_with_emoji")}</SubTitle>
-                <Spacing.Vertical height={8} />
-                <Content>
-                    {data?.story}
-                </Content>
-
-                <Divider />
-
                 {/* 저에 대한 이야기 */}
-                <SubTitle>{t("detail.about_me")}</SubTitle>
+                {/* <SubTitle>{t("detail.about_me")}</SubTitle> */}
                 <Spacing.Vertical height={8} />
                 <Content>
                     {data?.description}
@@ -189,6 +201,23 @@ const ItemDetailModal: React.FC = () => {
 
                 <Spacing.Vertical height={42} />
             </Container>
+
+            {
+                data &&
+                <MatchModal
+                    open={matched}
+                    handleClickClose={() => setMatched(false)}
+                    chatRoomUid={chatUid}
+                    nickname={data.nickname}
+                    name={data.nickname}
+                    madeIn={data.genCountry}
+                    brand={data.brand}
+                    genYear={data.genYear}
+                    genMonth={data.genMonth}
+                    thumbnail_src={data?.images[0]?.src ?? ""}
+                    thubmnail_srcSet={data?.images[0]?.srcSet ?? ""}
+                />
+            }
         </Modal>
     );
 };
@@ -207,7 +236,7 @@ const styles = {
 
 export interface MatchingPickResponse {
     match: boolean;
-    member: MemberDetail;
+    chatUid: string;
 }
 
 export interface MemberDetail {

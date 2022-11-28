@@ -1,10 +1,16 @@
+import api from "@/api";
 import ActionBar from "@/components/ActionBar";
 import Container from "@/components/Container";
 import Spacing from "@/components/Spacing";
+import { useAppSelector } from "@/hooks/redux";
+import ChatRoomAction from "@/utils/db";
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import { Client, CompatClient, IFrame, Message, Stomp } from '@stomp/stompjs';
+import SockJS from "sockjs-client/dist/sockjs"
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Modal from 'react-modal';
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     open: boolean;
@@ -14,10 +20,40 @@ interface Props {
 const AskToTalkModal: React.FC<Props> = ({ open, onClickBackButton }) => {
 
     const { t } = useTranslation();
+
+    const uid = useAppSelector(state => state.user.data?.uid);
+    const chatClient = useRef<CompatClient>();
     const [value, setValue] = useState("");
+    const navigate = useNavigate();
 
     const handleClickSend = async () => {
-        
+        try {
+            const { data: chatRoomUid } = await api.main.post<string>("/chat/admin");
+
+            const sock = new SockJS("https://api.thingder.app/endpoint",);
+            const stomp_client = Stomp.over(sock);
+
+            stomp_client.connect({
+                roomUid: chatRoomUid,
+            }, (frame: IFrame) => {
+                chatClient.current = stomp_client
+                chatClient?.current?.send("/app/message", {}, JSON.stringify(value));
+
+                ChatRoomAction.createNewChatRoom(
+                    uid ?? "",
+                    chatRoomUid,
+                    "관리자",
+                    "",
+                    ""
+                );
+    
+                navigate("/home/chat/" + chatRoomUid + "?nickname=" + "관리자");
+            });
+
+
+        } catch (e) {
+            alert("죄송합니다. 문제가 발생했어요. 잠시 뒤 다시 시도해주세요.")
+        }
     };
 
     return (
@@ -29,6 +65,7 @@ const AskToTalkModal: React.FC<Props> = ({ open, onClickBackButton }) => {
                 <Spacing.Vertical height={12} />
                 <Body>
                     <Description>{t("about.placeholder")}</Description>
+                    <Spacing.Vertical height={16} />
                     <TextArea value={value} onChange={e => setValue(e.target.value)} />
                     <Spacing.Vertical height={36} />
                     <Button onClick={handleClickSend}>
