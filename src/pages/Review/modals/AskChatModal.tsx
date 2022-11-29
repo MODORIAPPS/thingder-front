@@ -1,64 +1,45 @@
-import api from "@/api";
-import { useAppSelector } from "@/hooks/redux";
+import CounterpartChat from "@/pages/Chat/components/CounterpartChat";
+import MinepartChat from "@/pages/Chat/components/MinepartChat";
 import styled from "@emotion/styled";
-import { Client, CompatClient, IFrame, Stomp } from '@stomp/stompjs';
-import emojiRegex from "emoji-regex";
-import queryString from 'query-string';
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import Modal from "react-modal";
 import SockJS from "sockjs-client/dist/sockjs";
-import ChatInput from "./components/ChatInput";
-import CounterpartChat from "./components/CounterpartChat";
-import MinepartChat from "./components/MinepartChat";
-import TopBar from "./components/TopBar";
-import ReportChatModal from "./modal/ReportChatModal";
+import { Client, CompatClient, IFrame, Stomp } from '@stomp/stompjs';
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "@/hooks/redux";
+import { ChatItem } from "@/pages/Chat";
+import api from "@/api";
+import TopBar from "@/pages/Chat/components/TopBar";
+import ChatInput from "@/pages/Chat/components/ChatInput";
+import { modalStyles } from "@/pages/Home/fragments/About/modal/AskToTalkModal";
 
-const regex = emojiRegex();
-
-export interface ChatItem {
-    sender: {
-        uid: string;
-
-        images: {
-            src: string;
-            srcSet: string;
-        }[]
-    }
-    message: string;
-    sendAt: string;
+interface Props {
+    chatRoomUid: string;
+    nickname: string;
+    open: boolean;
+    setOpen: (value: boolean) => void;
 }
 
-interface Photo {
-    src: string;
-    srcSet: string
-}
-
-const Chat: React.FC = () => {
-
-    const { id } = useParams();
-
-    const { search } = location;
-    const queryObj = queryString.parse(search);
-    const { nickname } = queryObj;
-
-    /** 상대방 썸네일 */
-    const [thumbnail, setThumbnail] = useState<Photo>();
+const AskChatModal: React.FC<Props> = ({
+    chatRoomUid,
+    nickname,
+    open,
+    setOpen
+}) => {
 
     const navigate = useNavigate();
 
     const uid = useAppSelector(state => state.user.data?.uid);
+    console.log('userUid', uid);
     const chatClient = useRef<CompatClient>();
 
     const [chatList, setChatList] = useState<ChatItem[]>([]);
-    const [subjectUid, setSubjectUid] = useState("");
-
-    const mineChat = chatList.filter(chat => chat.sender.uid === uid);
 
     const [text, setText] = useState("");
     const handleClickSend = () => {
         if (!text || text.replace(/^\s+|\s+$/g, "") === "") return;
         const chat = {
-            roomUid: id,
+            roomUid: chatRoomUid,
             userUid: uid,
             message: text
         }
@@ -71,36 +52,20 @@ const Chat: React.FC = () => {
             },
             message: text
         };
+        console.log('commit');
         setChatList(prevState => [...prevState, item]);
         setText("");
     };
 
-    const [reportModal, setReportModal] = useState(false);
-
-    const onlyEmoji = mineChat.length < 5;
-
-    const handleClickClose = () => navigate(-1);
-    const handleClickGuard = () => {
-        setReportModal(true);
-    }
+    const handleClickClose = () => setOpen(false);
 
     const fetchChatHistory = async () => {
-        const { data } = await api.main.get<{ messages: ChatItem[] }>("/chat/" + id);
+        const { data } = await api.main.get<{ messages: ChatItem[] }>("/chat/" + chatRoomUid);
         setChatList(sortDate1(data.messages));
     };
 
     const handleChangeText = (text: string) => {
-        if(text === "") {
-            setText(text);
-            return;
-        }
-        let description = text;
-        if (onlyEmoji) {
-            description = text.match(regex)?.join("") ?? "";
-            if (!description) return;
-        }
-
-        setText(description);
+        setText(text);
     };
 
     useEffect(() => {
@@ -111,11 +76,11 @@ const Chat: React.FC = () => {
             const stomp_client = Stomp.over(sock);
 
             stomp_client.connect({
-                roomUid: id,
+                roomUid: chatRoomUid,
             }, (frame: IFrame) => {
                 chatClient.current = stomp_client
-                stomp_client.subscribe(id ?? "", message => {
-                    console.log(message);
+                stomp_client.subscribe(chatRoomUid ?? "", message => {
+                    console.log('subscribed!!');
                 });
             });
         })();
@@ -123,7 +88,7 @@ const Chat: React.FC = () => {
         return () => {
             client?.deactivate();
         }
-    }, [id]);
+    }, [chatRoomUid]);
 
     useEffect(() => {
         fetchChatHistory();
@@ -131,7 +96,7 @@ const Chat: React.FC = () => {
 
     useEffect(() => {
         if (chatClient.current) {
-            chatClient.current.subscribe("/chat/room/" + id, (message) => {
+            chatClient.current.subscribe("/chat/room/" + chatRoomUid, (message) => {
                 console.log('hello')
                 const body = JSON.parse(message.body);
                 const item = {
@@ -148,36 +113,23 @@ const Chat: React.FC = () => {
     }, [chatClient]);
 
 
-    useEffect(() => {
-        if (chatList.length > 0) {
-            const image = chatList[0].sender.images;
-            setThumbnail({
-                src: image[0]?.src ?? "",
-                srcSet: image[0]?.srcSet ?? ""
-            });
-            setSubjectUid(chatList[0].sender.uid)
-        }
-    }, [chatList]);
-
     return (
-        <>
+        <Modal isOpen={open} style={modalStyles}>
             <Container>
-                <TopBar onClickBack={handleClickClose} onClickGuard={handleClickGuard} title={nickname as string ?? ""} />
+                <TopBar onClickBack={handleClickClose} title={nickname as string ?? ""} />
 
                 <ChatBody>
                     {
-                        onlyEmoji && <Limit5TextView>첫 5개의 메시지는 이모지만 쓸 수 있어요.</Limit5TextView>
-                    }
-                    {
                         chatList.map((chat, i) => {
+                            console.log('hitomi', uid);
                             if (chat.sender.uid === uid) {
                                 return <MinepartChat key={i} text={chat.message} />
                             }
 
                             return <CounterpartChat
                                 key={i}
-                                thumbnail_src={thumbnail?.src ?? ""}
-                                thumbnail_srcSet={thumbnail?.srcSet ?? ""}
+                                thumbnail_src={chat.sender.images[0]?.src ?? ""}
+                                thumbnail_srcSet={chat.sender.images[0]?.srcSet ?? ""}
                                 text={chat.message} />
                         })
                     }
@@ -194,16 +146,11 @@ const Chat: React.FC = () => {
                     </InputWrapper>
                 </BottomChat>
             </Container>
+        </Modal>
 
-            {/* 신고 모달 */}
-            <ReportChatModal
-                chatRoomUid={id ?? ""}
-                subjectUid={subjectUid}
-                open={reportModal}
-                close={() => setReportModal(false)} />
-        </>
     );
 };
+
 export function sortDate1(list: ChatItem[]) {
     const sorted_list = list.sort(function (a, b) {
         return new Date(a.sendAt).getTime() - new Date(b.sendAt).getTime();
@@ -256,4 +203,5 @@ export const WhiteGradient = styled.div`
     background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 91.84%);
 `;
 
-export default Chat;
+
+export default AskChatModal;

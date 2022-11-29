@@ -8,6 +8,7 @@ import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PullToRefresh from "react-simple-pull-to-refresh";
+import ProfileItemCard from "../components/ProfileItemCard";
 import RemainedReviewCount from "../components/RemainedReviewCount";
 import AdminItemDetailModal from "../modals/AdminItemDetailModal";
 
@@ -27,10 +28,11 @@ const ProfileFragment: React.FC = () => {
     const handleClickBack = () => navigate("/admin");
 
     const [open, setOpen] = useState(false);
+
+    const [targetUid, setTargetUid] = useState("");
     const [memberUid, setMemberUid] = useState("");
     const [description, setDescription] = useState("");
 
-    const dispatch = useAppDispatch();
     const [list, setList] = useState<Profile[]>([]);
 
     const fetchItemList = async () => {
@@ -40,9 +42,12 @@ const ProfileFragment: React.FC = () => {
     };
 
     const handleClickItem = (uid: string) => {
-        setMemberUid(uid);
-        setDescription(list.find(item => item.memberUid === uid)?.message ?? "")
-        setOpen(true)
+        setTargetUid(uid);
+        const item = list.find(item => item.uid === uid);
+        if(!item) return;
+        setMemberUid(item?.memberUid);
+        setDescription(item.message);
+        setOpen(true);
     };
 
     useEffect(() => {
@@ -58,26 +63,23 @@ const ProfileFragment: React.FC = () => {
                 <ListView>
                     {
                         list?.map(item =>
-                            <ItemCard
-                                onClick={handleClickItem}
+                            <ProfileItemCard
                                 key={item.uid}
-                                uid={item.memberUid}
-                                nickname={""}
-                                name={""}
-                                thumbnail_src={""}
-                                thumbnail_srcSet={""}
-                            />
+                                uid={item.uid}
+                                memberUid={item.memberUid}
+                                onClick={handleClickItem}
+                                message={item.message} />
                         )
                     }
                 </ListView>
             </PullToRefresh>
             <Spacing.Vertical height={40} />
-
             {
                 list.length > 0
                 && <AdminItemDetailModal
                     open={open}
                     close={() => setOpen(false)}
+                    targetUid={targetUid}
                     memberUid={memberUid}
                     description={description}
                 />

@@ -37,7 +37,7 @@ const AskToTalkModal: React.FC<Props> = ({ open, onClickBackButton }) => {
                 roomUid: chatRoomUid,
             }, (frame: IFrame) => {
                 chatClient.current = stomp_client
-                chatClient?.current?.send("/app/message", {}, JSON.stringify(value));
+                stomp_client.send("/app/message", {}, JSON.stringify(value));
 
                 ChatRoomAction.createNewChatRoom(
                     uid ?? "",

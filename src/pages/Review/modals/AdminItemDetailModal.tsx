@@ -10,6 +10,7 @@ import { closeMemberDetailAction } from "@/store/ui/ui.reducer";
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import Modal from 'react-modal';
+import { useNavigate } from "react-router-dom";
 
 export const RELATION = {
     BLOCK: "BLOCK",
@@ -20,6 +21,7 @@ export const RELATION = {
 interface Props {
     open: boolean;
     close: () => void;
+    targetUid: string;
     memberUid: string;
     description: string;
 }
@@ -31,11 +33,13 @@ const AdminItemDetailModal: React.FC<Props> = (
     {
         open,
         close,
+        targetUid,
         memberUid,
         description
     }
 ) => {
 
+    const navigate = useNavigate();
     const [data, setData] = useState<MemberDetail>();
 
     const fetchData = async () => {
@@ -46,9 +50,10 @@ const AdminItemDetailModal: React.FC<Props> = (
     const handleClickBackButton = () => close();
 
     const handleClickNegativeButton = async () => {
-        await api.main.post(`/admin/report/profile/${memberUid}`, {
+        await api.main.post(`/admin/report/profile/${targetUid}`, {
             status: "BAN"
         });
+        navigate(-1);
         alert("밴 처리되었습니다.")
     };
 

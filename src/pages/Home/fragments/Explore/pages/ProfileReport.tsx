@@ -17,8 +17,6 @@ const ProfileReport: React.FC = () => {
 
     return (
         <div className="flex flex-col content-between h-full">
-
-
             <ChatModalContainer>
                 <ActionBar />
 

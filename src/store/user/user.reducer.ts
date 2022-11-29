@@ -60,9 +60,11 @@ export const signInUser = (token?: string): ThunkAction<void, RootState, unknown
 
             /** 1. 내 정보 불러오기 */
             const { data: my } = await api.main.get<MyResponse>("/auth/my");
+            console.log('data mine!', my);
 
             /** 2. 내 프로필 불러오기 */
             const { data: member } = await api.main.get<MemberDTO>(`/member/${my.uid}`);
+            console.log('data mewmber', member);
             dispatch({ type: USER_SIGN_IN_SUCCESS, userType: my.roles[0], uid: my.uid, member });
 
             console.log("user/reducer token", accessToken);

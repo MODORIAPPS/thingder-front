@@ -70,7 +70,7 @@ const AdminChatModal: React.FC<Props> = ({
 
     return (
         <Modal isOpen={open} style={styles}>
-            <TopBar onClickBack={handleClickClose} title={"미야오옹"} />
+            <TopBar onClickBack={handleClickClose} title={""} />
 
             {
                 description &&
