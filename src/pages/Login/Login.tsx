@@ -33,7 +33,7 @@ const Login: React.FC = () => {
     const [pwd, setPwd] = useState("");
     const [pwdError, setPwdError] = useState("");
 
-    const [remember, setRemember] = useState<boolean>(false);
+    const [remember, setRemember] = useState<boolean>((window.localStorage.getItem("email") !== null));
 
     const handleClickLogin = async () => {
         try {

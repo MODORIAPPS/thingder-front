@@ -39,6 +39,10 @@
     url("styles/fonts/NotoSansKR-Bold.otf") format('truetype')
 }
 
+textarea {
+  font-family: 'Noto Sans CJK KR';
+}
+
 :root {
   font-family: 'Noto Sans CJK KR', Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;

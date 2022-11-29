@@ -81,9 +81,9 @@ const ItemCardBig: React.FC<Props> = (props) => {
  * ItemCardBig
  */
 const LikeImageView = styled.img<{ left: boolean }>`
-    width: 158px;
-    height: 53px;
+    width: 130px;
     object-fit: cover;
+
 
     position: absolute;
     top: 16px;
